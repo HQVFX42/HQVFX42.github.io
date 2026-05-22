@@ -1,7 +1,912 @@
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>HQVFX42</title>
-      <meta http-equiv = "refresh" content = "0; url=https://immense-banjo-283.notion.site/1afb47f20dfa80d5ab1be80ce92eb613?" />
-   </head>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장인호 | 게임 프로그래머 포트폴리오</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: #0B0F19; /* Ultra dark Slate */
+            color: #F1F5F9;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Smooth custom glow effects */
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+        }
+        .neon-glow-emerald {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Glassmorphism Cards */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-panel:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Custom scrollbar for premium look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="selection:bg-cyan-500 selection:text-slate-900 antialiased overflow-x-hidden">
+
+    <!-- Glowing Decorative Background Objects -->
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+    <div class="absolute top-[800px] right-1/4 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+
+    <div class="max-w-6xl mx-auto px-4 py-8 md:py-16">
+        
+        <!-- ================= HEADER / HERO SECTION ================= -->
+        <header class="mb-16">
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-8 glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden">
+                <!-- Decorative Top line -->
+                <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-cyan-500 via-emerald-500 to-indigo-500"></div>
+                
+                <div class="space-y-4 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-800/50 text-cyan-400 text-xs font-semibold tracking-wider uppercase">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        AI & MCP Pipeline Pioneer
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
+                        장인호 <span class="text-xl md:text-2xl font-normal text-slate-400 ml-2 code-font">&lt;Inho Jang /&gt;</span>
+                    </h1>
+                    
+                    <p class="text-lg md:text-xl font-medium text-slate-300">
+                        기술적 도전을 즐기며 개발 생태계를 효율화하는 <span class="text-cyan-400 font-semibold">게임 프로그래머</span>
+                    </p>
+                    
+                    <!-- AI/MCP 핵심 소개 배너 (가시성 대폭 향상) -->
+                    <div class="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 mt-4 relative">
+                        <div class="absolute top-3 right-4 opacity-10">
+                            <i class="fa-solid fa-wand-magic-sparkles text-5xl text-cyan-400"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                            <strong class="text-white"><i class="fa-solid fa-brain text-cyan-400 mr-2"></i>AI 연계 파이프라인 마스터:</strong><br>
+                            AI를 코드 구현, 기획 설계, 기술 문서화, 아트 에셋 제작 전반에 영리하게 도입하며, <span class="text-emerald-400 font-semibold underline decoration-emerald-500/30">MCP(Model Context Protocol)를 Unity 및 Notion 등 다양한 개발 환경에 밀결합</span>하여 팀의 제작 생산성을 극대화하는 독보적인 워크플로우를 설계합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact & Bio Cards -->
+                <div class="w-full lg:w-auto shrink-0 flex flex-col gap-3 min-w-[280px]">
+                    <div class="p-5 rounded-2xl bg-slate-950/80 border border-slate-800/80 space-y-3 text-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                                <i class="fa-regular fa-envelope text-cyan-400"></i>
+                            </div>
+                            <a href="mailto:ford6313@gmail.com" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">ford6313@gmail.com</a>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                                <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                            </div>
+                            <span class="text-slate-300">Seoul, South Korea</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
+                                <i class="fa-brands fa-github text-indigo-400"></i>
+                            </div>
+                            <a href="https://github.com/hqvfx42" target="_blank" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">github.com/hqvfx42</a>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs text-slate-400 flex justify-between items-center">
+                        <span>최종 업데이트</span>
+                        <span class="code-font text-slate-300">2026.05</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ================= MAIN LAYOUT GRID ================= -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+            
+            <!-- LEFT COLUMN: TECH STACK & PROFILE (4 cols) -->
+            <div class="lg:col-span-4 space-y-8">
+                
+                <!-- TECH STACK CARD -->
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h2 class="text-lg font-bold text-white mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-screwdriver-wrench text-cyan-400"></i>
+                        Tech Stack
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Engines -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-3">Game Engines</span>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-300 font-medium"><i class="fa-solid fa-cube text-orange-400 mr-1"></i> Unreal Engine</span>
+                                        <span class="text-cyan-400 code-font">Advanced (3/3)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                                        <div class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-300 font-medium"><i class="fa-solid fa-cubes text-cyan-400 mr-1"></i> Unity Engine</span>
+                                        <span class="text-emerald-400 code-font">Intermediate (1/3)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                                        <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full" style="width: 40%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Languages -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-3">Languages</span>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-300 font-medium">C++</span>
+                                        <span class="text-cyan-400 code-font">Proficient</span>
+                                    </div>
+                                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                                        <div class="bg-cyan-500 h-full rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-300 font-medium">C#</span>
+                                        <span class="text-emerald-400 code-font">Capable</span>
+                                    </div>
+                                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                                        <div class="bg-emerald-500 h-full rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DevOps & Collaboration tools -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-3">DevOps & Cooperation</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium flex items-center gap-1">
+                                    <i class="fa-brands fa-git-alt text-orange-500"></i> Git
+                                </span>
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium flex items-center gap-1">
+                                    <i class="fa-solid fa-code-commit text-blue-400"></i> SVN
+                                </span>
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium flex items-center gap-1">
+                                    <i class="fa-brands fa-jenkins text-red-400"></i> Jenkins
+                                </span>
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium flex items-center gap-1">
+                                    <i class="fa-solid fa-list-check text-indigo-400"></i> Linear
+                                </span>
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium flex items-center gap-1">
+                                    <i class="fa-brands fa-slack text-yellow-400"></i> Slack
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EDUCATION & LANGUAGES CARD -->
+                <div class="glass-panel p-6 rounded-2xl space-y-6">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Education</h3>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-200">한국공학대학교 졸업</h4>
+                                <p class="text-xs text-slate-400">게임공학 계열 전공 (2014.03 - 2020.02)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-slate-800">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Languages</h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-300">한국어 (Native)</span>
+                                <span class="text-emerald-400 code-font">🟩🟩🟩🟩🟩</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">영어 (Professional)</span>
+                                <span class="text-sky-400 code-font">🟩🟩🟩</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: PROFESSIONAL EXPERIENCE (8 cols) -->
+            <div class="lg:col-span-8 space-y-8">
+                
+                <div class="glass-panel p-6 md:p-8 rounded-2xl">
+                    <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-user-gear text-emerald-400"></i>
+                        Experience <span class="text-sm font-normal text-slate-400">(총 2년 6개월)</span>
+                    </h2>
+                    
+                    <!-- Timeline Wrapper -->
+                    <div class="relative border-l border-slate-800 pl-6 ml-4 space-y-10">
+                        
+                        <!-- Experience 1: Tidal Flats -->
+                        <div class="relative">
+                            <!-- Timeline Dot -->
+                            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-emerald-500 border-4 border-slate-950 neon-glow-emerald"></div>
+                            
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                                <div>
+                                    <h3 class="text-lg font-bold text-white">Tidal Flats</h3>
+                                    <p class="text-sm text-cyan-400 font-medium">Game Programmer</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 font-mono self-start sm:self-center">
+                                    2023.04 - 2023.11
+                                </span>
+                            </div>
+                            
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                Unity 모바일 게임 프로젝트 메인 시스템 개발. 플랫폼 연동 모듈 최적화 및 유니티 환경에서의 견고한 시스템 기여.
+                            </p>
+                        </div>
+
+                        <!-- Experience 2: TubaN -->
+                        <div class="relative">
+                            <!-- Timeline Dot -->
+                            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-cyan-500 border-4 border-slate-950 neon-glow-cyan"></div>
+                            
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                                <div>
+                                    <h3 class="text-lg font-bold text-white">TubaN</h3>
+                                    <p class="text-sm text-cyan-400 font-medium">Technical Director</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 font-mono self-start sm:self-center">
+                                    2022.06 - 2023.01
+                                </span>
+                            </div>
+                            
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                UE5 기반 애니메이션 제작 파이프라인 구축 및 워크플로우 생산성 향상을 위한 자동화 에디터 툴 및 플러그인 전담 개발.
+                            </p>
+                        </div>
+
+                        <!-- Experience 3: JIH -->
+                        <div class="relative">
+                            <!-- Timeline Dot -->
+                            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-950"></div>
+                            
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                                <div>
+                                    <h3 class="text-lg font-bold text-white">JIH</h3>
+                                    <p class="text-sm text-cyan-400 font-medium">Director</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 font-mono self-start sm:self-center">
+                                    2019.05 - 2020.06
+                                </span>
+                            </div>
+                            
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                UE4 기반 상호작용형 콘텐츠 설계 및 전반적인 게임플레이 메커니즘을 총괄 디렉팅하여 최종 출시 단계 안정화 성공.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- ==================== CORE PROJECTS ===================== -->
+        <!-- ========================================================= -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-black text-white mb-2 flex items-center gap-3">
+                <i class="fa-solid fa-circle-nodes text-cyan-400"></i> Core Projects
+            </h2>
+            <p class="text-slate-400 text-sm mb-8">실무 및 주요 협업에서 메인 개발자로 담당한 핵심 프로젝트 상세 정보입니다.</p>
+            
+            <div class="space-y-8">
+                
+                <!-- Project 1: Mega Road -->
+                <div class="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                    
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <!-- Abstract Visual Graphic -->
+                        <div class="w-full lg:w-72 shrink-0 bg-slate-950 rounded-2xl border border-slate-800 flex flex-col justify-between p-6 relative overflow-hidden min-h-[200px]">
+                            <div class="space-y-2">
+                                <span class="px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold tracking-wider uppercase">Unity Mobile</span>
+                                <h4 class="text-xl font-bold text-white tracking-tight">Mega Road</h4>
+                            </div>
+                            <!-- Styled visual placeholder looking like game node/radar -->
+                            <div class="my-4 flex justify-center items-center">
+                                <svg class="w-24 h-24 text-red-500/20 animate-spin" style="animation-duration: 20s" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <circle cx="12" cy="12" r="9" stroke-width="1" stroke-dasharray="4 4" />
+                                    <circle cx="12" cy="12" r="6" stroke-width="2" />
+                                    <path d="M12 2v20M2 12h20" stroke-width="1"/>
+                                </svg>
+                            </div>
+                            <div class="text-[11px] text-slate-500 flex justify-between">
+                                <span>Platform</span>
+                                <span class="font-bold">iOS / Android</span>
+                            </div>
+                        </div>
+
+                        <!-- Details & Content -->
+                        <div class="flex-grow space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white tracking-tight">Mega Road - Tidal Flats</h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-building text-slate-500 mr-1"></i> 소속: Tidal Flats</p>
+                                </div>
+                                <span class="text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
+                                    2023.04.19 ~ 2023.11.27
+                                </span>
+                            </div>
+
+                            <!-- Tags from original HTML custom values -->
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs px-3 py-1 rounded bg-red-500/10 text-red-400 border border-red-500/20 font-semibold">
+                                    <i class="fa-solid fa-key mr-1"></i> Login - Play Games & Game Center
+                                </span>
+                                <span class="text-xs px-3 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+                                    <i class="fa-solid fa-rectangle-ad mr-1"></i> Mediation - AppLovin
+                                </span>
+                                <span class="text-xs px-3 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">
+                                    <i class="fa-solid fa-desktop mr-1"></i> UI - Ingame & OutGame
+                                </span>
+                            </div>
+
+                            <!-- Clean structure for scanability -->
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Key Accomplishments</h4>
+                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>구글 플레이 게임즈 및 애플 게임 센터 기반의 멀티플랫폼 사용자 인증 파이프라인 구현</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>AppLovin MAX 메디에이션 모듈을 게임 환경에 통합하여 모바일 맞춤형 광고 트래픽 모델 최적화</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>인게임 물리 루프와 로비 씬 간의 UI 제어권을 조율하는 MVC 형태의 인터랙티브 유니티 UI 프레임워크 설계</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- CTA Button directly linked to specific Notion page -->
+                            <div class="pt-4 flex">
+                                <a href="https://www.notion.so/Mega-Road-Tidal-Flats-1afb47f20dfa80e9aa69e078c7898266?pvs=21" target="_blank"
+                                   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-semibold text-xs hover:from-cyan-500 hover:to-indigo-500 shadow-lg shadow-cyan-950/40 hover:-translate-y-0.5 transition-all">
+                                    <i class="fa-solid fa-up-right-from-square"></i>
+                                    노션에서 구현 상세 정보 확인하기
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Larva -->
+                <div class="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                    
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <!-- Abstract Visual Graphic -->
+                        <div class="w-full lg:w-72 shrink-0 bg-slate-950 rounded-2xl border border-slate-800 flex flex-col justify-between p-6 relative overflow-hidden min-h-[200px]">
+                            <div class="space-y-2">
+                                <span class="px-2 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold tracking-wider uppercase">UE5 Plugin</span>
+                                <h4 class="text-xl font-bold text-white tracking-tight">Larva - TubaN</h4>
+                            </div>
+                            <!-- Styled visual placeholder looking like nodes -->
+                            <div class="my-4 flex justify-center items-center">
+                                <svg class="w-24 h-24 text-blue-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                </svg>
+                            </div>
+                            <div class="text-[11px] text-slate-500 flex justify-between">
+                                <span>Core Tech</span>
+                                <span class="font-bold">C++ & Engine SDK</span>
+                            </div>
+                        </div>
+
+                        <!-- Details & Content -->
+                        <div class="flex-grow space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white tracking-tight">Larva - TubaN</h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-building text-slate-500 mr-1"></i> 소속: TubaN (Technical Director)</p>
+                                </div>
+                                <span class="text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
+                                    2022.06.20 ~ 2023.01.20
+                                </span>
+                            </div>
+
+                            <!-- Tags from original HTML custom values -->
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs px-3 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold">
+                                    <i class="fa-solid fa-terminal mr-1"></i> R&D - Unreal Engine Editor Plugin
+                                </span>
+                                <span class="text-xs px-3 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-semibold">
+                                    <i class="fa-solid fa-microchip mr-1"></i> UE5 Pipeline Automation
+                                </span>
+                            </div>
+
+                            <!-- Clean structure for scanability -->
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Key Accomplishments</h4>
+                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>언리얼 엔진 5 환경에서 아티스트 중심 애니메이션 워크플로우를 자동화하는 확장형 에디터 플러그인 독자 설계</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>C++ 코드 기반의 에셋 가상화 및 일괄 임포트/익스포트 프로세스 구현으로 파이프라인 병목 대폭 개선</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>인게임 프레임 최적화 분석을 위한 타겟 프로파일링 셋업 보조 및 에디터 툴 안정화</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- CTA Button directly linked to specific Notion page -->
+                            <div class="pt-4 flex">
+                                <a href="https://www.notion.so/Larva-TubaN-1afb47f20dfa8134bc8eecb7d5081733?pvs=21" target="_blank"
+                                   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-semibold text-xs hover:from-cyan-500 hover:to-indigo-500 shadow-lg shadow-cyan-950/40 hover:-translate-y-0.5 transition-all">
+                                    <i class="fa-solid fa-up-right-from-square"></i>
+                                    노션에서 구현 상세 정보 확인하기
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: White Paradise -->
+                <div class="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                    
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <!-- Abstract Visual Graphic -->
+                        <div class="w-full lg:w-72 shrink-0 bg-slate-950 rounded-2xl border border-slate-800 flex flex-col justify-between p-6 relative overflow-hidden min-h-[200px]">
+                            <div class="space-y-2">
+                                <span class="px-2 py-0.5 rounded bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] font-bold tracking-wider uppercase">UE4 Content</span>
+                                <h4 class="text-xl font-bold text-white tracking-tight">White Paradise</h4>
+                            </div>
+                            <!-- Styled visual placeholder looking like nodes -->
+                            <div class="my-4 flex justify-center items-center">
+                                <svg class="w-24 h-24 text-purple-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0y0z" />
+                                </svg>
+                            </div>
+                            <div class="text-[11px] text-slate-500 flex justify-between">
+                                <span>Engine</span>
+                                <span class="font-bold">Unreal Engine 4</span>
+                            </div>
+                        </div>
+
+                        <!-- Details & Content -->
+                        <div class="flex-grow space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white tracking-tight">White Paradise - JIH</h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-building text-slate-500 mr-1"></i> 소속: JIH (Director)</p>
+                                </div>
+                                <span class="text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
+                                    2019.05.20 ~ 2020.06.01
+                                </span>
+                            </div>
+
+                            <!-- Tags from original HTML custom values -->
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs px-3 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 font-semibold">
+                                    <i class="fa-solid fa-gamepad mr-1"></i> 게임 개발
+                                </span>
+                                <span class="text-xs px-3 py-1 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20 font-semibold">
+                                    <i class="fa-solid fa-clapperboard mr-1"></i> 콘텐츠 제작
+                                </span>
+                            </div>
+
+                            <!-- Clean structure for scanability -->
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Key Accomplishments</h4>
+                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>UE4를 연계한 대규모 인터랙티브 모션/비주얼 콘텐츠 시스템 기획 주도 및 빌드 안정화</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>다양한 센서 데이터 처리 및 플레이어 좌표 인식 엔진 연동부 핵심 코딩</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                                        <span>디렉터로서 가이드라인 정의, 제작 과정 상의 예기치 않은 테크니컬 리스크 신속 돌파</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- CTA Button directly linked to specific Notion page -->
+                            <div class="pt-4 flex">
+                                <a href="https://www.notion.so/White-Paradise-JIH-1afb47f20dfa80d1a7b1c2d88a466c48?pvs=21" target="_blank"
+                                   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-semibold text-xs hover:from-cyan-500 hover:to-indigo-500 shadow-lg shadow-cyan-950/40 hover:-translate-y-0.5 transition-all">
+                                    <i class="fa-solid fa-up-right-from-square"></i>
+                                    노션에서 구현 상세 정보 확인하기
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ==================== SIDE PROJECTS ===================== -->
+        <!-- ========================================================= -->
+        <section class="mb-16">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+                <div>
+                    <h2 class="text-2xl font-black text-white mb-2 flex items-center gap-3">
+                        <i class="fa-solid fa-code-fork text-emerald-400"></i> Side Projects & Frameworks
+                    </h2>
+                    <p class="text-slate-400 text-sm">개인 개발 연구실: 깃허브 및 독립 연구로 다듬어 온 포트폴리오 파이프라인 리스트입니다.</p>
+                </div>
+                
+                <!-- Search & Filters Container -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto self-stretch md:self-auto shrink-0">
+                    <!-- Search Input -->
+                    <div class="relative flex-grow">
+                        <input type="text" id="project-search" placeholder="프로젝트명 검색..." 
+                               class="w-full sm:w-48 pl-9 pr-4 py-2 text-xs rounded-xl bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Category Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-900 pb-4">
+                <button onclick="filterCategory('all')" id="tab-all" class="category-tab px-4 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition-all">
+                    전체보기 (10)
+                </button>
+                <button onclick="filterCategory('unity')" id="tab-unity" class="category-tab px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800/60 hover:text-slate-200 transition-all">
+                    Unity Engine (6)
+                </button>
+                <button onclick="filterCategory('unreal')" id="tab-unreal" class="category-tab px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800/60 hover:text-slate-200 transition-all">
+                    Unreal Engine (3)
+                </button>
+                <button onclick="filterCategory('opengl')" id="tab-opengl" class="category-tab px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800/60 hover:text-slate-200 transition-all">
+                    Low-Level / OpenGL (2)
+                </button>
+            </div>
+
+            <!-- Grid Cards -->
+            <div id="side-projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Side Project 1 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unity game system" data-name="ax_defense_03">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Unity</span>
+                            <span class="text-[10px] font-mono text-slate-500">Defense System</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200 hover:text-cyan-400 transition-colors">AX_Defense_03</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            디펜스 게임 프레임워크의 고도화 버전. 가중치 매핑 경로 탐색 및 성능 고속 루프 설계 R&D.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">v3.0 Stable</span>
+                        <a href="https://www.notion.so/AX_Defense_03-326b47f20dfa8034bd48e3ba5d05c641?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 2 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unity game" data-name="ax_defense_02">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Unity</span>
+                            <span class="text-[10px] font-mono text-slate-500">Defense System</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">AX_Defense_02</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            객체 상태 조율 및 다각화 몬스터 웨이브 처리를 위한 시스템 아키텍처 실험작.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">v2.0 Stable</span>
+                        <a href="https://www.notion.so/AX_Defense_02-326b47f20dfa80d28891ccdc7f27b349?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 3 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unity game" data-name="ax_defense_01">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Unity</span>
+                            <span class="text-[10px] font-mono text-slate-500">Defense System</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">AX_Defense_01</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            유니티 물리 감지 및 그리드 좌표 배치를 위한 타일형 디펜스 초기 프로토타입.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">v1.0 Basic</span>
+                        <a href="https://www.notion.so/AX_Defense_01-326b47f20dfa80399ed3e5bf8c5c5800?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 4 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unity framework design" data-name="ax framework v1 - unity">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Unity</span>
+                            <span class="text-[10px] font-mono text-slate-500">Custom Framework</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">AX Framework v1</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            UI 매니저, 데이터 직렬화, 이벤트 채널 등 확장 가능한 유니티 인디 시스템 전용 디자인 패턴 프레임워크.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">Architecture Core</span>
+                        <a href="https://www.notion.so/AX-Framework-v1-Unity-326b47f20dfa80a69a73d7a9e6eb8391?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 5 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unity game clicker" data-name="ax_clicker_01">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Unity</span>
+                            <span class="text-[10px] font-mono text-slate-500">Casual Mechanics</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">AX_Clicker_01</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            오브젝트 풀링 가비지 제어 및 가벼운 방치형 인게임 사이클 제어 연구.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">v1.0 Basic</span>
+                        <a href="https://www.notion.so/AX_Clicker_01-326b47f20dfa803aa452f645835a387e?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 6 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unreal server network" data-name="ue_multiplayer_dedicated">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-wider">Unreal</span>
+                            <span class="text-[10px] font-mono text-slate-500">Dedicated Server</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">UE_Multiplayer_Dedicated</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            언리얼 엔진 전용 데디케이티드 서버 구축, RPC 패킷 전송, 유저 세션 관리 연구.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">Multiplayer Core</span>
+                        <a href="https://www.notion.so/UE_Multiplayer_Dedicated-24cb47f20dfa80808104d6e5289f120a?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 7 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unity game clone" data-name="mega road clone - unity">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Unity</span>
+                            <span class="text-[10px] font-mono text-slate-500">Refactoring Study</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">Mega Road Clone - Unity</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            실무 메가로드 시스템의 구조를 유니티 환경에서 정밀 복기한 역공학 설계 프로젝트.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">Educational Clone</span>
+                        <a href="https://www.notion.so/Mega-Road-Clone-Unity-1afb47f20dfa80aea5dff11cb3481eca?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 8 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="unreal game clone" data-name="mega road clone - unreal">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-wider">Unreal</span>
+                            <span class="text-[10px] font-mono text-slate-500">Cross-Engine Study</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">Mega Road Clone - Unreal</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            유니티로 제작된 원본 플레이 코어의 언리얼 엔진 완전 이식 테크니컬 스택 마이그레이션.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">Cross Porting</span>
+                        <a href="https://www.notion.so/Mega-Road-Clone-Unreal-1afb47f20e428219c545c77a6925?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 9 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="opengl cpp raw graphic" data-name="isaac clone - opengl">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider">C++ / OpenGL</span>
+                            <span class="text-[10px] font-mono text-slate-500">Low-Level Graphics</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">Isaac Clone - OpenGL</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            상용 엔진을 배제하고 OpenGL API 및 C++ 표준을 사용하여 구동시킨 아이작 스타일 게임.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">Pure GLFW/GLEW</span>
+                        <a href="https://www.notion.so/Isaac-Clone-OpenGL-1afb47f20dfa80f5acf3e3e3a44b2811?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Side Project 10 -->
+                <div class="side-card bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700/80 transition-all hover:scale-[1.02] duration-300" 
+                     data-tags="opengl glsl raw graphic shader" data-name="shader - opengl">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider">C++ / GLSL</span>
+                            <span class="text-[10px] font-mono text-slate-500">Shader Programming</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-200">Shader - OpenGL</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            커스텀 정점 및 프래그먼트 셰이더 바인딩, 조명 연산, 동적 머티리얼 효과 GLFW 검증.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-slate-950 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-600 font-mono">Custom GLSL core</span>
+                        <a href="https://www.notion.so/Shader-OpenGL-1afb47f20dfa8000b829fc45ad486c93?pvs=21" target="_blank"
+                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors">
+                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= FOOTER ================= -->
+        <footer class="mt-20 pt-8 border-t border-slate-900 text-center text-xs text-slate-500 space-y-2">
+            <p>© 2026 장인호. Built with Clean direct HTML & Tailwind CSS.</p>
+            <p class="code-font text-[10px] text-slate-600">Verified compatibility for both Desktop & Mobile Recruitment Systems.</p>
+        </footer>
+
+    </div>
+
+    <!-- ================= CUSTOM JS FOR FILTERS & SEARCH ================= -->
+    <script>
+        // Store references to all cards and tabs
+        const cards = document.querySelectorAll('.side-card');
+        const searchInput = document.getElementById('project-search');
+        let currentFilter = 'all';
+
+        // Categorize project filtering function
+        function filterCategory(category) {
+            currentFilter = category;
+            
+            // Update Tab active styling
+            const tabs = document.querySelectorAll('.category-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-cyan-500/20', 'text-cyan-300', 'border-cyan-500/30');
+                tab.classList.add('bg-slate-900', 'text-slate-400', 'border-slate-800/60');
+            });
+
+            const activeTab = document.getElementById(`tab-${category}`);
+            activeTab.classList.remove('bg-slate-900', 'text-slate-400', 'border-slate-800/60');
+            activeTab.classList.add('bg-cyan-500/20', 'text-cyan-300', 'border-cyan-500/30');
+
+            executeSearchAndFilter();
+        }
+
+        // Live Search Input event listener
+        searchInput.addEventListener('input', () => {
+            executeSearchAndFilter();
+        });
+
+        // Combined filtering logic for real-time reactivity
+        function executeSearchAndFilter() {
+            const query = searchInput.value.toLowerCase().trim();
+
+            cards.forEach(card => {
+                const tags = card.getAttribute('data-tags');
+                const name = card.getAttribute('data-name');
+                
+                // Check Category match
+                let matchesCategory = false;
+                if (currentFilter === 'all') {
+                    matchesCategory = true;
+                } else if (currentFilter === 'unity' && tags.includes('unity')) {
+                    matchesCategory = true;
+                } else if (currentFilter === 'unreal' && tags.includes('unreal')) {
+                    matchesCategory = true;
+                } else if (currentFilter === 'opengl' && tags.includes('opengl')) {
+                    matchesCategory = true;
+                }
+
+                // Check Search query match
+                const matchesSearch = name.includes(query) || tags.includes(query);
+
+                // Show or Hide based on union
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
 </html>
