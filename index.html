@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>장인호 | 게임 프로그래머 포트폴리오 (Hype Graffiti Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;500;600;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;500;600;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap"
+        rel="stylesheet">
     <style>
         body {
             font-family: 'Outfit', 'Noto Sans KR', sans-serif;
-            background-color: #03000a; /* Deep dark void space */
+            background-color: #03000a;
+            /* Deep dark void space */
             color: #f8fafc;
             /* 기존 커서를 숨겨 스프레이 노즐 커서가 활성화되도록 함 */
             cursor: none;
         }
 
         /* 클릭 가능한 요소들에도 커서를 기본 대신 보이지 않게 유지하여 모핑 커서 효과 유지 */
-        a, button, input, select, textarea, [role="button"], .category-tab, .side-card {
+        a,
+        button,
+        input,
+        select,
+        textarea,
+        [role="button"],
+        .category-tab,
+        .side-card {
             cursor: none !important;
         }
 
@@ -40,10 +51,12 @@
             box-shadow: 5px 5px 0px #facc15;
             border: 3px solid #000000;
         }
+
         .punk-shadow-lime {
             box-shadow: 5px 5px 0px #a3e635;
             border: 3px solid #000000;
         }
+
         .punk-shadow-cyan {
             box-shadow: 5px 5px 0px #00f0ff;
             border: 3px solid #000000;
@@ -56,6 +69,7 @@
             box-shadow: 6px 6px 0px #000000;
             transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
         .sticker-panel:hover {
             transform: scale(1.02) rotate(0.5deg);
             border-color: #00f0ff;
@@ -64,24 +78,40 @@
 
         /* 헤저드 스트라이프 테두리 데칼 */
         .hazard-stripe-bg {
-            background: repeating-linear-gradient(
-                -45deg,
-                #a3e635,
-                #a3e635 10px,
-                #000000 10px,
-                #000000 20px
-            );
+            background: repeating-linear-gradient(-45deg,
+                    #a3e635,
+                    #a3e635 10px,
+                    #000000 10px,
+                    #000000 20px);
         }
 
         /* 글리치 애니메이션 효과 */
         @keyframes glitch {
-            0% { clip-path: inset(40% 0 61% 0); }
-            20% { clip-path: inset(92% 0 1% 0); }
-            40% { clip-path: inset(25% 0 58% 0); }
-            60% { clip-path: inset(80% 0 5% 0); }
-            80% { clip-path: inset(11% 0 81% 0); }
-            100% { clip-path: inset(50% 0 45% 0); }
+            0% {
+                clip-path: inset(40% 0 61% 0);
+            }
+
+            20% {
+                clip-path: inset(92% 0 1% 0);
+            }
+
+            40% {
+                clip-path: inset(25% 0 58% 0);
+            }
+
+            60% {
+                clip-path: inset(80% 0 5% 0);
+            }
+
+            80% {
+                clip-path: inset(11% 0 81% 0);
+            }
+
+            100% {
+                clip-path: inset(50% 0 45% 0);
+            }
         }
+
         .glitch-hover:hover .glitch-text {
             animation: glitch 1s linear infinite alternate-reverse;
             text-shadow: -2px 0 #a3e635, 2px 0 #00f0ff;
@@ -91,13 +121,16 @@
         ::-webkit-scrollbar {
             width: 10px;
         }
+
         ::-webkit-scrollbar-track {
             background: #03000a;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #a3e635;
             border: 2px solid #03000a;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #00f0ff;
         }
@@ -122,19 +155,41 @@
             width: 48px;
             height: 48px;
             transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-origin: 5px 8px; /* 노즐 분사구 원 중심을 기준으로 가속 회전 */
+            transform-origin: 5px 8px;
+            /* 노즐 분사구 원 중심을 기준으로 가속 회전 */
         }
 
-        /* 분사 시 미세 덜덜 떨림 효과 애니메이션을 wrapper에 격리 적용하여 좌표 분실 버그 완전 해결 */
+        /* --- [수정본] 마우스 흔들림 격리 및 댐핑 최적화 --- */
         @keyframes jitter {
-            0% { transform: translate3d(0px, 0px, 0px) rotate(0deg); }
-            25% { transform: translate3d(-1.5px, 1px, 0px) rotate(-1.5deg); }
-            50% { transform: translate3d(1px, -1.5px, 0px) rotate(1.5deg); }
-            75% { transform: translate3d(-1.5px, -1px, 0px) rotate(0deg); }
-            100% { transform: translate3d(0px, 0px, 0px) rotate(-1.5deg); }
+            0% {
+                transform: translate3d(0px, 0px, 0px) rotate(0deg);
+            }
+
+            25% {
+                transform: translate3d(-0.5px, 0.5px, 0px) rotate(-0.5deg);
+            }
+
+            50% {
+                transform: translate3d(0.5px, -0.5px, 0px) rotate(0.5deg);
+            }
+
+            75% {
+                transform: translate3d(-0.5px, -0.2px, 0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translate3d(0px, 0px, 0px) rotate(-0.5deg);
+            }
         }
-        .cursor-wrapper.spraying {
-            animation: jitter 0.05s infinite;
+
+        /* 포인터 좌표계 자체를 흔들지 않고, 내부의 'can-graphics'만 흔들리도록 격리 */
+        .cursor-wrapper.spraying .can-graphics {
+            animation: jitter 0.08s infinite linear;
+        }
+
+        /* 조준경은 분사 중에도 절대로 흔들리지 않고 조준점을 유지하도록 고정 */
+        .cursor-wrapper.spraying .crosshair-graphics {
+            animation: none !important;
         }
 
         /* 호버 시 캔이 축소되며 깔끔한 네온 조준선으로 변하는 모핑 */
@@ -142,6 +197,7 @@
             opacity: 0;
             transform: scale(0.1) rotate(-45deg);
         }
+
         .cursor-wrapper.hovering .crosshair-graphics {
             opacity: 1;
             transform: scale(1);
@@ -150,12 +206,15 @@
         /* 그래픽 요소 가속 트랜지션 */
         .can-graphics {
             transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.15s ease;
-            transform-origin: 5px 8px; /* 노즐 분사구 원 중심을 기준으로 대칭 스케일 모핑 */
+            transform-origin: 5px 8px;
+            /* 노즐 분사구 원 중심을 기준으로 대칭 스케일 모핑 */
         }
+
         .crosshair-graphics {
             position: absolute;
             transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.15s ease;
-            transform-origin: 20px 20px; /* 조준경 정가운데를 기준으로 정렬 */
+            transform-origin: 20px 20px;
+            /* 조준경 정가운데를 기준으로 정렬 */
             opacity: 0;
             transform: scale(0.4);
         }
@@ -167,19 +226,21 @@
             left: 5px;
             width: 30px;
             height: 30px;
-            background: radial-gradient(circle, var(--spray-color) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, var(--spray-color) 0%, rgba(0, 0, 0, 0) 70%);
             border-radius: 50%;
             opacity: 0;
             transform: translate(-50%, -50%) scale(0.5);
             pointer-events: none;
             transition: opacity 0.1s ease, transform 0.1s ease;
         }
+
         .cursor-wrapper.spraying .spray-mist {
             opacity: 0.65;
             transform: translate(-50%, -50%) scale(1.3);
         }
     </style>
 </head>
+
 <body class="selection:bg-[#a3e635] selection:text-black antialiased overflow-x-hidden relative">
 
     <!-- 🎨 커스텀 스프레이/조준경 모핑 마우스 포인터 (버튼 위에서도 눈에 잘 보이게 개선 완료) -->
@@ -189,42 +250,45 @@
             <div class="spray-mist"></div>
 
             <!-- 스프레이 캔 그래픽 (기본형) -->
-            <svg class="can-graphics" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="can-graphics" width="48" height="48" viewBox="0 0 48 48" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
                 <!-- 캔 본체 및 셰이딩 -->
-                <rect x="12" y="16" width="18" height="26" rx="2" fill="#1e1b4b" stroke="#ffffff" stroke-width="2.5"/>
+                <rect x="12" y="16" width="18" height="26" rx="2" fill="#1e1b4b" stroke="#ffffff" stroke-width="2.5" />
                 <!-- 캔 라벨 스티커 스트라이프 -->
-                <rect x="14" y="22" width="14" height="10" fill="#03000a"/>
-                <line x1="14" y1="27" x2="28" y2="27" stroke="#3b82f6" stroke-width="2"/>
-                
+                <rect x="14" y="22" width="14" height="10" fill="#03000a" />
+                <line x1="14" y1="27" x2="28" y2="27" stroke="#3b82f6" stroke-width="2" />
+
                 <!-- 컬러 캡 (실시간 테마 연동 컬러스팟) -->
-                <path id="cursor-color-cap" d="M12 16C12 12 30 12 30 16H12Z" fill="#a3e635" stroke="#ffffff" stroke-width="2"/>
-                
+                <path id="cursor-color-cap" d="M12 16C12 12 30 12 30 16H12Z" fill="#a3e635" stroke="#ffffff"
+                    stroke-width="2" />
+
                 <!-- 노즐 어댑터 대가리 -->
-                <rect x="18" y="10" width="6" height="4" fill="#d1d5db" stroke="#ffffff" stroke-width="2"/>
-                
+                <rect x="18" y="10" width="6" height="4" fill="#d1d5db" stroke="#ffffff" stroke-width="2" />
+
                 <!-- 최종 분사 노즐 (마우스 끝점으로 정렬되는 부분) -->
-                <path d="M18 10L14 8V6H8V10H10L14 10" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
-                <circle id="cursor-color-nozzle" cx="5" cy="8" r="3" fill="#a3e635"/>
+                <path d="M18 10L14 8V6H8V10H10L14 10" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" />
+                <circle id="cursor-color-nozzle" cx="5" cy="8" r="3" fill="#a3e635" />
             </svg>
 
             <!-- 정밀 조준경 정렬 그래픽 (고채도 배너 및 핑크 버튼 위에 올라가도 무조건 보이도록 개선) -->
-            <svg class="crosshair-graphics" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: -12px; left: -15px; width: 40px; height: 40px;">
+            <svg class="crosshair-graphics" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
+                style="position: absolute; top: -12px; left: -15px; width: 40px; height: 40px;">
                 <!-- 1단계: 어떤 고채도 배경 위에서도 테두리가 분리되도록 두껍고 불투명한 블랙 윤곽선 원과 십자선 배치 -->
-                <circle cx="20" cy="20" r="12" stroke="#000000" stroke-width="4"/>
-                <line x1="20" y1="2" x2="20" y2="38" stroke="#000000" stroke-width="4"/>
-                <line x1="2" y1="20" x2="38" y2="20" stroke="#000000" stroke-width="4"/>
+                <circle cx="20" cy="20" r="12" stroke="#000000" stroke-width="4" />
+                <line x1="20" y1="2" x2="20" y2="38" stroke="#000000" stroke-width="4" />
+                <line x1="2" y1="20" x2="38" y2="20" stroke="#000000" stroke-width="4" />
 
                 <!-- 2단계: 형광 조준경 가이드 링 배치 (배경과 대비되는 청량한 사이언/화이트 이중 스트로크) -->
-                <line x1="20" y1="4" x2="20" y2="12" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                <line x1="20" y1="28" x2="20" y2="36" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                <line x1="4" y1="20" x2="12" y2="20" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                <line x1="28" y1="20" x2="36" y2="20" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                <line x1="20" y1="4" x2="20" y2="12" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+                <line x1="20" y1="28" x2="20" y2="36" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+                <line x1="4" y1="20" x2="12" y2="20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+                <line x1="28" y1="20" x2="36" y2="20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
 
-                <circle cx="20" cy="20" r="12" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="4 2"/>
-                
+                <circle cx="20" cy="20" r="12" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="4 2" />
+
                 <!-- 3단계: 정중앙 정밀 형광 도트 -->
-                <circle cx="20" cy="20" r="4.5" fill="#000000"/>
-                <circle cx="20" cy="20" r="2.5" fill="#a3e635"/>
+                <circle cx="20" cy="20" r="4.5" fill="#000000" />
+                <circle cx="20" cy="20" r="2.5" fill="#a3e635" />
             </svg>
         </div>
     </div>
@@ -234,21 +298,28 @@
 
     <!-- Canvas Control Tooltip Sticker -->
     <div class="fixed bottom-6 right-6 z-30 pointer-events-auto scale-90 md:scale-100 rotate-[-2deg]">
-        <div class="bg-black border-2 border-[#a3e635] p-3 text-xs shadow-[4px_4px_0px_#000] flex flex-col gap-1.5 max-w-xs">
+        <div
+            class="bg-black border-2 border-[#a3e635] p-3 text-xs shadow-[4px_4px_0px_#000] flex flex-col gap-1.5 max-w-xs">
             <div class="flex justify-between items-center border-b border-neutral-800 pb-1.5">
-                <span class="text-[#a3e635] font-black tracking-widest graffiti-font graffiti-shadow-black">🎨 GRAFFITI CANVAS</span>
+                <span class="text-[#a3e635] font-black tracking-widest graffiti-font graffiti-shadow-black">🎨 GRAFFITI
+                    CANVAS</span>
                 <span class="w-2 h-2 rounded-full bg-[#a3e635] animate-pulse"></span>
             </div>
             <p class="text-neutral-400 text-[10px]">화면 빈 곳에 자유롭게 드래그해서 스프레이 낙서를 남기거나, 채도를 조율하세요!</p>
             <div class="flex gap-1 mt-1 justify-between">
-                <button onclick="clearGraffiti()" class="px-2.5 py-1 bg-[#ff007f] text-white font-black text-[9px] hover:scale-105 active:scale-95 transition-all graffiti-font graffiti-shadow-black">
+                <button onclick="clearGraffiti()"
+                    class="px-2.5 py-1 bg-[#ff007f] text-white font-black text-[9px] hover:scale-105 active:scale-95 transition-all graffiti-font graffiti-shadow-black">
                     CLEAR PAINT
                 </button>
                 <div class="flex gap-1.5">
-                    <button onclick="setSprayColor('#ff007f')" class="w-4 h-4 rounded-full bg-[#ff007f] border border-white"></button>
-                    <button onclick="setSprayColor('#facc15')" class="w-4 h-4 rounded-full bg-[#facc15] border border-white"></button>
-                    <button onclick="setSprayColor('#a3e635')" class="w-4 h-4 rounded-full bg-[#a3e635] border border-white"></button>
-                    <button onclick="setSprayColor('#00f0ff')" class="w-4 h-4 rounded-full bg-[#00f0ff] border border-white"></button>
+                    <button onclick="setSprayColor('#ff007f')"
+                        class="w-4 h-4 rounded-full bg-[#ff007f] border border-white"></button>
+                    <button onclick="setSprayColor('#facc15')"
+                        class="w-4 h-4 rounded-full bg-[#facc15] border border-white"></button>
+                    <button onclick="setSprayColor('#a3e635')"
+                        class="w-4 h-4 rounded-full bg-[#a3e635] border border-white"></button>
+                    <button onclick="setSprayColor('#00f0ff')"
+                        class="w-4 h-4 rounded-full bg-[#00f0ff] border border-white"></button>
                 </div>
             </div>
         </div>
@@ -256,48 +327,62 @@
 
     <!-- Main Container -->
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-16 relative z-10">
-        
+
         <!-- HEADER SECTION (Sticker-Bombed Flyer) -->
         <header class="mb-16">
-            <div class="flex flex-col lg:flex-row justify-between items-start gap-8 bg-[#0d091a] p-8 md:p-10 border-4 border-white shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
+            <div
+                class="flex flex-col lg:flex-row justify-between items-start gap-8 bg-[#0d091a] p-8 md:p-10 border-4 border-white shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
                 <!-- Top Warning Stripe Decal -->
                 <div class="absolute top-0 left-0 w-full h-3 hazard-stripe-bg"></div>
-                
+
                 <div class="space-y-4 max-w-3xl">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-black border-2 border-[#ff007f] text-[#ff007f] text-xs font-black tracking-wider uppercase rotate-[-1.5deg]">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-black border-2 border-[#ff007f] text-[#ff007f] text-xs font-black tracking-wider uppercase rotate-[-1.5deg]">
                         <span class="w-2.5 h-2.5 rounded-full bg-[#ff007f] animate-ping"></span>
                         Do or do not, there is no try
                     </div>
-                    
-                    <h1 class="text-5xl md:text-6xl font-black tracking-tight text-white leading-tight glitch-hover select-none">
-                        <span class="graffiti-font text-[#a3e635] text-6xl block md:inline-block rotate-[-1deg] graffiti-shadow-black">장인호</span>
-                        <span class="text-xl md:text-2xl font-bold text-slate-400 block md:inline md:ml-3 code-font tracking-tighter">&lt;Inho Jang /&gt;</span>
+
+                    <h1
+                        class="text-5xl md:text-6xl font-black tracking-tight text-white leading-tight glitch-hover select-none">
+                        <span
+                            class="graffiti-font text-[#a3e635] text-6xl block md:inline-block rotate-[-1deg] graffiti-shadow-black">장인호</span>
+                        <span
+                            class="text-xl md:text-2xl font-bold text-slate-400 block md:inline md:ml-3 code-font tracking-tighter">&lt;Inho
+                            Jang /&gt;</span>
                     </h1>
-                    
+
                     <p class="text-xl md:text-2xl font-black text-slate-200 select-none leading-snug">
-                        기획 및 아트와의 협업 효율을 고민하고, 새로운 기술을 탐구하는 <span class="bg-[#ff007f] text-white px-3 py-0.5 inline-block rotate-[1deg] graffiti-font graffiti-shadow-black">게임 프로그래머</span>
+                        기획 및 아트와의 협업 효율을 고민하고, 새로운 기술을 탐구하는 <span
+                            class="bg-[#ff007f] text-white px-3 py-0.5 inline-block rotate-[1deg] graffiti-font graffiti-shadow-black">게임
+                            프로그래머</span>
                     </p>
-                    
+
                     <!-- Bio 1: 스토리텔링의 철학 -->
-                    <div class="p-6 bg-black border-2 border-neutral-800 mt-6 relative shadow-[4px_4px_0px_rgba(0,240,255,0.3)]">
+                    <div
+                        class="p-6 bg-black border-2 border-neutral-800 mt-6 relative shadow-[4px_4px_0px_rgba(0,240,255,0.3)]">
                         <div class="absolute top-4 right-4 opacity-10">
                             <i class="fa-solid fa-book-open text-6xl text-[#00f0ff]"></i>
                         </div>
                         <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                            <strong class="text-[#00f0ff] font-bold text-base block mb-2"><i class="fa-solid fa-heart text-[#ff007f] mr-2"></i>스토리텔링이 이끈 개발자의 삶:</strong>
-                            저는 원래 <strong>스토리텔링이 너무 좋아서</strong> 개발을 시작했습니다. 그 이야기의 강력한 힘에 매료되어 있으며, 결국 게임이라는 가장 역동적이고 입체적인 매체를 통해 유저들의 마음에 깊은 울림을 주는 스토리를 기술로서 완벽히 풀어내는 것을 가장 큰 목표로 삼고 있습니다. 
+                            <strong class="text-[#00f0ff] font-bold text-base block mb-2"><i
+                                    class="fa-solid fa-heart text-[#ff007f] mr-2"></i>스토리텔링이 이끈 개발자의 삶:</strong>
+                            저는 원래 <strong>스토리텔링이 너무 좋아서</strong> 개발을 시작했습니다. 그 이야기의 강력한 힘에 매료되어 있으며, 결국 게임이라는 가장 역동적이고
+                            입체적인 매체를 통해 유저들의 마음에 깊은 울림을 주는 스토리를 기술로서 완벽히 풀어내는 것을 가장 큰 목표로 삼고 있습니다.
                         </p>
                     </div>
 
                     <!-- Bio 2: 개발 프로세스 조율 및 스터디 -->
-                    <div class="p-6 bg-black border-2 border-neutral-800 mt-4 relative shadow-[4px_4px_0px_rgba(163,230,53,0.3)]">
+                    <div
+                        class="p-6 bg-black border-2 border-neutral-800 mt-4 relative shadow-[4px_4px_0px_rgba(163,230,53,0.3)]">
                         <div class="absolute top-4 right-4 opacity-10">
                             <i class="fa-solid fa-wand-magic-sparkles text-6xl text-[#a3e635]"></i>
                         </div>
                         <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                            <strong class="text-white text-base block mb-2"><i class="fa-solid fa-brain text-[#a3e635] mr-2"></i>개발 프로세스 효율화에 관심이 많습니다:</strong>
-                            AI 도구를 코드 흐름 분석과 기술 문서화 보조에 영리하게 활용하고 있으며, 더 나아가 
-                            <span class="text-[#a3e635] font-black underline decoration-[#a3e635]/40">Unity, Unreal, Notion 등 환경에 맞게 연계</span>하는 개발 효율화 방식들을 관심 있게 연구하고 스터디를 적극적으로 이어가고 있습니다.
+                            <strong class="text-white text-base block mb-2"><i
+                                    class="fa-solid fa-brain text-[#a3e635] mr-2"></i>개발 프로세스 효율화에 관심이 많습니다:</strong>
+                            AI 도구를 코드 흐름 분석과 기술 문서화 보조에 영리하게 활용하고 있으며, 더 나아가
+                            <span class="text-[#a3e635] font-black underline decoration-[#a3e635]/40">Unity, Unreal,
+                                Notion 등 환경에 맞게 연계</span>하는 개발 효율화 방식들을 관심 있게 연구하고 스터디를 적극적으로 이어가고 있습니다.
                         </p>
                     </div>
                 </div>
@@ -306,26 +391,32 @@
                 <div class="w-full lg:w-auto shrink-0 flex flex-col gap-4 min-w-[280px] rotate-[1.5deg]">
                     <div class="p-6 bg-black border-4 border-[#00f0ff] space-y-4 text-sm shadow-[5px_5px_0px_#000]">
                         <div class="flex items-center gap-3 border-b border-neutral-900 pb-2.5">
-                            <div class="w-9 h-9 bg-[#a3e635]/20 border border-[#a3e635] flex items-center justify-center">
+                            <div
+                                class="w-9 h-9 bg-[#a3e635]/20 border border-[#a3e635] flex items-center justify-center">
                                 <i class="fa-regular fa-envelope text-[#a3e635]"></i>
                             </div>
-                            <a href="mailto:ford6313@gmail.com" class="text-slate-200 hover:text-[#a3e635] font-black transition-colors code-font text-xs">ford6313@gmail.com</a>
+                            <a href="mailto:ford6313@gmail.com"
+                                class="text-slate-200 hover:text-[#a3e635] font-black transition-colors code-font text-xs">ford6313@gmail.com</a>
                         </div>
                         <div class="flex items-center gap-3 border-b border-neutral-900 pb-2.5">
-                            <div class="w-9 h-9 bg-[#facc15]/20 border border-[#facc15] flex items-center justify-center">
+                            <div
+                                class="w-9 h-9 bg-[#facc15]/20 border border-[#facc15] flex items-center justify-center">
                                 <i class="fa-solid fa-location-dot text-[#facc15]"></i>
                             </div>
                             <span class="text-slate-200 font-bold">Seoul, South Korea</span>
                         </div>
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 bg-[#00f0ff]/20 border border-[#00f0ff] flex items-center justify-center">
+                            <div
+                                class="w-9 h-9 bg-[#00f0ff]/20 border border-[#00f0ff] flex items-center justify-center">
                                 <i class="fa-brands fa-github text-[#00f0ff]"></i>
                             </div>
-                            <a href="https://github.com/hqvfx42" target="_blank" class="text-slate-200 hover:text-[#00f0ff] font-black transition-colors code-font text-xs">github.com/hqvfx42</a>
+                            <a href="https://github.com/hqvfx42" target="_blank"
+                                class="text-slate-200 hover:text-[#00f0ff] font-black transition-colors code-font text-xs">github.com/hqvfx42</a>
                         </div>
                     </div>
-                    
-                    <div class="p-4 bg-neutral-950 border-2 border-neutral-800 text-xs text-slate-400 flex justify-between items-center shadow-[3px_3px_0px_#000]">
+
+                    <div
+                        class="p-4 bg-neutral-950 border-2 border-neutral-800 text-xs text-slate-400 flex justify-between items-center shadow-[3px_3px_0px_#000]">
                         <span class="font-bold uppercase tracking-widest text-neutral-500">UPDATE</span>
                         <span class="code-font text-[#00f0ff] font-black">2026.05</span>
                     </div>
@@ -335,43 +426,52 @@
 
         <!-- TECH STACK & EDUCATION GRID -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
-            
+
             <!-- Left Side: Tech Stack (Punk Metal Panel) -->
             <div class="lg:col-span-4 space-y-8">
-                
+
                 <div class="bg-black border-4 border-[#a3e635] p-6 shadow-[6px_6px_0px_#000] rotate-[-1deg]">
-                    <h2 class="text-xl font-black text-white mb-6 flex items-center gap-2.5 border-b-2 border-[#a3e635] pb-3">
+                    <h2
+                        class="text-xl font-black text-white mb-6 flex items-center gap-2.5 border-b-2 border-[#a3e635] pb-3">
                         <i class="fa-solid fa-screwdriver-wrench text-[#a3e635]"></i>
                         <span class="graffiti-font graffiti-shadow-black">TECH STACK</span>
                     </h2>
-                    
+
                     <div class="space-y-6">
                         <div>
-                            <span class="text-xs font-black text-[#a3e635] uppercase tracking-widest block mb-3 graffiti-font graffiti-shadow-black">Game Engines</span>
+                            <span
+                                class="text-xs font-black text-[#a3e635] uppercase tracking-widest block mb-3 graffiti-font graffiti-shadow-black">Game
+                                Engines</span>
                             <div class="space-y-4">
                                 <div>
                                     <div class="flex justify-between text-xs mb-1.5">
-                                        <span class="text-slate-200 font-black"><i class="fa-solid fa-cube text-orange-500 mr-1.5"></i> Unreal Engine</span>
+                                        <span class="text-slate-200 font-black"><i
+                                                class="fa-solid fa-cube text-orange-500 mr-1.5"></i> Unreal
+                                            Engine</span>
                                         <span class="text-[#00f0ff] font-black code-font">3 / 5</span>
                                     </div>
                                     <div class="w-full bg-neutral-900 h-3.5 border-2 border-black p-[2px]">
-                                        <div class="bg-gradient-to-r from-[#00f0ff] to-[#3b82f6] h-full" style="width: 60%"></div>
+                                        <div class="bg-gradient-to-r from-[#00f0ff] to-[#3b82f6] h-full"
+                                            style="width: 60%"></div>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="flex justify-between text-xs mb-1.5">
-                                        <span class="text-slate-200 font-black"><i class="fa-solid fa-cubes text-cyan-400 mr-1.5"></i> Unity Engine</span>
+                                        <span class="text-slate-200 font-black"><i
+                                                class="fa-solid fa-cubes text-cyan-400 mr-1.5"></i> Unity Engine</span>
                                         <span class="text-[#a3e635] font-black code-font">2 / 5</span>
                                     </div>
                                     <div class="w-full bg-neutral-900 h-3.5 border-2 border-black p-[2px]">
-                                        <div class="bg-gradient-to-r from-[#a3e635] to-teal-500 h-full" style="width: 40%"></div>
+                                        <div class="bg-gradient-to-r from-[#a3e635] to-teal-500 h-full"
+                                            style="width: 40%"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <span class="text-xs font-black text-[#a3e635] uppercase tracking-widest block mb-3 graffiti-font graffiti-shadow-black">Languages</span>
+                            <span
+                                class="text-xs font-black text-[#a3e635] uppercase tracking-widest block mb-3 graffiti-font graffiti-shadow-black">Languages</span>
                             <div class="space-y-4">
                                 <div>
                                     <div class="flex justify-between text-xs mb-1.5">
@@ -395,21 +495,28 @@
                         </div>
 
                         <div class="pt-2 border-t border-neutral-900">
-                            <span class="text-xs font-black text-neutral-500 uppercase tracking-widest block mb-3 code-font">DevOps & Cooperation</span>
+                            <span
+                                class="text-xs font-black text-neutral-500 uppercase tracking-widest block mb-3 code-font">DevOps
+                                & Cooperation</span>
                             <div class="flex flex-wrap gap-2">
-                                <span class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
                                     <i class="fa-brands fa-git-alt text-orange-500"></i> Git
                                 </span>
-                                <span class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
                                     <i class="fa-solid fa-code-commit text-blue-400"></i> SVN
                                 </span>
-                                <span class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
                                     <i class="fa-brands fa-jenkins text-red-400"></i> Jenkins
                                 </span>
-                                <span class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
                                     <i class="fa-solid fa-list-check text-indigo-400"></i> Linear
                                 </span>
-                                <span class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-2.5 py-1.5 bg-[#0a0515] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_#000]">
                                     <i class="fa-brands fa-slack text-yellow-400"></i> Slack
                                 </span>
                             </div>
@@ -420,9 +527,12 @@
                 <!-- Education & Languages (Slapped Sticker Stamp) -->
                 <div class="bg-black border-4 border-[#00f0ff] p-6 shadow-[6px_6px_0px_#000] space-y-6 rotate-[1deg]">
                     <div>
-                        <h3 class="text-xs font-black text-[#00f0ff] uppercase tracking-widest mb-3.5 graffiti-font graffiti-shadow-black">Education</h3>
+                        <h3
+                            class="text-xs font-black text-[#00f0ff] uppercase tracking-widest mb-3.5 graffiti-font graffiti-shadow-black">
+                            Education</h3>
                         <div class="flex items-start gap-3">
-                            <div class="w-9 h-9 bg-[#00f0ff]/10 border-2 border-[#00f0ff] flex items-center justify-center text-[#00f0ff] shrink-0 rotate-[-5deg]">
+                            <div
+                                class="w-9 h-9 bg-[#00f0ff]/10 border-2 border-[#00f0ff] flex items-center justify-center text-[#00f0ff] shrink-0 rotate-[-5deg]">
                                 <i class="fa-solid fa-graduation-cap"></i>
                             </div>
                             <div>
@@ -431,9 +541,11 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="pt-4 border-t border-neutral-900">
-                        <h3 class="text-xs font-black text-[#00f0ff] uppercase tracking-widest mb-3.5 graffiti-font graffiti-shadow-black">Languages</h3>
+                        <h3
+                            class="text-xs font-black text-[#00f0ff] uppercase tracking-widest mb-3.5 graffiti-font graffiti-shadow-black">
+                            Languages</h3>
                         <div class="space-y-2 text-xs">
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-300 font-bold">한국어 (Native)</span>
@@ -450,70 +562,88 @@
 
             <!-- Right Side: Experience (Zine Timeline) -->
             <div class="lg:col-span-8 space-y-8">
-                
+
                 <div class="bg-[#0d091a] border-4 border-white p-6 md:p-8 shadow-[8px_8px_0px_#000]">
-                    <h2 class="text-xl font-black text-white mb-8 flex items-center gap-2.5 border-b-2 border-neutral-800 pb-4">
+                    <h2
+                        class="text-xl font-black text-white mb-8 flex items-center gap-2.5 border-b-2 border-neutral-800 pb-4">
                         <i class="fa-solid fa-user-gear text-[#00f0ff]"></i>
                         <span class="graffiti-font graffiti-shadow-black">EXPERIENCE</span>
-                        <span class="text-xs font-bold text-[#ff007f] bg-black px-2 py-0.5 ml-2 border border-[#ff007f] rotate-[1deg]">(총 2년 6개월)</span>
+                        <span
+                            class="text-xs font-bold text-[#ff007f] bg-black px-2 py-0.5 ml-2 border border-[#ff007f] rotate-[1deg]">(총
+                            2년 6개월)</span>
                     </h2>
-                    
+
                     <div class="relative border-l-4 border-[#00f0ff] pl-6 ml-4 space-y-12">
-                        
+
                         <!-- Timeline Node 1 -->
                         <div class="relative">
-                            <div class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border-4 border-[#a3e635] rotate-45 shadow-[2px_2px_0px_#000]"></div>
-                            
+                            <div
+                                class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border-4 border-[#a3e635] rotate-45 shadow-[2px_2px_0px_#000]">
+                            </div>
+
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                                 <div>
                                     <h3 class="text-xl font-black text-white">Tidal Flats</h3>
-                                    <p class="text-xs text-[#a3e635] font-black uppercase tracking-wider">Game Programmer</p>
+                                    <p class="text-xs text-[#a3e635] font-black uppercase tracking-wider">Game
+                                        Programmer</p>
                                 </div>
-                                <span class="px-3 py-1.5 bg-black border-2 border-[#a3e635] text-xs text-[#a3e635] font-mono font-bold self-start sm:self-center rotate-[-1deg] shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-3 py-1.5 bg-black border-2 border-[#a3e635] text-xs text-[#a3e635] font-mono font-bold self-start sm:self-center rotate-[-1deg] shadow-[2px_2px_0px_#000]">
                                     2023.04 - 2023.11
                                 </span>
                             </div>
-                            
-                            <p class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
-                                Unity 모바일 게임 프로젝트 메인 시스템 개발. 플랫폼 연동 모듈 최적화 및 유니티 환경에서의 견고한 시스템 기여.
+
+                            <p
+                                class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
+                                유니티 모바일 게임 프로젝트의 초기 아키텍처 셋업부터 릴리즈 및 라이브 서비스 단계까지 전 과정 기여. 클라이언트-서버 간 패킷 통신 기반의 인게임/아웃게임
+                                UI 매니지먼트 및 데이터 동기화 시스템 전반을 전담 개발.
                             </p>
                         </div>
 
                         <!-- Timeline Node 2 -->
                         <div class="relative">
-                            <div class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border-4 border-[#00f0ff] rotate-45 shadow-[2px_2px_0px_#000]"></div>
-                            
+                            <div
+                                class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border-4 border-[#00f0ff] rotate-45 shadow-[2px_2px_0px_#000]">
+                            </div>
+
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                                 <div>
                                     <h3 class="text-xl font-black text-white">TubaN</h3>
-                                    <p class="text-xs text-[#00f0ff] font-black uppercase tracking-wider">Technical Director</p>
+                                    <p class="text-xs text-[#00f0ff] font-black uppercase tracking-wider">Technical
+                                        Director</p>
                                 </div>
-                                <span class="px-3 py-1.5 bg-black border-2 border-[#00f0ff] text-xs text-[#00f0ff] font-mono font-bold self-start sm:self-center rotate-[1deg] shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-3 py-1.5 bg-black border-2 border-[#00f0ff] text-xs text-[#00f0ff] font-mono font-bold self-start sm:self-center rotate-[1deg] shadow-[2px_2px_0px_#000]">
                                     2022.06 - 2023.01
                                 </span>
                             </div>
-                            
-                            <p class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
+
+                            <p
+                                class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
                                 UE5 기반 애니메이션 제작 파이프라인 구축 및 워크플로우 생산성 향상을 위한 자동화 에디터 툴 및 플러그인 전담 개발.
                             </p>
                         </div>
 
                         <!-- Timeline Node 3 -->
                         <div class="relative">
-                            <div class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border-4 border-[#facc15] rotate-45 shadow-[2px_2px_0px_#000]"></div>
-                            
+                            <div
+                                class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border-4 border-[#facc15] rotate-45 shadow-[2px_2px_0px_#000]">
+                            </div>
+
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                                 <div>
                                     <h3 class="text-xl font-black text-white">JIH</h3>
                                     <p class="text-xs text-[#facc15] font-black uppercase tracking-wider">Director</p>
                                 </div>
-                                <span class="px-3 py-1.5 bg-black border-2 border-[#facc15] text-xs text-[#facc15] font-mono font-bold self-start sm:self-center rotate-[-1deg] shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="px-3 py-1.5 bg-black border-2 border-[#facc15] text-xs text-[#facc15] font-mono font-bold self-start sm:self-center rotate-[-1deg] shadow-[2px_2px_0px_#000]">
                                     2019.05 - 2020.06
                                 </span>
                             </div>
-                            
-                            <p class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
-                                UE4 기반 상호작용형 콘텐츠 설계 및 전반적인 게임플레이 메커니즘을 총괄 디렉팅하여 최종 출시 단계 안정화 성공.
+
+                            <p
+                                class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
+                                언리얼 엔진 4 환경에서 멀티플레이어 생존 게임의 캐릭터 상호작용 시스템 및 전반적인 게임플레이 핵심 메커니즘 설계.
                             </p>
                         </div>
                     </div>
@@ -525,39 +655,52 @@
         <section class="mb-16">
             <div class="border-b-4 border-white pb-3 mb-8">
                 <h2 class="text-3xl font-black text-white flex items-center gap-3">
-                    <i class="fa-solid fa-circle-nodes text-[#ff007f]"></i> 
+                    <i class="fa-solid fa-circle-nodes text-[#ff007f]"></i>
                     <span class="graffiti-font text-4xl graffiti-shadow-black">CORE PROJECTS</span>
                 </h2>
                 <p class="text-slate-400 text-sm mt-1">실무 및 주요 협업에서 메인 개발자로 담당한 핵심 프로젝트 상세 정보입니다.</p>
             </div>
-            
+
             <div class="space-y-12">
-                
+
                 <!-- Project 1 (Mega Road - 썸네일 탑재 완료) -->
-                <div class="bg-[#000d1c] border-4 border-[#00f0ff] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                    
+                <div
+                    class="bg-[#000d1c] border-4 border-[#00f0ff] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none">
+                    </div>
+
                     <div class="flex flex-col lg:flex-row gap-8">
-                        <div class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-yellow group">
+                        <div
+                            class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-yellow group">
                             <!-- Image Backdrop with dark vignette overlay (요청 이미지 적용) -->
                             <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Megaroad.png" 
-                                     class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300" 
-                                     alt="Mega Road"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img src="Thumbnail_Megaroad.png"
+                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
+                                    alt="Mega Road"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <!-- 로컬 이미지 부재 시 표시되는 매력적인 예외 폴백 레이아웃 -->
-                                <div class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-gradient-to-tr from-[#02000c] to-emerald-950">
+                                <div
+                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-gradient-to-tr from-[#02000c] to-emerald-950">
                                     <span class="text-4xl mb-2">🏜️</span>
-                                    <span class="text-xs font-black text-emerald-400 tracking-wider uppercase code-font">ACTION IN THE DESERT</span>
+                                    <span
+                                        class="text-xs font-black text-emerald-400 tracking-wider uppercase code-font">ACTION
+                                        IN THE DESERT</span>
                                     <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Megaroad.png 미업로드 상태</span>
                                 </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
+                                </div>
                             </div>
                             <div class="space-y-2 relative z-10 p-5">
-                                <span class="px-3 py-1.5 bg-[#facc15] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">Unity Mobile</span>
-                                <h4 class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">Mega Road</h4>
+                                <span
+                                    class="px-3 py-1.5 bg-[#facc15] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">Unity
+                                    Mobile</span>
+                                <h4
+                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">
+                                    Mega Road</h4>
                             </div>
-                            <div class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
+                            <div
+                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
                                 <span>Platform</span>
                                 <span class="text-[#a3e635]">iOS / Android</span>
                             </div>
@@ -566,47 +709,60 @@
                         <div class="flex-grow space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-4">
                                 <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">Mega Road <span class="text-lg text-neutral-400 font-bold">- Tidal Flats</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-building text-[#00f0ff] mr-1.5"></i> 소속: Tidal Flats</p>
+                                    <h3 class="text-3xl font-black text-white tracking-tight">Mega Road <span
+                                            class="text-lg text-neutral-400 font-bold">- Tidal Flats</span></h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i
+                                            class="fa-solid fa-building text-[#00f0ff] mr-1.5"></i> 소속: Tidal Flats</p>
                                 </div>
-                                <span class="text-xs font-mono font-bold text-[#00f0ff] bg-black border-2 border-[#00f0ff] px-3 py-1.5 rotate-[1deg] shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="text-xs font-mono font-bold text-[#00f0ff] bg-black border-2 border-[#00f0ff] px-3 py-1.5 rotate-[1deg] shadow-[2px_2px_0px_#000]">
                                     2023.04.19 ~ 2023.11.27
                                 </span>
                             </div>
 
                             <div class="flex flex-wrap gap-2 pt-2">
-                                <span class="text-xs px-3 py-2 bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff] font-black code-font">
+                                <span
+                                    class="text-xs px-3 py-2 bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff] font-black code-font">
                                     <i class="fa-solid fa-key mr-1"></i> Login - Play Games & Game Center
                                 </span>
-                                <span class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
+                                <span
+                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
                                     <i class="fa-solid fa-rectangle-ad mr-1"></i> Mediation - AppLovin
                                 </span>
-                                <span class="text-xs px-3 py-2 bg-[#a3e635]/10 text-[#a3e635] border border-[#a3e635] font-black code-font">
+                                <span
+                                    class="text-xs px-3 py-2 bg-[#a3e635]/10 text-[#a3e635] border border-[#a3e635] font-black code-font">
                                     <i class="fa-solid fa-desktop mr-1"></i> UI - Ingame & OutGame
                                 </span>
                             </div>
 
                             <div class="space-y-3 pt-2">
-                                <h4 class="text-xs font-black text-[#00f0ff] uppercase tracking-widest graffiti-font graffiti-shadow-black">Key Accomplishments</h4>
+                                <h4
+                                    class="text-xs font-black text-[#00f0ff] uppercase tracking-widest graffiti-font graffiti-shadow-black">
+                                    Key Accomplishments</h4>
                                 <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
-                                        <span>구글 플레이 게임즈 및 애플 게임 센터 기반의 멀티플랫폼 사용자 인증 파이프라인 구현</span>
+                                        <span>클라이언트-서버 간 패킷 통신에 대응하는 인게임 및 아웃게임 UI 전반 구현</span>
                                     </li>
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
-                                        <span>AppLovin MAX 메디에이션 모듈을 게임 환경에 통합하여 모바일 맞춤형 광고 트래픽 모델 최적화</span>
+                                        <span>UI 데이터 바인딩 및 화면 간 제어권 조율을 위해 MVC 디자인 패턴 적용</span>
                                     </li>
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
-                                        <span>인게임 물리 루프와 로비 씬 간의 UI 제어권을 조율하는 MVC 형태의 인터랙티브 유니티 UI 프레임워크 설계</span>
+                                        <span>AppLovin MAX SDK 연동 및 관련 UI 흐름 개발</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
+                                        <span>SVN 및 Git을 활용한 형상 관리, Jenkins 기반의 빌드 자동화 환경 운용</span>
                                     </li>
                                 </ul>
                             </div>
 
                             <div class="pt-4 flex">
-                                <a href="https://www.notion.so/Mega-Road-Tidal-Flats-1afb47f20dfa80e9aa69e078c7898266?pvs=21" target="_blank"
-                                   class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#ff007f] border-2 border-black text-white font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font graffiti-shadow-black">
+                                <a href="https://www.notion.so/Mega-Road-Tidal-Flats-1afb47f20dfa80e9aa69e078c7898266?pvs=21"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#ff007f] border-2 border-black text-white font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font graffiti-shadow-black">
                                     <i class="fa-solid fa-up-right-from-square"></i>
                                     노션에서 구현 상세 확인하기
                                 </a>
@@ -616,42 +772,58 @@
                 </div>
 
                 <!-- Project 2 (Larva: TubaN - 레드 & 옐로우 캐릭터 연동 및 폴백 탑재 완료) -->
-                <div class="bg-[#000d1c] border-4 border-[#00f0ff] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[0.5deg]">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                    
+                <div
+                    class="bg-[#000d1c] border-4 border-[#00f0ff] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[0.5deg]">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none">
+                    </div>
+
                     <div class="flex flex-col lg:flex-row gap-8">
-                        <div class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-cyan group">
+                        <div
+                            class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-cyan group">
                             <!-- Image Backdrop with dark vignette overlay (라바 옐로우 & 레드 캐릭터 썸네일 상대 경로 지원) -->
                             <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Larva.png" 
-                                     class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300" 
-                                     alt="Larva - Red and Yellow"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img src="Thumbnail_Larva.png"
+                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
+                                    alt="Larva - Red and Yellow"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <!-- 라바 레드 & 옐로우가 없을 시 출력되는 고품질 벡터 SVG 낙서 스티커 데칼 폴백 -->
-                                <div class="absolute inset-0 hidden flex-col items-center justify-center p-4 bg-gradient-to-tr from-[#160a2c] to-[#042f2e] text-center">
-                                    <svg class="w-20 h-12 mb-2 animate-bounce" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <div
+                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 bg-gradient-to-tr from-[#160a2c] to-[#042f2e] text-center">
+                                    <svg class="w-20 h-12 mb-2 animate-bounce" viewBox="0 0 100 50" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
                                         <!-- 옐로우 캐릭터 단순화 그래픽 스티커 -->
-                                        <rect x="25" y="10" width="18" height="35" rx="9" fill="#facc15" stroke="#000000" stroke-width="2.5" />
+                                        <rect x="25" y="10" width="18" height="35" rx="9" fill="#facc15"
+                                            stroke="#000000" stroke-width="2.5" />
                                         <circle cx="30" cy="18" r="2.5" fill="#000000" />
                                         <circle cx="38" cy="18" r="2.5" fill="#000000" />
                                         <path d="M29 28Q34 33 39 28" stroke="#000" stroke-width="2" />
-                                        
+
                                         <!-- 레드 캐릭터 단순화 그래픽 스티커 -->
-                                        <rect x="52" y="20" width="20" height="25" rx="10" fill="#ef4444" stroke="#000000" stroke-width="2.5" />
+                                        <rect x="52" y="20" width="20" height="25" rx="10" fill="#ef4444"
+                                            stroke="#000000" stroke-width="2.5" />
                                         <circle cx="58" cy="28" r="2" fill="#000000" />
                                         <circle cx="66" cy="28" r="2" fill="#000000" />
                                         <path d="M57 34Q62 31 67 34" stroke="#000" stroke-width="2" />
                                     </svg>
-                                    <span class="text-xs font-black text-[#00f0ff] tracking-widest uppercase code-font">LARVA (RED & YELLOW)</span>
+                                    <span
+                                        class="text-xs font-black text-[#00f0ff] tracking-widest uppercase code-font">LARVA
+                                        (RED & YELLOW)</span>
                                     <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Larva.png 미업로드 상태</span>
                                 </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
+                                </div>
                             </div>
                             <div class="space-y-2 relative z-10 p-5">
-                                <span class="px-3 py-1.5 bg-[#00f0ff] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">UE5 Plugin</span>
-                                <h4 class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">Larva</h4>
+                                <span
+                                    class="px-3 py-1.5 bg-[#00f0ff] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">UE5
+                                    Plugin</span>
+                                <h4
+                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">
+                                    Larva</h4>
                             </div>
-                            <div class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
+                            <div
+                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
                                 <span>Core Tech</span>
                                 <span class="text-[#00f0ff]">C++ & SDK</span>
                             </div>
@@ -660,44 +832,61 @@
                         <div class="flex-grow space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-4">
                                 <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">Larva <span class="text-lg text-neutral-400 font-bold">- TubaN</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-building text-[#00f0ff] mr-1.5"></i> 소속: TubaN (Technical Director)</p>
+                                    <h3 class="text-3xl font-black text-white tracking-tight">Larva <span
+                                            class="text-lg text-neutral-400 font-bold">- TubaN</span></h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i
+                                            class="fa-solid fa-building text-[#00f0ff] mr-1.5"></i> 소속: TubaN (Technical
+                                        Director)</p>
                                 </div>
-                                <span class="text-xs font-mono font-bold text-[#00f0ff] bg-black border-2 border-[#00f0ff] px-3 py-1.5 rotate-[-1deg] shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="text-xs font-mono font-bold text-[#00f0ff] bg-black border-2 border-[#00f0ff] px-3 py-1.5 rotate-[-1deg] shadow-[2px_2px_0px_#000]">
                                     2022.06.20 ~ 2023.01.20
                                 </span>
                             </div>
 
                             <div class="flex flex-wrap gap-2 pt-2">
-                                <span class="text-xs px-3 py-2 bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff] font-black code-font">
+                                <span
+                                    class="text-xs px-3 py-2 bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff] font-black code-font">
                                     <i class="fa-solid fa-terminal mr-1"></i> R&D - Unreal Engine Editor Plugin
                                 </span>
-                                <span class="text-xs px-3 py-2 bg-indigo-500/10 text-indigo-300 border border-indigo-700 font-bold">
+                                <span
+                                    class="text-xs px-3 py-2 bg-indigo-500/10 text-indigo-300 border border-indigo-700 font-bold">
                                     <i class="fa-solid fa-microchip mr-1"></i> UE5 Pipeline Automation
                                 </span>
                             </div>
 
                             <div class="space-y-3 pt-2">
-                                <h4 class="text-xs font-black text-[#00f0ff] uppercase tracking-widest graffiti-font graffiti-shadow-black">Key Accomplishments</h4>
+                                <h4
+                                    class="text-xs font-black text-[#00f0ff] uppercase tracking-widest graffiti-font graffiti-shadow-black">
+                                    Key Accomplishments</h4>
                                 <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
-                                        <span>언리얼 엔진 5 환경에서 아티스트 중심 애니메이션 워크플로우를 자동화하는 확장형 에디터 플러그인 독자 설계</span>
+                                        <span>언리얼 엔진 5 환경에서 애니메이션 워크플로우 지원용 확장형 에디터 플러그인 C++ 설계 및 구현</span>
                                     </li>
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
-                                        <span>C++ 코드 기반의 에셋 가상화 및 일괄 임포트/익스포트 프로세스 구현으로 파이프라인 병목 대폭 개선</span>
+                                        <span>C++ 및 Python 스크립트 연동 기반의 에셋 가상화 및 일괄 임포트/익스포트 파이프라인 개발</span>
                                     </li>
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
-                                        <span>인게임 프레임 최적화 분석을 위한 타겟 프로파일링 셋업 보조 및 에디터 툴 안정화</span>
+                                        <span>시퀀서 데이터 추출 자동화 및 에셋 네이밍 규칙 검증(Naming Convention Check) 에디터 툴 구현</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
+                                        <span>사내 웹서버 API 연동을 통한 에피소드·씬·컷별 캐릭터 및 프랍 에셋의 제작 상태(Status) 관리 시스템 구축</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
+                                        <span>Git을 활용한 프로젝트 소스 코드 및 에디터 플러그인 형상 관리</span>
                                     </li>
                                 </ul>
                             </div>
 
                             <div class="pt-4 flex">
-                                <a href="https://www.notion.so/Larva-TubaN-1afb47f20dfa8134bc8eecb7d5081733?pvs=21" target="_blank"
-                                   class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#00f0ff] border-2 border-black text-black font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
+                                <a href="https://www.notion.so/Larva-TubaN-1afb47f20dfa8134bc8eecb7d5081733?pvs=21"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#00f0ff] border-2 border-black text-black font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
                                     <i class="fa-solid fa-up-right-from-square"></i>
                                     노션에서 구현 상세 확인하기
                                 </a>
@@ -707,30 +896,44 @@
                 </div>
 
                 <!-- Project 3 (White Paradise - 두 번째 설산 썸네일 탑재 완료) -->
-                <div class="bg-[#120a00] border-4 border-[#a3e635] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                    
+                <div
+                    class="bg-[#120a00] border-4 border-[#a3e635] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none">
+                    </div>
+
                     <div class="flex flex-col lg:flex-row gap-8">
-                        <div class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-lime group">
+                        <div
+                            class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-lime group">
                             <!-- Image Backdrop with dark vignette overlay (요청 이미지 2순위 적용) -->
                             <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Whiteparadise.png" 
-                                     class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300" 
-                                     alt="White Paradise"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img src="Thumbnail_Whiteparadise.png"
+                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
+                                    alt="White Paradise"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <!-- 로컬 이미지 부재 시 표시되는 매력적인 예외 폴백 레이아웃 -->
-                                <div class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-gradient-to-tr from-[#02000c] to-cyan-950">
+                                <div
+                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-gradient-to-tr from-[#02000c] to-cyan-950">
                                     <span class="text-4xl mb-2">🏔️</span>
-                                    <span class="text-xs font-black text-[#a3e635] tracking-wider uppercase code-font">WHITE PARADISE</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Whiteparadise.png 미업로드 상태</span>
+                                    <span
+                                        class="text-xs font-black text-[#a3e635] tracking-wider uppercase code-font">WHITE
+                                        PARADISE</span>
+                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Whiteparadise.png 미업로드
+                                        상태</span>
                                 </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
+                                </div>
                             </div>
                             <div class="space-y-2 relative z-10 p-5">
-                                <span class="px-3 py-1.5 bg-[#a3e635] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">UE4 Content</span>
-                                <h4 class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">White Paradise</h4>
+                                <span
+                                    class="px-3 py-1.5 bg-[#a3e635] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">UE4
+                                    Content</span>
+                                <h4
+                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">
+                                    White Paradise</h4>
                             </div>
-                            <div class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
+                            <div
+                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
                                 <span>Engine</span>
                                 <span class="text-[#a3e635]">Unreal Engine 4</span>
                             </div>
@@ -739,44 +942,54 @@
                         <div class="flex-grow space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-4">
                                 <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">White Paradise <span class="text-lg text-neutral-400 font-bold">- JIH</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-building text-[#a3e635] mr-1.5"></i> 소속: JIH (Director)</p>
+                                    <h3 class="text-3xl font-black text-white tracking-tight">White Paradise <span
+                                            class="text-lg text-neutral-400 font-bold">- JIH</span></h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i
+                                            class="fa-solid fa-building text-[#a3e635] mr-1.5"></i> 소속: JIH (Director)
+                                    </p>
                                 </div>
-                                <span class="text-xs font-mono font-bold text-[#a3e635] bg-black border-2 border-[#a3e635] px-3 py-1.5 rotate-[1deg] shadow-[2px_2px_0px_#000]">
+                                <span
+                                    class="text-xs font-mono font-bold text-[#a3e635] bg-black border-2 border-[#a3e635] px-3 py-1.5 rotate-[1deg] shadow-[2px_2px_0px_#000]">
                                     2019.05.20 ~ 2020.06.01
                                 </span>
                             </div>
 
                             <div class="flex flex-wrap gap-2 pt-2">
-                                <span class="text-xs px-3 py-2 bg-[#a3e635]/10 text-[#a3e635] border border-[#a3e635] font-black code-font">
+                                <span
+                                    class="text-xs px-3 py-2 bg-[#a3e635]/10 text-[#a3e635] border border-[#a3e635] font-black code-font">
                                     <i class="fa-solid fa-gamepad mr-1"></i> 게임 개발
                                 </span>
-                                <span class="text-xs px-3 py-2 bg-orange-500/10 text-orange-300 border border-orange-700 font-bold">
+                                <span
+                                    class="text-xs px-3 py-2 bg-orange-500/10 text-orange-300 border border-orange-700 font-bold">
                                     <i class="fa-solid fa-clapperboard mr-1"></i> 콘텐츠 제작
                                 </span>
                             </div>
 
                             <div class="space-y-3 pt-2">
-                                <h4 class="text-xs font-black text-[#a3e635] uppercase tracking-widest graffiti-font graffiti-shadow-black">Key Accomplishments</h4>
+                                <h4
+                                    class="text-xs font-black text-[#a3e635] uppercase tracking-widest graffiti-font graffiti-shadow-black">
+                                    Key Accomplishments</h4>
                                 <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#00f0ff] mt-1 shrink-0"></i>
-                                        <span>UE4를 연계한 대규모 인터랙티브 모션/비주얼 콘텐츠 시스템 기획 주도 및 빌드 안정화</span>
+                                        <span>언리얼 엔진 4 기반 멀티플레이어 생존 게임의 핵심 플레이 메커니즘 설계 및 C++ 구현</span>
                                     </li>
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#00f0ff] mt-1 shrink-0"></i>
-                                        <span>다양한 센서 데이터 처리 및 플레이어 좌표 인식 엔진 연동부 핵심 코딩</span>
+                                        <span>Dedicated 서버 엔진 빌드 및 AWS(Amazon Web Services) 클라우드 환경 배포를 통한 멀티플레이어 환경
+                                            구현</span>
                                     </li>
                                     <li class="flex items-start gap-2.5">
                                         <i class="fa-solid fa-bolt text-[#00f0ff] mt-1 shrink-0"></i>
-                                        <span>디렉터로서 가이드라인 정의, 제작 과정 상의 예기치 않은 테크니컬 리스크 신속 돌파</span>
+                                        <span>디렉터로서 가이드라인 정의 및 개발 마일스톤 관리</span>
                                     </li>
                                 </ul>
                             </div>
 
                             <div class="pt-4 flex">
-                                <a href="https://www.notion.so/White-Paradise-JIH-1afb47f20dfa80d1a7b1c2d88a466c48?pvs=21" target="_blank"
-                                   class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#a3e635] border-2 border-black text-black font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
+                                <a href="https://www.notion.so/White-Paradise-JIH-1afb47f20dfa80d1a7b1c2d88a466c48?pvs=21"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#a3e635] border-2 border-black text-black font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
                                     <i class="fa-solid fa-up-right-from-square"></i>
                                     노션에서 구현 상세 확인하기
                                 </a>
@@ -790,259 +1003,294 @@
 
         <!-- SIDE PROJECTS SECTION (Sticker Stack Filtering) -->
         <section class="mb-16">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 border-b-4 border-white pb-6">
+            <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 border-b-4 border-white pb-6">
                 <div>
                     <h2 class="text-3xl font-black text-white flex items-center gap-3">
-                        <i class="fa-solid fa-code-fork text-[#a3e635]"></i> 
-                        <span class="graffiti-font text-4xl graffiti-shadow-black">SIDE PROJECTS & FRAMEWORKS</span>
+                        <i class="fa-solid fa-code-fork text-[#a3e635]"></i>
+                        <span class="graffiti-font text-4xl graffiti-shadow-black">SIDE PROJECTS</span>
                     </h2>
-                    <p class="text-slate-400 text-sm mt-1">개인 개발 연구실: 깃허브 및 독립 연구로 다듬어 온 포트폴리오 파이프라인 리스트입니다.</p>
+                    <p class="text-slate-400 text-sm mt-1">개인 개발 연구실: 독자적으로 다듬어 온 프로젝트 리스트입니다.</p>
                 </div>
-                
+
                 <!-- Search Input with Hype Style -->
                 <div class="relative w-full md:w-auto">
-                    <input type="text" id="project-search" placeholder="프로젝트명 검색..." 
-                           class="w-full sm:w-60 pl-10 pr-4 py-3 text-xs bg-black border-2 border-[#a3e635] text-white placeholder-neutral-500 focus:outline-none focus:border-[#a3e635] transition-colors shadow-[3px_3px_0px_#000] font-bold">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 text-xs"></i>
+                    <input type="text" id="project-search" placeholder="프로젝트명 검색..."
+                        class="w-full sm:w-60 pl-10 pr-4 py-3 text-xs bg-black border-2 border-[#a3e635] text-white placeholder-neutral-500 focus:outline-none focus:border-[#a3e635] transition-colors shadow-[3px_3px_0px_#000] font-bold">
+                    <i
+                        class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 text-xs"></i>
                 </div>
             </div>
 
             <!-- Custom Category Selection Buttons (Hype Sticker Tabs) -->
             <div class="flex flex-wrap gap-3.5 mb-8">
                 <!-- 전체보기 탭을 마젠타 컬러와 선명한 블랙 섀도우를 가진 하이라이트 뱃지로 튜닝 -->
-                <button onclick="filterCategory('all')" id="tab-all" class="category-tab px-4 py-2 text-xs font-black bg-[#ff007f] text-white border-2 border-black shadow-[3px_3px_0px_#000] transition-all rotate-[-1.5deg] graffiti-shadow-black">
+                <button onclick="filterCategory('all')" id="tab-all"
+                    class="category-tab px-4 py-2 text-xs font-black bg-[#ff007f] text-white border-2 border-black shadow-[3px_3px_0px_#000] transition-all rotate-[-1.5deg] graffiti-shadow-black">
                     전체보기 (10)
                 </button>
-                <button onclick="filterCategory('unity')" id="tab-unity" class="category-tab px-4 py-2 text-xs font-black bg-black text-[#a3e635] border-2 border-[#a3e635] shadow-[3px_3px_0px_#000] hover:bg-[#a3e635]/10 transition-all rotate-[1deg]">
+                <button onclick="filterCategory('unity')" id="tab-unity"
+                    class="category-tab px-4 py-2 text-xs font-black bg-black text-[#a3e635] border-2 border-[#a3e635] shadow-[3px_3px_0px_#000] hover:bg-[#a3e635]/10 transition-all rotate-[1deg]">
                     Unity Engine (6)
                 </button>
-                <button onclick="filterCategory('unreal')" id="tab-unreal" class="category-tab px-4 py-2 text-xs font-black bg-black text-[#00f0ff] border-2 border-[#00f0ff] shadow-[3px_3px_0px_#000] hover:bg-[#00f0ff]/10 transition-all rotate-[-1deg]">
+                <button onclick="filterCategory('unreal')" id="tab-unreal"
+                    class="category-tab px-4 py-2 text-xs font-black bg-black text-[#00f0ff] border-2 border-[#00f0ff] shadow-[3px_3px_0px_#000] hover:bg-[#00f0ff]/10 transition-all rotate-[-1deg]">
                     Unreal Engine (3)
                 </button>
-                <button onclick="filterCategory('opengl')" id="tab-opengl" class="category-tab px-4 py-2 text-xs font-black bg-black text-white border-2 border-white shadow-[3px_3px_0px_#000] hover:bg-white/10 transition-all rotate-[2deg]">
+                <button onclick="filterCategory('opengl')" id="tab-opengl"
+                    class="category-tab px-4 py-2 text-xs font-black bg-black text-white border-2 border-white shadow-[3px_3px_0px_#000] hover:bg-white/10 transition-all rotate-[2deg]">
                     Low-Level / OpenGL (2)
                 </button>
             </div>
 
             <!-- Projects Grid of Cards -->
             <div id="side-projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
+
                 <!-- Card 1 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unity game system" data-name="ax_defense_03">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unity game system" data-name="ax_defense_03">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Defense System</span>
                         </div>
-                        <h3 class="text-lg font-black text-white group-hover:text-[#a3e635] transition-colors">AX_Defense_03</h3>
+                        <h3 class="text-lg font-black text-white group-hover:text-[#a3e635] transition-colors">
+                            AX_Defense_03</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            디펜스 게임 프레임워크의 고도화 버전. 가중치 매핑 경로 탐색 및 성능 고속 루프 설계 R&D.
+                            AX Framework v1 기반 프로젝트. AI 도구를 활용한 고속 개발 프로세스를 적용하여 가중치 매핑 기반 경로 탐색 및 웨이브 루프 기능을 빠르게 확장한
+                            디펜스 게임.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
                         <span class="text-[10px] text-[#00f0ff] font-black code-font">v3.0 Stable</span>
-                        <a href="https://www.notion.so/AX_Defense_03-326b47f20dfa834bd48e3ba5d05c641?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                        <a href="https://www.notion.so/AX_Defense_03-326b47f20dfa834bd48e3ba5d05c641?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
                             상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unity game" data-name="ax_defense_02">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unity game" data-name="ax_defense_02">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Defense System</span>
                         </div>
                         <h3 class="text-lg font-black text-white">AX_Defense_02</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            객체 상태 조율 및 다각화 몬스터 웨이브 처리를 위한 시스템 아키텍처 실험작.
+                            AX Framework v1 기반 프로젝트. AI 생성을 연계하여 다양한 몬스터 패턴 및 웨이브 스케줄러 시스템의 빠른 기능 구현과 살 붙이기 작업을 테스트한
+                            프로토타입.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
                         <span class="text-[10px] text-[#00f0ff] font-black code-font">v2.0 Stable</span>
-                        <a href="https://www.notion.so/AX_Defense_02-326b47f20dfa8d28891ccdc7f27b349?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                        <a href="https://www.notion.so/AX_Defense_02-326b47f20dfa8d28891ccdc7f27b349?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
                             상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unity game" data-name="ax_defense_01">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unity game" data-name="ax_defense_01">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Defense System</span>
                         </div>
                         <h3 class="text-lg font-black text-white">AX_Defense_01</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            유니티 물리 감지 및 그리드 좌표 배치를 위한 타일형 디펜스 초기 프로토타입.
+                            AX Framework v1 기반 프로젝트. 유니티 그리드 좌표 배치 및 마우스 클릭 레이캐스트 기반의 타일형 디펜스 초기 핵심 메커니즘 검증작.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
                         <span class="text-[10px] text-[#00f0ff] font-black code-font">v1.0 Basic</span>
-                        <a href="https://www.notion.so/AX_Defense_01-326b47f20dfa80399ed3e5bf8c5c5800?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                        <a href="https://www.notion.so/AX_Defense_01-326b47f20dfa80399ed3e5bf8c5c5800?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
                             상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 4 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unity framework design" data-name="ax framework v1 - unity">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unity framework design" data-name="ax framework v1 - unity">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Custom Framework</span>
                         </div>
                         <h3 class="text-lg font-black text-white">AX Framework v1</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            UI 매니저, 데이터 직렬화, 이벤트 채널 등 확장 가능한 유니티 인디 시스템 전용 디자인 패턴 프레임워크.
+                            앞선 UI 중심 개발 경험을 바탕으로 정립한 인하우스 고속 개발용 커스텀 프레임워크. UI 매니저, 데이터 직렬화, 이벤트 채널 등 AI 보조 도구와 연계해 빠르게
+                            살을 붙일 수 있는 베이스 시스템.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
                         <span class="text-[10px] text-[#00f0ff] font-black code-font">Architecture</span>
-                        <a href="https://www.notion.so/AX-Framework-v1-Unity-326b47f20dfa8a69a73d7a9e6eb8391?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                        <a href="https://www.notion.so/AX-Framework-v1-Unity-326b47f20dfa8a69a73d7a9e6eb8391?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
                             상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 5 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unity game clicker" data-name="ax_clicker_01">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unity game clicker" data-name="ax_clicker_01">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Casual Mechanics</span>
                         </div>
                         <h3 class="text-lg font-black text-white">AX_Clicker_01</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            오브젝트 풀링 가비지 제어 및 가벼운 방치형 인게임 사이클 제어 연구.
+                            AX Framework v1 제작의 발판이 된 UI 메인 프로토타입. 캐주얼 방치형 게임의 화면 간 데이터 흐름과 인게임 루프를 검증하고, 클릭 시 발생하는 화면
+                            이펙트 처리에 오브젝트 풀링을 적용한 프로젝트.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
                         <span class="text-[10px] text-[#00f0ff] font-black code-font">v1.0 Basic</span>
-                        <a href="https://www.notion.so/AX_Clicker_01-326b47f20dfa803aa452f645835a387e?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                        <a href="https://www.notion.so/AX_Clicker_01-326b47f20dfa803aa452f645835a387e?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
                             상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 6 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unreal server network" data-name="ue_multiplayer_dedicated">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unreal server network" data-name="ue_multiplayer_dedicated">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#00f0ff]/10 border border-[#00f0ff] text-[#00f0ff] text-[10px] font-black uppercase tracking-wider graffiti-font">Unreal</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#00f0ff]/10 border border-[#00f0ff] text-[#00f0ff] text-[10px] font-black uppercase tracking-wider graffiti-font">Unreal</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Dedicated Server</span>
                         </div>
                         <h3 class="text-lg font-black text-white">UE_Multiplayer_Dedicated</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            언리얼 엔진 전용 데디케이티드 서버 구축, RPC 패킷 전송, 유저 세션 관리 연구.
+                            언리얼 엔진 데디케이티드 서버 가동 및 멀티플레이어 환경 테스트 프로젝트. C++ 및 블루프린트를 활용한 RPC(Remote Procedure Call) 패킷 전송
+                            및 유저 세션 관리 기능 구현 스터디.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
                         <span class="text-[10px] text-[#00f0ff] font-black code-font">Multiplayer Core</span>
-                        <a href="https://www.notion.so/UE_Multiplayer_Dedicated-24cb47f20dfa80808104d6e5289f120a?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                        <a href="https://www.notion.so/UE_Multiplayer_Dedicated-24cb47f20dfa80808104d6e5289f120a?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
                             상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 7 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unity game clone" data-name="mega road clone - unity">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unity game clone optimization" data-name="mega road clone - unity">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#a3e635]/10 border border-[#a3e635] text-[#a3e635] text-[10px] font-black uppercase tracking-wider graffiti-font">Unity</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Refactoring Study</span>
                         </div>
                         <h3 class="text-lg font-black text-white">Mega Road Clone - Unity</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            실무 메가로드 시스템의 구조를 유니티 환경에서 정밀 복기한 역공학 설계 프로젝트.
+                            실무 시스템을 기반으로 한 뱀서라이크 장르의 R&D 프로젝트. UnityEngine.Pool 기반의 오브젝트 풀링 최적화, Addressable Asset
+                            System을 활용한 메모리 및 에셋 관리, 리플렉션/컴포넌트 자동 맵핑을 통한 UI Bind 구조 개선 적용.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#00f0ff] font-black code-font">Educational Clone</span>
-                        <a href="https://www.notion.so/Mega-Road-Clone-Unity-1afb47f20dfa80aea5dff11cb3481eca?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        <span class="text-[10px] text-[#00f0ff] font-black code-font">Optimization Core</span>
+                        <a href="https://www.notion.so/Mega-Road-Clone-Unity-1afb47f20dfa80fbbfecd808a5cb0542?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 8 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="unreal game clone" data-name="mega road clone - unreal">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="unreal game clone" data-name="mega road clone - unreal">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-[#00f0ff]/10 border border-[#00f0ff] text-[#00f0ff] text-[10px] font-black uppercase tracking-wider graffiti-font">Unreal</span>
+                            <span
+                                class="px-2.5 py-1 bg-[#00f0ff]/10 border border-[#00f0ff] text-[#00f0ff] text-[10px] font-black uppercase tracking-wider graffiti-font">Unreal</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Cross-Engine Study</span>
                         </div>
                         <h3 class="text-lg font-black text-white">Mega Road Clone - Unreal</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            유니티로 제작된 원본 플레이 코어의 언리얼 엔진 완전 이식 테크니컬 스택 마이그레이션.
+                            유니티 기반의 원본 게임 로직과 UI 구조를 언리얼 엔진 5 환경의 C++ 및 블루프린트 구조로 이식하는 마이그레이션 스터디.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
                         <span class="text-[10px] text-[#00f0ff] font-black code-font">Cross Porting</span>
-                        <a href="https://www.notion.so/Mega-Road-Clone-Unreal-1afb47f20e428219c545c77a6925?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        <a href="https://www.notion.so/Mega-Road-Clone-Unreal-1afb47f20e428219c545c77a6925?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 9 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="opengl cpp raw graphic" data-name="isaac clone - opengl">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="opengl cpp raw graphic" data-name="isaac clone - opengl">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-white/10 border border-white text-white text-[10px] font-black uppercase tracking-wider graffiti-font">C++ / OpenGL</span>
+                            <span
+                                class="px-2.5 py-1 bg-white/10 border border-white text-white text-[10px] font-black uppercase tracking-wider graffiti-font">C++
+                                / OpenGL</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Low-Level Graphics</span>
                         </div>
                         <h3 class="text-lg font-black text-white">Isaac Clone - OpenGL</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            상용 게임 엔진을 배제하고 OpenGL API 및 C++ 표준을 사용하여 구동시킨 아이작 스타일 게임.
+                            상용 엔진 없이 C++ 및 OpenGL API를 사용하여 2D 텍스처(이미지) 매핑, 기본 이동 및 충돌 처리를 테스트한 아이작 스타일
+                            프로토타입.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#00f0ff] font-black code-font">Pure GLFW/GLEW</span>
-                        <a href="https://www.notion.so/Isaac-Clone-OpenGL-1afb47f20dfa80f5acf3e3e3a44b2811?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                        <span class="text-[10px] text-[#00f0ff] font-black code-font">OpenGL</span>
+                        <a href="https://www.notion.so/Isaac-Clone-OpenGL-1afb47f20dfa80f5acf3e3e3a44b2811?pvs=21"
+                            target="_blank"
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 10 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between" 
-                     data-tags="opengl glsl raw graphic shader" data-name="shader - opengl">
+                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                    data-tags="opengl glsl raw graphic shader" data-name="shader - opengl">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-white/10 border border-white text-white text-[10px] font-black uppercase tracking-wider graffiti-font">C++ / GLSL</span>
+                            <span
+                                class="px-2.5 py-1 bg-white/10 border border-white text-white text-[10px] font-black uppercase tracking-wider graffiti-font">C++
+                                / GLSL</span>
                             <span class="text-[10px] font-black code-font text-neutral-500">Shader Programming</span>
                         </div>
                         <h3 class="text-lg font-black text-white">Shader - OpenGL</h3>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            커스텀 정점 및 프래그먼트 셰이더 바인딩, 조명 연산, 동적 머티리얼 효과 GLFW 검증.
+                            GLSL을 활용한 기본 버텍스/프래그먼트 셰이더 연산 테스트. 화면에 원을 그리거나 기본적인 색상 변경 이펙트를 구현한 기초 테스트 프로젝트.
                         </p>
                     </div>
                     <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#00f0ff] font-black code-font">Custom GLSL core</span>
+                        <span class="text-[10px] text-[#00f0ff] font-black code-font">OpenGL</span>
                         <a href="https://www.notion.so/Shader-OpenGL-1afb47f2000b829fc45ad486c93?pvs=21" target="_blank"
-                           class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
+                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
+                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                         </a>
                     </div>
                 </div>
@@ -1052,8 +1300,10 @@
 
         <!-- FOOTER -->
         <footer class="mt-20 pt-8 border-t-4 border-white text-center text-xs text-slate-500 space-y-3">
-            <p class="graffiti-font text-lg text-white graffiti-shadow-black">© 2026 장인호. BUILT WITH RAW HTML & TAILWIND PUNK SPEED.</p>
-            <p class="code-font text-[10px] text-slate-600">Verified compatibility for both Desktop & Mobile Recruitment Systems.</p>
+            <p class="graffiti-font text-lg text-white graffiti-shadow-black">© 2026 장인호. BUILT WITH RAW HTML & TAILWIND
+                PUNK SPEED.</p>
+            <p class="code-font text-[10px] text-slate-600">Verified compatibility for both Desktop & Mobile Recruitment
+                Systems.</p>
         </footer>
 
     </div>
@@ -1088,7 +1338,7 @@
             // 마우스 호버 타겟 요소 지능형 가독성 체크 (상호작용 요소 위에선 정밀 조준선 형태로 모핑)
             const targetElement = e.target;
             const isClickable = targetElement && targetElement.closest && targetElement.closest('button, a, input, [role="button"], .side-card, .category-tab');
-            
+
             if (cursorWrapper) {
                 if (isClickable) {
                     cursorWrapper.classList.add('hovering');
@@ -1132,7 +1382,7 @@
         window.addEventListener('mouseup', () => {
             if (cursorWrapper) cursorWrapper.classList.remove('spraying');
         });
-        
+
         // 터치 기기용 좌표 트래킹 및 드로잉 통합 연동
         window.addEventListener('touchstart', (e) => {
             if (e.target.closest('button, a, input, [role="button"]')) return;
@@ -1140,7 +1390,7 @@
             const touch = e.touches[0];
             syncCursorCoordinates(touch.clientX, touch.clientY);
         }, { passive: true });
-        
+
         window.addEventListener('touchmove', (e) => {
             const touch = e.touches[0];
             syncCursorCoordinates(touch.clientX, touch.clientY);
@@ -1156,7 +1406,7 @@
         // --- 🎨 캔버스 드로잉 물리 엔진 장치 ---
         const canvas = document.getElementById('portfolioCanvas');
         const ctx = canvas.getContext('2d');
-        
+
         let isDrawing = false;
         let lastX = 0;
         let lastY = 0;
@@ -1174,7 +1424,7 @@
         // 스프레이 테마 컬러 실시간 연동
         function setSprayColor(color) {
             currentSprayColor = color;
-            
+
             // 노즐 커서 그래픽 실시간 컬러 매핑 연동
             colorCap.setAttribute('fill', color);
             colorNozzle.setAttribute('fill', color);
@@ -1233,12 +1483,12 @@
 
         function redrawCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             splatterArray.forEach(p => {
                 ctx.save();
                 ctx.globalAlpha = p.alpha;
                 ctx.fillStyle = p.color;
-                
+
                 if (p.isDripping) {
                     ctx.beginPath();
                     ctx.arc(p.x, p.y + p.dripY, p.size, 0, Math.PI * 2);
@@ -1273,7 +1523,7 @@
 
         function filterCategory(category) {
             currentFilter = category;
-            
+
             // Update Tab active styling with Hype designs
             const tabs = document.querySelectorAll('.category-tab');
             tabs.forEach(tab => {
@@ -1289,7 +1539,7 @@
 
             const activeTab = document.getElementById(`tab-${category}`);
             activeTab.classList.remove('bg-black', 'text-slate-400', 'border-neutral-800');
-            
+
             if (category === 'all') {
                 activeTab.classList.add('bg-[#ff007f]', 'text-white', 'border-black', 'graffiti-shadow-black');
             } else if (category === 'unity') {
@@ -1313,7 +1563,7 @@
             cards.forEach(card => {
                 const tags = card.getAttribute('data-tags');
                 const name = card.getAttribute('data-name');
-                
+
                 let matchesCategory = false;
                 if (currentFilter === 'all') {
                     matchesCategory = true;
@@ -1336,4 +1586,5 @@
         }
     </script>
 </body>
+
 </html>
