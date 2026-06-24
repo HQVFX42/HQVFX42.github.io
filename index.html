@@ -62,6 +62,54 @@
             border: 3px solid #000000;
         }
 
+        .punk-shadow-pink {
+            box-shadow: 5px 5px 0px #ff007f;
+            border: 3px solid #000000;
+        }
+
+        /* 카카오 스타일: 휠 스크롤 시 각 영역의 시작점에 깔끔하게 정렬 (영역 내부 콘텐츠는 자유롭게 스크롤) */
+        /* 데스크탑(휠/트랙패드)은 JS 저항 컨트롤러가 전환을 담당하므로 네이티브 스냅은 끔 */
+        /* 터치(모바일)는 wheel 이벤트가 없으므로 네이티브 mandatory 스냅을 그대로 사용 */
+        html {
+            scroll-snap-type: none;
+        }
+
+        @media (pointer: coarse) {
+            html {
+                scroll-snap-type: y mandatory;
+            }
+
+            .snap-section {
+                scroll-snap-stop: always;
+            }
+        }
+
+        .snap-section {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        /* 푸터는 한 화면을 다 채울 필요 없는 짧은 영역이라 100vh 강제에서 제외 */
+        footer.snap-section {
+            min-height: 0;
+        }
+
+        .snap-section.is-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .snap-section {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
         /* 스티커 폭탄 느낌의 패널 스타일 */
         .sticker-panel {
             background: #090613;
@@ -328,8 +376,11 @@
     <!-- Main Container -->
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-16 relative z-10">
 
+        <!-- PROFILE AREA (Header + Tech Stack/Education, snap-scroll target) -->
+        <div class="snap-section">
+
         <!-- HEADER SECTION (Sticker-Bombed Flyer) -->
-        <header class="mb-16">
+        <header class="mb-32">
             <div
                 class="flex flex-col lg:flex-row justify-between items-start gap-8 bg-[#0d091a] p-8 md:p-10 border-4 border-white shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
                 <!-- Top Warning Stripe Decal -->
@@ -425,7 +476,7 @@
         </header>
 
         <!-- TECH STACK & EDUCATION GRID -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-32">
 
             <!-- Left Side: Tech Stack (Punk Metal Panel) -->
             <div class="lg:col-span-4 space-y-8">
@@ -651,8 +702,11 @@
             </div>
         </div>
 
+        </div>
+        <!-- /PROFILE AREA -->
+
         <!-- CORE PROJECTS SECTION (Bold Poster Blocks) -->
-        <section class="mb-16">
+        <section class="mb-32 snap-section">
             <div class="border-b-4 border-white pb-3 mb-8">
                 <h2 class="text-3xl font-black text-white flex items-center gap-3">
                     <i class="fa-solid fa-circle-nodes text-[#ff007f]"></i>
@@ -1001,8 +1055,215 @@
             </div>
         </section>
 
+        <!-- AX PROJECTS SECTION (Solo Rapid Prototypes, Itch.io Builds) -->
+        <section class="mb-32 snap-section">
+            <div class="border-b-4 border-white pb-3 mb-8">
+                <h2 class="text-3xl font-black text-white flex items-center gap-3">
+                    <i class="fa-solid fa-flask text-[#facc15]"></i>
+                    <span class="graffiti-font text-4xl graffiti-shadow-black">AX PROJECTS</span>
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">기획부터 빌드, Itch.io 배포까지 단독으로 진행한 단기 게임 프로토타입입니다.</p>
+            </div>
+
+            <div class="space-y-12">
+
+                <!-- Prototype 1 (Germ-y Laundry) -->
+                <div
+                    class="bg-[#0c0500] border-4 border-[#facc15] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl pointer-events-none">
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <div
+                            class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-yellow group">
+                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
+                                <img src="Thumbnail_Germy.png"
+                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
+                                    alt="Germ-y Laundry"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div
+                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-gradient-to-tr from-[#02000c] to-yellow-950">
+                                    <span class="text-4xl mb-2">🧫</span>
+                                    <span
+                                        class="text-xs font-black text-[#facc15] tracking-wider uppercase code-font">GERM-Y
+                                        LAUNDRY</span>
+                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Germy.png 미업로드
+                                        상태</span>
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
+                                </div>
+                            </div>
+                            <div class="space-y-2 relative z-10 p-5">
+                                <span
+                                    class="px-3 py-1.5 bg-[#facc15] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">Solo
+                                    Prototype</span>
+                                <h4
+                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">
+                                    Germ-y Laundry</h4>
+                            </div>
+                            <div
+                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
+                                <span>Build</span>
+                                <span class="text-[#facc15]">Web (Itch.io)</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-3xl font-black text-white tracking-tight">Germ-y Laundry <span
+                                            class="text-lg text-neutral-400 font-bold">- Hyper UX & Balance
+                                            Edition</span></h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i
+                                            class="fa-solid fa-user text-[#facc15] mr-1.5"></i> 기획·개발 단독 진행 (1인
+                                        프로토타입)</p>
+                                </div>
+                                <span
+                                    class="text-xs font-mono font-bold text-[#facc15] bg-black border-2 border-[#facc15] px-3 py-1.5 rotate-[1deg] shadow-[2px_2px_0px_#000]">
+                                    2026.06.02 ~ 2026.06.03
+                                </span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 pt-2">
+                                <span
+                                    class="text-xs px-3 py-2 bg-[#facc15]/10 text-[#facc15] border border-[#facc15] font-black code-font">
+                                    <i class="fa-solid fa-code mr-1"></i> Vanilla JS / Tailwind 단일 HTML 빌드
+                                </span>
+                                <span
+                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
+                                    <i class="fa-solid fa-gauge-high mr-1"></i> 난이도 밸런싱 (Easy / Normal / Hard)
+                                </span>
+                            </div>
+
+                            <div class="space-y-3 pt-2">
+                                <h4
+                                    class="text-xs font-black text-[#facc15] uppercase tracking-widest graffiti-font graffiti-shadow-black">
+                                    Key Accomplishments</h4>
+                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
+                                        <span>세탁 드럼 회전 + 대시 회피 코어 루프를 기획부터 빌드까지 2일 내 단독 구현</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-bolt text-[#a3e635] mt-1 shrink-0"></i>
+                                        <span>3단계 난이도 밸런싱과 튜토리얼, 생존시간 기반 결과 공유 화면까지 단기간 완성</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="pt-4 flex">
+                                <a href="https://epiclog42.itch.io/germ-y-laundry"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#facc15] border-2 border-black text-black font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
+                                    <i class="fa-solid fa-play"></i>
+                                    PLAY DEMO (Itch.io)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prototype 2 (No More Prizes) -->
+                <div
+                    class="bg-[#1a0010] border-4 border-[#ff007f] p-6 md:p-8 shadow-[8px_8px_0px_#000] relative overflow-hidden rotate-[-0.5deg]">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl pointer-events-none">
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <div
+                            class="w-full lg:w-72 shrink-0 bg-black border-4 border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] punk-shadow-pink group">
+                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
+                                <img src="Thumbnail_NoMorePrizes.png"
+                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
+                                    alt="No More Prizes"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div
+                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-gradient-to-tr from-[#02000c] to-pink-950">
+                                    <span class="text-4xl mb-2">🎰</span>
+                                    <span
+                                        class="text-xs font-black text-[#ff007f] tracking-wider uppercase code-font">NO
+                                        MORE PRIZES</span>
+                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_NoMorePrizes.png 미업로드
+                                        상태</span>
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
+                                </div>
+                            </div>
+                            <div class="space-y-2 relative z-10 p-5">
+                                <span
+                                    class="px-3 py-1.5 bg-[#ff007f] text-black text-[11px] font-black tracking-widest uppercase inline-block graffiti-font">Solo
+                                    Prototype</span>
+                                <h4
+                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2 graffiti-shadow-black">
+                                    No More Prizes</h4>
+                            </div>
+                            <div
+                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
+                                <span>Build</span>
+                                <span class="text-[#ff007f]">Web (Itch.io)</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-3xl font-black text-white tracking-tight">No More Prizes</h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i
+                                            class="fa-solid fa-user text-[#ff007f] mr-1.5"></i> 기획·개발 단독 진행 (1인
+                                        프로토타입)</p>
+                                </div>
+                                <span
+                                    class="text-xs font-mono font-bold text-[#ff007f] bg-black border-2 border-[#ff007f] px-3 py-1.5 rotate-[1deg] shadow-[2px_2px_0px_#000]">
+                                    2026.05.21 ~ 2026.05.28
+                                </span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 pt-2">
+                                <span
+                                    class="text-xs px-3 py-2 bg-[#ff007f]/10 text-[#ff007f] border border-[#ff007f] font-black code-font">
+                                    <i class="fa-solid fa-code mr-1"></i> Vanilla JS (game / ui / effects 모듈 분리)
+                                </span>
+                                <span
+                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
+                                    <i class="fa-solid fa-language mr-1"></i> EN / KR 다국어 지원
+                                </span>
+                            </div>
+
+                            <div class="space-y-3 pt-2">
+                                <h4
+                                    class="text-xs font-black text-[#ff007f] uppercase tracking-widest graffiti-font graffiti-shadow-black">
+                                    Key Accomplishments</h4>
+                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-bolt text-[#00f0ff] mt-1 shrink-0"></i>
+                                        <span>세트 효과 · 인벤토리 · Moss Drive 레벨링을 갖춘 수집형 코어 루프를 1주일 내 단독 구현</span>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fa-solid fa-bolt text-[#00f0ff] mt-1 shrink-0"></i>
+                                        <span>도감 / 기록 모달, 커스텀 커서 · 볼륨 UI 등 디테일한 인터랙션으로 완성도 확보</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="pt-4 flex">
+                                <a href="https://epiclog42.itch.io/no-more-prizes"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#ff007f] border-2 border-black text-white font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
+                                    <i class="fa-solid fa-play"></i>
+                                    PLAY DEMO (Itch.io)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- SIDE PROJECTS SECTION (Sticker Stack Filtering) -->
-        <section class="mb-16">
+        <section class="mb-32 snap-section">
             <div
                 class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 border-b-4 border-white pb-6">
                 <div>
@@ -1299,11 +1560,8 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="mt-20 pt-8 border-t-4 border-white text-center text-xs text-slate-500 space-y-3">
-            <p class="graffiti-font text-lg text-white graffiti-shadow-black">© 2026 장인호. BUILT WITH RAW HTML & TAILWIND
-                PUNK SPEED.</p>
-            <p class="code-font text-[10px] text-slate-600">Verified compatibility for both Desktop & Mobile Recruitment
-                Systems.</p>
+        <footer class="snap-section mt-20 pt-8 border-t-4 border-white text-center text-xs text-slate-500">
+            <p class="graffiti-font text-lg text-white graffiti-shadow-black">© 2026 장인호</p>
         </footer>
 
     </div>
@@ -1584,6 +1842,194 @@
                 }
             });
         }
+    </script>
+
+    <!-- Snap Section Fade In/Out (스냅 전환 시 휠 먹통 오인 방지용 시각 피드백) -->
+    <script>
+        const snapSections = document.querySelectorAll('.snap-section');
+        const snapObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                entry.target.classList.toggle('is-active', entry.isIntersecting);
+            });
+        }, { threshold: 0 });
+
+        snapSections.forEach((section) => snapObserver.observe(section));
+    </script>
+
+    <!-- Wheel Resistance Controller (영역 끝에 도달해도 즉시 넘어가지 않고, 흐려지며 더 휠을 내려야 다음 영역으로 확정 전환) -->
+    <script>
+        (function () {
+            // 터치/모바일은 wheel 이벤트가 없어 영향 없음 (해당 환경은 CSS 미디어쿼리의 네이티브 스냅이 담당)
+            if (!window.matchMedia('(pointer: fine)').matches) return;
+
+            const sections = Array.from(document.querySelectorAll('.snap-section'));
+            if (sections.length < 2) return;
+
+            const RESISTANCE = 220;     // 경계에서 전환을 확정 짓기까지 필요한 추가 휠 입력량(px)
+            const IDLE_RESET_MS = 220;  // 휠 입력이 멈추면 저항 누적을 리셋
+            const COMMIT_LOCK_MS = 650; // 전환 애니메이션 동안 추가 입력 무시
+            const DIM_RATIO = 0.6;      // 저항 중 최대로 흐려지는 정도
+
+            let bounds = [];
+            let progress = 0;
+            let resistDirection = 0; // 1: 다음 영역으로, -1: 이전 영역으로
+            let resistTarget = null;
+            let idleTimer = null;
+            let locked = false;
+
+            function recomputeBounds() {
+                bounds = sections.map((el) => ({
+                    el,
+                    top: el.offsetTop,
+                    bottom: el.offsetTop + el.offsetHeight,
+                }));
+            }
+            recomputeBounds();
+            window.addEventListener('resize', recomputeBounds);
+
+            function currentIndex() {
+                const y = window.scrollY;
+                for (let i = bounds.length - 1; i >= 0; i--) {
+                    if (y >= bounds[i].top - 1) return i;
+                }
+                return 0;
+            }
+
+            function resetResistance() {
+                if (resistTarget) {
+                    resistTarget.style.opacity = '';
+                    resistTarget.style.transitionDuration = '';
+                }
+                progress = 0;
+                resistDirection = 0;
+                resistTarget = null;
+                clearTimeout(idleTimer);
+            }
+
+            function applyDim(el, ratio) {
+                el.style.transitionDuration = '0.12s';
+                el.style.opacity = String(1 - ratio * DIM_RATIO);
+            }
+
+            function commitTo(targetTop, fadingEl) {
+                locked = true;
+                clearTimeout(idleTimer);
+                window.scrollTo({ top: targetTop, behavior: 'smooth' });
+                setTimeout(() => {
+                    if (fadingEl) {
+                        fadingEl.style.opacity = '';
+                        fadingEl.style.transitionDuration = '';
+                    }
+                    resetResistance();
+                    locked = false;
+                }, COMMIT_LOCK_MS);
+            }
+
+            window.addEventListener('wheel', (e) => {
+                if (locked) {
+                    e.preventDefault();
+                    return;
+                }
+
+                const idx = currentIndex();
+                const y = window.scrollY;
+                const viewH = window.innerHeight;
+                const current = bounds[idx];
+                const next = bounds[idx + 1];
+                const prev = bounds[idx - 1];
+
+                const goingDown = e.deltaY > 0;
+                const goingUp = e.deltaY < 0;
+
+                // 한 번의 큰 휠 입력(빠른 마우스/트랙패드 플링)이 경계 체크를 건너뛰고
+                // 갭/다음 영역으로 바로 점프해버리는 것을 막기 위해, "이번 이동으로 경계를
+                // 넘는지"를 미리 계산해서 경계까지만 이동시키고 넘는 만큼만 저항치로 누적한다.
+                if (goingDown && next) {
+                    const maxAllowedY = Math.max(current.bottom - viewH, current.top);
+                    if (y >= maxAllowedY - 0.5) {
+                        // 이미 경계: 이번 입력 전체가 저항으로 누적됨, 스크롤 자체는 고정
+                        e.preventDefault();
+                        if (resistDirection !== 1 || resistTarget !== current.el) resetResistance();
+                        resistDirection = 1;
+                        resistTarget = current.el;
+                        progress += e.deltaY;
+                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
+
+                        clearTimeout(idleTimer);
+                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
+
+                        if (progress >= RESISTANCE) {
+                            commitTo(next.top, resistTarget);
+                        }
+                        return;
+                    }
+
+                    const intendedY = y + e.deltaY;
+                    if (intendedY > maxAllowedY) {
+                        // 경계를 넘어가려는 큰 점프: 경계까지만 이동, 넘긴 만큼만 저항으로 누적
+                        e.preventDefault();
+                        window.scrollTo(0, maxAllowedY);
+                        if (resistDirection !== 1 || resistTarget !== current.el) resetResistance();
+                        resistDirection = 1;
+                        resistTarget = current.el;
+                        progress += intendedY - maxAllowedY;
+                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
+
+                        clearTimeout(idleTimer);
+                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
+
+                        if (progress >= RESISTANCE) {
+                            commitTo(next.top, resistTarget);
+                        }
+                        return;
+                    }
+                    // 경계와 거리가 충분하면 평범하게 자유 스크롤 (기본 동작 유지)
+                }
+
+                if (goingUp && prev) {
+                    const minAllowedY = current.top;
+                    if (y <= minAllowedY + 0.5) {
+                        e.preventDefault();
+                        if (resistDirection !== -1 || resistTarget !== current.el) resetResistance();
+                        resistDirection = -1;
+                        resistTarget = current.el;
+                        progress += -e.deltaY;
+                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
+
+                        clearTimeout(idleTimer);
+                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
+
+                        if (progress >= RESISTANCE) {
+                            commitTo(prev.top, resistTarget);
+                        }
+                        return;
+                    }
+
+                    const intendedY = y + e.deltaY;
+                    if (intendedY < minAllowedY) {
+                        e.preventDefault();
+                        window.scrollTo(0, minAllowedY);
+                        if (resistDirection !== -1 || resistTarget !== current.el) resetResistance();
+                        resistDirection = -1;
+                        resistTarget = current.el;
+                        progress += minAllowedY - intendedY;
+                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
+
+                        clearTimeout(idleTimer);
+                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
+
+                        if (progress >= RESISTANCE) {
+                            commitTo(prev.top, resistTarget);
+                        }
+                        return;
+                    }
+                    // 경계와 거리가 충분하면 평범하게 자유 스크롤 (기본 동작 유지)
+                }
+
+                // 경계가 아니면 평범하게 자유 스크롤
+                if (resistDirection !== 0) resetResistance();
+            }, { passive: false });
+        })();
     </script>
 </body>
 
