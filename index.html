@@ -88,12 +88,30 @@
         }
 
         .entry-row {
+            position: relative;
             border-top: 1px solid var(--line);
             transition: background-color 0.15s ease;
         }
 
+        .entry-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -1px;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.25s ease;
+        }
+
         .entry-row:hover {
             background-color: #191919;
+        }
+
+        .entry-row:hover::before {
+            transform: scaleY(1);
         }
 
         .tag {
