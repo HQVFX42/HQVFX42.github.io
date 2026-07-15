@@ -88,32 +88,12 @@
         }
 
         .entry-row {
-            position: relative;
             border-top: 1px solid var(--line);
-            transition: background-color 0.15s ease, padding-left 0.2s ease;
-        }
-
-        .entry-row::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: -1px;
-            bottom: 0;
-            width: 2px;
-            background: var(--accent);
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 0.25s ease;
+            transition: background-color 0.15s ease;
         }
 
         .entry-row:hover {
             background-color: #191919;
-            padding-left: 0.85rem;
-            margin-left: -0.85rem;
-        }
-
-        .entry-row:hover::before {
-            transform: scaleY(1);
         }
 
         .tag {
@@ -232,7 +212,7 @@
         .hero-in {
             opacity: 0;
             transform: translateY(14px);
-            animation: hero-in-kf 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: hero-in-kf 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation-delay: var(--d, 0s);
         }
 
@@ -255,8 +235,8 @@
             bottom: -2px;
             height: 2px;
             background: var(--accent);
-            animation: hero-underline-kf 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 0.55s;
+            animation: hero-underline-kf 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1.1s;
         }
 
         @keyframes hero-underline-kf {
@@ -321,20 +301,20 @@
                     programmer</p>
 
                 <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
-                    style="--d:0.08s">
+                    style="--d:0.16s">
                     장인호
                     <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">Inho
                         Jang</span>
                 </h1>
 
                 <p class="hero-in text-base md:text-lg text-[var(--text-dim)] mt-4 leading-relaxed max-w-xl"
-                    style="--d:0.16s">
+                    style="--d:0.32s">
                     기획 및 아트와의 협업 효율을 고민하고, 새로운 기술을 탐구하는 <span
                         class="hero-underline text-white">게임 프로그래머</span>
                 </p>
 
                 <div class="hero-in flex flex-wrap gap-x-6 gap-y-2 mt-6 code-font text-xs text-[var(--text-dim)]"
-                    style="--d:0.24s">
+                    style="--d:0.48s">
                     <a href="mailto:ford6313@gmail.com" class="link-accent flex items-center gap-1.5">
                         <i class="fa-regular fa-envelope"></i> ford6313@gmail.com
                     </a>
