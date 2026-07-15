@@ -8,50 +8,38 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --bg-0: #1e1e1e;
-            /* editor background */
-            --bg-1: #252526;
-            /* panel background */
-            --bg-2: #2d2d30;
-            /* raised panel / hover */
-            --line: #3c3c3c;
-            /* borders */
-            --line-soft: #333333;
-            --text-0: #d4d4d4;
-            /* default text */
-            --text-1: #cccccc;
-            --text-muted: #8a8a8d;
-            --accent-blue: #569cd6;
-            /* keyword blue */
-            --accent-cyan: #4ec9b0;
-            /* type teal */
-            --accent-orange: #ce9178;
-            /* string orange */
-            --accent-yellow: #dcdcaa;
-            /* function yellow */
-            --accent-purple: #c586c0;
-            /* keyword purple */
-            --accent-green: #6a9955;
-            /* comment green */
+            --bg: #141414;
+            --line: #2a2a2a;
+            --text: #e8e8e6;
+            --text-dim: #8c8c8a;
+            --text-faint: #5c5c5a;
+            --accent: #5b8def;
         }
 
         body {
             font-family: 'Inter', 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-0);
-            color: var(--text-0);
+            background-color: var(--bg);
+            color: var(--text);
+            font-weight: 400;
         }
 
         .code-font {
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* 카카오 스타일: 휠 스크롤 시 각 영역의 시작점에 깔끔하게 정렬 (영역 내부 콘텐츠는 자유롭게 스크롤) */
-        /* 데스크탑(휠/트랙패드)은 JS 저항 컨트롤러가 전환을 담당하므로 네이티브 스냅은 끔 */
-        /* 터치(모바일)는 wheel 이벤트가 없으므로 네이티브 mandatory 스냅을 그대로 사용 */
+        a {
+            color: inherit;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0c0c0c;
+        }
+
         html {
             scroll-snap-type: none;
         }
@@ -70,11 +58,10 @@
             scroll-snap-align: start;
             min-height: 100vh;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(16px);
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        /* 푸터는 한 화면을 다 채울 필요 없는 짧은 영역이라 100vh 강제에서 제외 */
         footer.snap-section {
             min-height: 0;
         }
@@ -92,1609 +79,784 @@
             }
         }
 
-        /* 코드 에디터 패널: 얇은 보더 + 미묘한 elevation, 회전/네온 없이 평평하게 */
-        .panel {
-            background: var(--bg-1);
-            border: 1px solid var(--line);
-            border-radius: 6px;
+        .hairline {
+            border-top: 1px solid var(--line);
         }
 
-        .card-panel {
-            background: var(--bg-1);
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            transition: border-color 0.15s ease, transform 0.15s ease;
+        .hairline-b {
+            border-bottom: 1px solid var(--line);
         }
 
-        .card-panel:hover {
-            border-color: var(--accent-blue);
+        .entry-row {
+            border-top: 1px solid var(--line);
+            transition: background-color 0.15s ease;
         }
 
-        .sticker-panel {
-            background: var(--bg-1);
+        .entry-row:hover {
+            background-color: #191919;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-dim);
             border: 1px solid var(--line);
-            border-radius: 8px;
+            padding: 0.15rem 0.55rem;
+            border-radius: 3px;
+        }
+
+        .link-accent {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
             transition: border-color 0.15s ease;
         }
 
-        .sticker-panel:hover {
-            border-color: var(--accent-blue);
+        .link-accent:hover {
+            border-bottom-color: var(--accent);
         }
 
-        /* Custom Scrollbar */
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            color: var(--text);
+            transition: border-color 0.15s ease, color 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-solid {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .btn-solid:hover {
+            color: #0c0c0c;
+            opacity: 0.88;
+        }
+
+        .thumb {
+            background: #1a1a1a;
+            border: 1px solid var(--line);
+        }
+
+        .bar-track {
+            background: #1e1e1e;
+            height: 3px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            background: var(--accent);
+            height: 100%;
+        }
+
+        .category-tab {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.4rem 0.85rem;
+            border: 1px solid var(--line);
+            color: var(--text-dim);
+            border-radius: 4px;
+            transition: all 0.15s ease;
+        }
+
+        .category-tab.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 9px;
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--bg-0);
+            background: var(--bg);
         }
 
         ::-webkit-scrollbar-thumb {
             background: var(--line);
-            border: 2px solid var(--bg-0);
             border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-blue);
+            background: var(--text-faint);
         }
     </style>
 </head>
 
-<body class="selection:bg-[#569cd6] selection:text-white antialiased overflow-x-hidden relative">
+<body class="antialiased overflow-x-hidden relative">
 
-    <!-- Main Container -->
-    <div class="max-w-6xl mx-auto px-4 py-8 md:py-16 relative z-10">
+    <div class="max-w-4xl mx-auto px-5 py-14 md:py-20 relative z-10">
 
-        <!-- PROFILE AREA (Header + Tech Stack/Education, snap-scroll target) -->
+        <!-- PROFILE AREA -->
         <div class="snap-section">
 
-        <!-- HEADER SECTION (Sticker-Bombed Flyer) -->
-        <header class="mb-32">
-            <div
-                class="flex flex-col lg:flex-row justify-between items-start gap-8 bg-[#252526] p-8 md:p-10 border border-white relative overflow-hidden">
-                <!-- Top Warning Stripe Decal -->
-                <div class="absolute top-0 left-0 w-full h-3"></div>
+            <!-- HEADER -->
+            <header class="mb-20">
+                <p class="code-font text-xs text-[var(--accent)] tracking-wide mb-4">// game programmer</p>
 
-                <div class="space-y-4 max-w-3xl">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-black border border-[#c586c0] text-[#c586c0] text-xs font-black tracking-wider uppercase">
-                        <span class="w-2.5 h-2.5 rounded-full bg-[#c586c0] animate-ping"></span>
-                        Do or do not, there is no try
-                    </div>
+                <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight">
+                    장인호
+                    <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">Inho
+                        Jang</span>
+                </h1>
 
-                    <h1
-                        class="text-5xl md:text-6xl font-black tracking-tight text-white leading-tight select-none">
-                        <span
-                            class="text-[#4ec9b0] text-6xl block md:inline-block">장인호</span>
-                        <span
-                            class="text-xl md:text-2xl font-bold text-slate-400 block md:inline md:ml-3 code-font tracking-tighter">&lt;Inho
-                            Jang /&gt;</span>
-                    </h1>
+                <p class="text-base md:text-lg text-[var(--text-dim)] mt-4 leading-relaxed max-w-xl">
+                    기획 및 아트와의 협업 효율을 고민하고, 새로운 기술을 탐구하는 게임 프로그래머
+                </p>
 
-                    <p class="text-xl md:text-2xl font-black text-slate-200 select-none leading-snug">
-                        기획 및 아트와의 협업 효율을 고민하고, 새로운 기술을 탐구하는 <span
-                            class="bg-[#c586c0] text-white px-3 py-0.5 inline-block">게임
-                            프로그래머</span>
+                <div class="flex flex-wrap gap-x-6 gap-y-2 mt-6 code-font text-xs text-[var(--text-dim)]">
+                    <a href="mailto:ford6313@gmail.com" class="link-accent flex items-center gap-1.5">
+                        <i class="fa-regular fa-envelope"></i> ford6313@gmail.com
+                    </a>
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot"></i> Seoul, South Korea
+                    </span>
+                    <a href="https://github.com/hqvfx42" target="_blank" class="link-accent flex items-center gap-1.5">
+                        <i class="fa-brands fa-github"></i> github.com/hqvfx42
+                    </a>
+                    <span class="text-[var(--text-faint)]">Updated 2026.05</span>
+                </div>
+
+                <div class="hairline mt-8 pt-6 space-y-4 text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl">
+                    <p>
+                        <strong class="text-white font-medium">스토리텔링이 이끈 개발자의 삶.</strong>
+                        저는 원래 스토리텔링이 너무 좋아서 개발을 시작했습니다. 그 이야기의 강력한 힘에 매료되어 있으며, 결국 게임이라는 가장 역동적이고
+                        입체적인 매체를 통해 유저들의 마음에 깊은 울림을 주는 스토리를 기술로서 완벽히 풀어내는 것을 가장 큰 목표로 삼고 있습니다.
                     </p>
-
-                    <!-- Bio 1: 스토리텔링의 철학 -->
-                    <div
-                        class="p-6 bg-black border border-neutral-800 mt-6 relative">
-                        <div class="absolute top-4 right-4 opacity-10">
-                            <i class="fa-solid fa-book-open text-6xl text-[#569cd6]"></i>
-                        </div>
-                        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                            <strong class="text-[#569cd6] font-bold text-base block mb-2"><i
-                                    class="fa-solid fa-heart text-[#c586c0] mr-2"></i>스토리텔링이 이끈 개발자의 삶:</strong>
-                            저는 원래 <strong>스토리텔링이 너무 좋아서</strong> 개발을 시작했습니다. 그 이야기의 강력한 힘에 매료되어 있으며, 결국 게임이라는 가장 역동적이고
-                            입체적인 매체를 통해 유저들의 마음에 깊은 울림을 주는 스토리를 기술로서 완벽히 풀어내는 것을 가장 큰 목표로 삼고 있습니다.
-                        </p>
-                    </div>
-
-                    <!-- Bio 2: 개발 프로세스 조율 및 스터디 -->
-                    <div
-                        class="p-6 bg-black border border-neutral-800 mt-4 relative">
-                        <div class="absolute top-4 right-4 opacity-10">
-                            <i class="fa-solid fa-wand-magic-sparkles text-6xl text-[#4ec9b0]"></i>
-                        </div>
-                        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                            <strong class="text-white text-base block mb-2"><i
-                                    class="fa-solid fa-brain text-[#4ec9b0] mr-2"></i>개발 프로세스 효율화에 관심이 많습니다:</strong>
-                            AI 도구를 코드 흐름 분석과 기술 문서화 보조에 영리하게 활용하고 있으며, 더 나아가
-                            <span class="text-[#4ec9b0] font-black underline decoration-[#4ec9b0]/40">Unity, Unreal,
-                                Notion 등 환경에 맞게 연계</span>하는 개발 효율화 방식들을 관심 있게 연구하고 스터디를 적극적으로 이어가고 있습니다.
-                        </p>
-                    </div>
+                    <p>
+                        <strong class="text-white font-medium">개발 프로세스 효율화에 관심이 많습니다.</strong>
+                        AI 도구를 코드 흐름 분석과 기술 문서화 보조에 영리하게 활용하고 있으며, 더 나아가 Unity, Unreal, Notion 등
+                        환경에 맞게 연계하는 개발 효율화 방식들을 관심 있게 연구하고 스터디를 적극적으로 이어가고 있습니다.
+                    </p>
                 </div>
+            </header>
 
-                <!-- Info Card (Slapped-on Badge Style) -->
-                <div class="w-full lg:w-auto shrink-0 flex flex-col gap-4 min-w-[280px]">
-                    <div class="p-6 bg-black border border-[#569cd6] space-y-4 text-sm">
-                        <div class="flex items-center gap-3 border-b border-neutral-900 pb-2.5">
-                            <div
-                                class="w-9 h-9 bg-[#4ec9b0]/20 border border-[#4ec9b0] flex items-center justify-center">
-                                <i class="fa-regular fa-envelope text-[#4ec9b0]"></i>
-                            </div>
-                            <a href="mailto:ford6313@gmail.com"
-                                class="text-slate-200 hover:text-[#4ec9b0] font-black transition-colors code-font text-xs">ford6313@gmail.com</a>
-                        </div>
-                        <div class="flex items-center gap-3 border-b border-neutral-900 pb-2.5">
-                            <div
-                                class="w-9 h-9 bg-[#dcdcaa]/20 border border-[#dcdcaa] flex items-center justify-center">
-                                <i class="fa-solid fa-location-dot text-[#dcdcaa]"></i>
-                            </div>
-                            <span class="text-slate-200 font-bold">Seoul, South Korea</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-9 h-9 bg-[#569cd6]/20 border border-[#569cd6] flex items-center justify-center">
-                                <i class="fa-brands fa-github text-[#569cd6]"></i>
-                            </div>
-                            <a href="https://github.com/hqvfx42" target="_blank"
-                                class="text-slate-200 hover:text-[#569cd6] font-black transition-colors code-font text-xs">github.com/hqvfx42</a>
-                        </div>
-                    </div>
+            <!-- TECH STACK & EDUCATION GRID -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-12 mb-20">
 
-                    <div
-                        class="p-4 bg-neutral-950 border border-neutral-800 text-xs text-slate-400 flex justify-between items-center">
-                        <span class="font-bold uppercase tracking-widest text-neutral-500">UPDATE</span>
-                        <span class="code-font text-[#569cd6] font-black">2026.05</span>
-                    </div>
-                </div>
-            </div>
-        </header>
+                <!-- Left: Tech Stack -->
+                <div class="lg:col-span-5 space-y-10">
 
-        <!-- TECH STACK & EDUCATION GRID -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-32">
-
-            <!-- Left Side: Tech Stack (Punk Metal Panel) -->
-            <div class="lg:col-span-4 space-y-8">
-
-                <div class="bg-black border border-[#4ec9b0] p-6">
-                    <h2
-                        class="text-xl font-black text-white mb-6 flex items-center gap-2.5 border-b-2 border-[#4ec9b0] pb-3">
-                        <i class="fa-solid fa-screwdriver-wrench text-[#4ec9b0]"></i>
-                        <span class="code-font">TECH STACK</span>
-                    </h2>
-
-                    <div class="space-y-6">
-                        <div>
-                            <span
-                                class="text-xs font-black text-[#4ec9b0] uppercase tracking-widest block mb-3">Game
-                                Engines</span>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between text-xs mb-1.5">
-                                        <span class="text-slate-200 font-black"><i
-                                                class="fa-solid fa-cube text-orange-500 mr-1.5"></i> Unreal
-                                            Engine</span>
-                                        <span class="text-[#569cd6] font-black code-font">3 / 5</span>
-                                    </div>
-                                    <div class="w-full bg-neutral-900 h-3.5 border border-black p-[2px]">
-                                        <div class="bg-gradient-to-r from-[#569cd6] to-[#3b82f6] h-full"
-                                            style="width: 60%"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-xs mb-1.5">
-                                        <span class="text-slate-200 font-black"><i
-                                                class="fa-solid fa-cubes text-cyan-400 mr-1.5"></i> Unity Engine</span>
-                                        <span class="text-[#4ec9b0] font-black code-font">2 / 5</span>
-                                    </div>
-                                    <div class="w-full bg-neutral-900 h-3.5 border border-black p-[2px]">
-                                        <div class="bg-gradient-to-r from-[#4ec9b0] to-teal-500 h-full"
-                                            style="width: 40%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <span
-                                class="text-xs font-black text-[#4ec9b0] uppercase tracking-widest block mb-3">Languages</span>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between text-xs mb-1.5">
-                                        <span class="text-slate-200 font-black">C++</span>
-                                        <span class="text-[#569cd6] font-black code-font">3 / 5</span>
-                                    </div>
-                                    <div class="w-full bg-neutral-900 h-3.5 border border-black p-[2px]">
-                                        <div class="bg-[#569cd6] h-full" style="width: 60%"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-xs mb-1.5">
-                                        <span class="text-slate-200 font-black">C#</span>
-                                        <span class="text-[#dcdcaa] font-black code-font">2 / 5</span>
-                                    </div>
-                                    <div class="w-full bg-neutral-900 h-3.5 border border-black p-[2px]">
-                                        <div class="bg-[#dcdcaa] h-full" style="width: 40%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="pt-2 border-t border-neutral-900">
-                            <span
-                                class="text-xs font-black text-neutral-500 uppercase tracking-widest block mb-3 code-font">DevOps
-                                & Cooperation</span>
-                            <div class="flex flex-wrap gap-2">
-                                <span
-                                    class="px-2.5 py-1.5 bg-[#252526] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1">
-                                    <i class="fa-brands fa-git-alt text-orange-500"></i> Git
-                                </span>
-                                <span
-                                    class="px-2.5 py-1.5 bg-[#252526] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1">
-                                    <i class="fa-solid fa-code-commit text-blue-400"></i> SVN
-                                </span>
-                                <span
-                                    class="px-2.5 py-1.5 bg-[#252526] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1">
-                                    <i class="fa-brands fa-jenkins text-red-400"></i> Jenkins
-                                </span>
-                                <span
-                                    class="px-2.5 py-1.5 bg-[#252526] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1">
-                                    <i class="fa-solid fa-list-check text-indigo-400"></i> Linear
-                                </span>
-                                <span
-                                    class="px-2.5 py-1.5 bg-[#252526] border border-neutral-800 text-slate-300 text-xs font-bold flex items-center gap-1">
-                                    <i class="fa-brands fa-slack text-yellow-400"></i> Slack
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Education & Languages (Slapped Sticker Stamp) -->
-                <div class="bg-black border border-[#569cd6] p-6 space-y-6">
                     <div>
-                        <h3
-                            class="text-xs font-black text-[#569cd6] uppercase tracking-widest mb-3.5">
-                            Education</h3>
-                        <div class="flex items-start gap-3">
-                            <div
-                                class="w-9 h-9 bg-[#569cd6]/10 border border-[#569cd6] flex items-center justify-center text-[#569cd6] shrink-0">
-                                <i class="fa-solid fa-graduation-cap"></i>
+                        <h2 class="code-font text-xs text-[var(--text-faint)] tracking-widest uppercase mb-5">Tech
+                            Stack</h2>
+
+                        <div class="space-y-5">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1.5">
+                                    <span>Unreal Engine</span>
+                                    <span class="code-font text-xs text-[var(--text-dim)]">3 / 5</span>
+                                </div>
+                                <div class="bar-track"><div class="bar-fill" style="width: 60%"></div></div>
                             </div>
                             <div>
-                                <h4 class="text-sm font-black text-white">한국공학대학교 졸업</h4>
-                                <p class="text-xs text-slate-400">게임공학 계열 전공 (2014.03 - 2020.02)</p>
+                                <div class="flex justify-between text-sm mb-1.5">
+                                    <span>Unity Engine</span>
+                                    <span class="code-font text-xs text-[var(--text-dim)]">2 / 5</span>
+                                </div>
+                                <div class="bar-track"><div class="bar-fill" style="width: 40%"></div></div>
                             </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1.5">
+                                    <span>C++</span>
+                                    <span class="code-font text-xs text-[var(--text-dim)]">3 / 5</span>
+                                </div>
+                                <div class="bar-track"><div class="bar-fill" style="width: 60%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1.5">
+                                    <span>C#</span>
+                                    <span class="code-font text-xs text-[var(--text-dim)]">2 / 5</span>
+                                </div>
+                                <div class="bar-track"><div class="bar-fill" style="width: 40%"></div></div>
+                            </div>
+                        </div>
+
+                        <div class="hairline mt-6 pt-5 flex flex-wrap gap-2">
+                            <span class="tag">Git</span>
+                            <span class="tag">SVN</span>
+                            <span class="tag">Jenkins</span>
+                            <span class="tag">Linear</span>
+                            <span class="tag">Slack</span>
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t border-neutral-900">
-                        <h3
-                            class="text-xs font-black text-[#569cd6] uppercase tracking-widest mb-3.5">
-                            Languages</h3>
-                        <div class="space-y-2 text-xs">
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-300 font-bold">한국어 (Native)</span>
-                                <span class="text-[#4ec9b0] code-font tracking-tighter">⚡⚡⚡⚡⚡</span>
+                    <div class="hairline pt-8">
+                        <h2 class="code-font text-xs text-[var(--text-faint)] tracking-widest uppercase mb-4">
+                            Education</h2>
+                        <h3 class="text-sm text-white">한국공학대학교 졸업</h3>
+                        <p class="text-xs text-[var(--text-dim)] mt-1">게임공학 계열 전공 (2014.03 - 2020.02)</p>
+
+                        <div class="mt-6 space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-[var(--text-dim)]">한국어</span>
+                                <span class="code-font text-xs text-[var(--text-dim)]">Native</span>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400 font-bold">영어 (Professional)</span>
-                                <span class="text-[#569cd6] code-font tracking-tighter">⚡⚡</span>
+                            <div class="flex justify-between">
+                                <span class="text-[var(--text-dim)]">영어</span>
+                                <span class="code-font text-xs text-[var(--text-dim)]">Professional</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Right Side: Experience (Zine Timeline) -->
-            <div class="lg:col-span-8 space-y-8">
-
-                <div class="bg-[#252526] border border-white p-6 md:p-8">
-                    <h2
-                        class="text-xl font-black text-white mb-8 flex items-center gap-2.5 border-b-2 border-neutral-800 pb-4">
-                        <i class="fa-solid fa-user-gear text-[#569cd6]"></i>
-                        <span class="code-font">EXPERIENCE</span>
-                        <span
-                            class="text-xs font-bold text-[#c586c0] bg-black px-2 py-0.5 ml-2 border border-[#c586c0]">(총
-                            2년 6개월)</span>
+                <!-- Right: Experience -->
+                <div class="lg:col-span-7">
+                    <h2 class="code-font text-xs text-[var(--text-faint)] tracking-widest uppercase mb-1">Experience
                     </h2>
+                    <p class="text-xs text-[var(--text-faint)] mb-6">총 2년 6개월</p>
 
-                    <div class="relative border-l-2 border-[#569cd6] pl-6 ml-4 space-y-12">
-
-                        <!-- Timeline Node 1 -->
-                        <div class="relative">
-                            <div
-                                class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border border-[#4ec9b0] rotate-45">
+                    <div class="space-y-8">
+                        <div class="hairline pt-5">
+                            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <h3 class="text-base text-white">Tidal Flats <span
+                                        class="text-[var(--text-dim)] font-normal">— Game Programmer</span></h3>
+                                <span class="code-font text-xs text-[var(--text-faint)]">2023.04 – 2023.11</span>
                             </div>
-
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                                <div>
-                                    <h3 class="text-xl font-black text-white">Tidal Flats</h3>
-                                    <p class="text-xs text-[#4ec9b0] font-black uppercase tracking-wider">Game
-                                        Programmer</p>
-                                </div>
-                                <span
-                                    class="px-3 py-1.5 bg-black border border-[#4ec9b0] text-xs text-[#4ec9b0] font-mono font-bold self-start sm:self-center">
-                                    2023.04 - 2023.11
-                                </span>
-                            </div>
-
-                            <p
-                                class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
-                                유니티 모바일 게임 프로젝트의 초기 아키텍처 셋업부터 릴리즈 및 라이브 서비스 단계까지 전 과정 기여. 클라이언트-서버 간 패킷 통신 기반의 인게임/아웃게임
-                                UI 매니지먼트 및 데이터 동기화 시스템 전반을 전담 개발.
+                            <p class="text-sm text-[var(--text-dim)] leading-relaxed mt-2">
+                                유니티 모바일 게임 프로젝트의 초기 아키텍처 셋업부터 릴리즈 및 라이브 서비스 단계까지 전 과정 기여. 클라이언트-서버 간 패킷 통신 기반의
+                                인게임/아웃게임 UI 매니지먼트 및 데이터 동기화 시스템 전반을 전담 개발.
                             </p>
                         </div>
 
-                        <!-- Timeline Node 2 -->
-                        <div class="relative">
-                            <div
-                                class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border border-[#569cd6] rotate-45">
+                        <div class="hairline pt-5">
+                            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <h3 class="text-base text-white">TubaN <span
+                                        class="text-[var(--text-dim)] font-normal">— Technical Director</span></h3>
+                                <span class="code-font text-xs text-[var(--text-faint)]">2022.06 – 2023.01</span>
                             </div>
-
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                                <div>
-                                    <h3 class="text-xl font-black text-white">TubaN</h3>
-                                    <p class="text-xs text-[#569cd6] font-black uppercase tracking-wider">Technical
-                                        Director</p>
-                                </div>
-                                <span
-                                    class="px-3 py-1.5 bg-black border border-[#569cd6] text-xs text-[#569cd6] font-mono font-bold self-start sm:self-center">
-                                    2022.06 - 2023.01
-                                </span>
-                            </div>
-
-                            <p
-                                class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
+                            <p class="text-sm text-[var(--text-dim)] leading-relaxed mt-2">
                                 UE5 기반 애니메이션 제작 파이프라인 구축 및 워크플로우 생산성 향상을 위한 자동화 에디터 툴 및 플러그인 전담 개발.
                             </p>
                         </div>
 
-                        <!-- Timeline Node 3 -->
-                        <div class="relative">
-                            <div
-                                class="absolute -left-[35px] top-1.5 w-5 h-5 rounded-none bg-black border border-[#dcdcaa] rotate-45">
+                        <div class="hairline pt-5">
+                            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <h3 class="text-base text-white">JIH <span
+                                        class="text-[var(--text-dim)] font-normal">— Director</span></h3>
+                                <span class="code-font text-xs text-[var(--text-faint)]">2019.05 – 2020.06</span>
                             </div>
-
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                                <div>
-                                    <h3 class="text-xl font-black text-white">JIH</h3>
-                                    <p class="text-xs text-[#dcdcaa] font-black uppercase tracking-wider">Director</p>
-                                </div>
-                                <span
-                                    class="px-3 py-1.5 bg-black border border-[#dcdcaa] text-xs text-[#dcdcaa] font-mono font-bold self-start sm:self-center">
-                                    2019.05 - 2020.06
-                                </span>
-                            </div>
-
-                            <p
-                                class="text-sm text-slate-300 leading-relaxed bg-black/40 p-4 border border-neutral-900 rounded-none shadow-inner">
+                            <p class="text-sm text-[var(--text-dim)] leading-relaxed mt-2">
                                 언리얼 엔진 4 환경에서 멀티플레이어 생존 게임의 캐릭터 상호작용 시스템 및 전반적인 게임플레이 핵심 메커니즘 설계.
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         </div>
         <!-- /PROFILE AREA -->
 
-        <!-- CORE PROJECTS SECTION (Bold Poster Blocks) -->
-        <section class="mb-32 snap-section">
-            <div class="border-b-2 border-white pb-3 mb-8">
-                <h2 class="text-3xl font-black text-white flex items-center gap-3">
-                    <i class="fa-solid fa-circle-nodes text-[#c586c0]"></i>
-                    <span class="text-4xl">CORE PROJECTS</span>
-                </h2>
-                <p class="text-slate-400 text-sm mt-1">실무 및 주요 협업에서 메인 개발자로 담당한 핵심 프로젝트 상세 정보입니다.</p>
+        <!-- CORE PROJECTS SECTION -->
+        <section class="mb-20 snap-section">
+            <div class="hairline-b pb-3 mb-2">
+                <h2 class="text-xl text-white">Core Projects</h2>
+                <p class="text-[var(--text-dim)] text-sm mt-1">실무 및 주요 협업에서 메인 개발자로 담당한 핵심 프로젝트입니다.</p>
             </div>
 
-            <div class="space-y-12">
-
-                <!-- Project 1 (Mega Road - 썸네일 탑재 완료) -->
-                <div
-                    class="bg-[#252526] border border-[#569cd6] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none">
-                    </div>
-
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <!-- Image Backdrop with dark vignette overlay (요청 이미지 적용) -->
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Megaroad.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="Mega Road"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <!-- 로컬 이미지 부재 시 표시되는 매력적인 예외 폴백 레이아웃 -->
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🏜️</span>
-                                    <span
-                                        class="text-xs font-black text-emerald-400 tracking-wider uppercase code-font">ACTION
-                                        IN THE DESERT</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Megaroad.png 미업로드 상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#dcdcaa] text-black text-[11px] font-black tracking-widest uppercase inline-block">Unity
-                                    Mobile</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    Mega Road</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Platform</span>
-                                <span class="text-[#4ec9b0]">iOS / Android</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">Mega Road <span
-                                            class="text-lg text-neutral-400 font-bold">- Tidal Flats</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-building text-[#569cd6] mr-1.5"></i> 소속: Tidal Flats</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#569cd6] bg-black border border-[#569cd6] px-3 py-1.5">
-                                    2023.04.19 ~ 2023.11.27
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#569cd6]/10 text-[#569cd6] border border-[#569cd6] font-black code-font">
-                                    <i class="fa-solid fa-key mr-1"></i> Login - Play Games & Game Center
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
-                                    <i class="fa-solid fa-rectangle-ad mr-1"></i> Mediation - AppLovin
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#4ec9b0]/10 text-[#4ec9b0] border border-[#4ec9b0] font-black code-font">
-                                    <i class="fa-solid fa-desktop mr-1"></i> UI - Ingame & OutGame
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#569cd6] uppercase tracking-widest">
-                                    Key Accomplishments</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>클라이언트-서버 간 패킷 통신에 대응하는 인게임 및 아웃게임 UI 전반 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>UI 데이터 바인딩 및 화면 간 제어권 조율을 위해 MVC 디자인 패턴 적용</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>AppLovin MAX SDK 연동 및 관련 UI 흐름 개발</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>SVN 및 Git을 활용한 형상 관리, Jenkins 기반의 빌드 자동화 환경 운용</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex">
-                                <a href="https://www.notion.so/Mega-Road-Tidal-Flats-1afb47f20dfa80e9aa69e078c7898266?pvs=21"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#c586c0] border border-black text-white font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-up-right-from-square"></i>
-                                    노션에서 구현 상세 확인하기
-                                </a>
-                            </div>
+            <!-- Project 1: Mega Road -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_Megaroad.png" class="w-full h-full object-cover"
+                            alt="Mega Road"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_Megaroad.png</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Project 2 (Larva: TubaN - 레드 & 옐로우 캐릭터 연동 및 폴백 탑재 완료) -->
-                <div
-                    class="bg-[#252526] border border-[#569cd6] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none">
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">Mega Road <span
+                                class="text-[var(--text-dim)] font-normal text-base">— Tidal Flats</span></h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">2023.04.19 – 2023.11.27</span>
                     </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">Unity Mobile</span>
+                        <span class="tag">iOS / Android</span>
+                        <span class="tag">AppLovin</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· 클라이언트-서버 간 패킷 통신에 대응하는 인게임 및 아웃게임 UI 전반 구현</li>
+                        <li>· UI 데이터 바인딩 및 화면 간 제어권 조율을 위해 MVC 디자인 패턴 적용</li>
+                        <li>· AppLovin MAX SDK 연동 및 관련 UI 흐름 개발</li>
+                        <li>· SVN 및 Git을 활용한 형상 관리, Jenkins 기반의 빌드 자동화 환경 운용</li>
+                    </ul>
+                    <a href="https://www.notion.so/Mega-Road-Tidal-Flats-1afb47f20dfa80e9aa69e078c7898266?pvs=21"
+                        target="_blank" class="btn mt-2">
+                        <i class="fa-solid fa-up-right-from-square"></i> 노션에서 구현 상세 확인하기
+                    </a>
+                </div>
+            </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <!-- Image Backdrop with dark vignette overlay (라바 옐로우 & 레드 캐릭터 썸네일 상대 경로 지원) -->
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Larva.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="Larva - Red and Yellow"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <!-- 라바 레드 & 옐로우가 없을 시 출력되는 고품질 벡터 SVG 낙서 스티커 데칼 폴백 -->
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 bg-gradient-to-tr from-[#160a2c] to-[#042f2e] text-center">
-                                    <svg class="w-20 h-12 mb-2 animate-bounce" viewBox="0 0 100 50" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <!-- 옐로우 캐릭터 단순화 그래픽 스티커 -->
-                                        <rect x="25" y="10" width="18" height="35" rx="9" fill="#dcdcaa"
-                                            stroke="#000000" stroke-width="2.5" />
-                                        <circle cx="30" cy="18" r="2.5" fill="#000000" />
-                                        <circle cx="38" cy="18" r="2.5" fill="#000000" />
-                                        <path d="M29 28Q34 33 39 28" stroke="#000" stroke-width="2" />
-
-                                        <!-- 레드 캐릭터 단순화 그래픽 스티커 -->
-                                        <rect x="52" y="20" width="20" height="25" rx="10" fill="#ef4444"
-                                            stroke="#000000" stroke-width="2.5" />
-                                        <circle cx="58" cy="28" r="2" fill="#000000" />
-                                        <circle cx="66" cy="28" r="2" fill="#000000" />
-                                        <path d="M57 34Q62 31 67 34" stroke="#000" stroke-width="2" />
-                                    </svg>
-                                    <span
-                                        class="text-xs font-black text-[#569cd6] tracking-widest uppercase code-font">LARVA
-                                        (RED & YELLOW)</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Larva.png 미업로드 상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#569cd6] text-black text-[11px] font-black tracking-widest uppercase inline-block">UE5
-                                    Plugin</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    Larva</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Core Tech</span>
-                                <span class="text-[#569cd6]">C++ & SDK</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">Larva <span
-                                            class="text-lg text-neutral-400 font-bold">- TubaN</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-building text-[#569cd6] mr-1.5"></i> 소속: TubaN (Technical
-                                        Director)</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#569cd6] bg-black border border-[#569cd6] px-3 py-1.5">
-                                    2022.06.20 ~ 2023.01.20
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#569cd6]/10 text-[#569cd6] border border-[#569cd6] font-black code-font">
-                                    <i class="fa-solid fa-terminal mr-1"></i> R&D - Unreal Engine Editor Plugin
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-indigo-500/10 text-indigo-300 border border-indigo-700 font-bold">
-                                    <i class="fa-solid fa-microchip mr-1"></i> UE5 Pipeline Automation
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#569cd6] uppercase tracking-widest">
-                                    Key Accomplishments</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>언리얼 엔진 5 환경에서 애니메이션 워크플로우 지원용 확장형 에디터 플러그인 C++ 설계 및 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>C++ 및 Python 스크립트 연동 기반의 에셋 가상화 및 일괄 임포트/익스포트 파이프라인 개발</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>시퀀서 데이터 추출 자동화 및 에셋 네이밍 규칙 검증(Naming Convention Check) 에디터 툴 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>사내 웹서버 API 연동을 통한 에피소드·씬·컷별 캐릭터 및 프랍 에셋의 제작 상태(Status) 관리 시스템 구축</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>Git을 활용한 프로젝트 소스 코드 및 에디터 플러그인 형상 관리</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex">
-                                <a href="https://www.notion.so/Larva-TubaN-1afb47f20dfa8134bc8eecb7d5081733?pvs=21"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#569cd6] border border-black text-black font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-up-right-from-square"></i>
-                                    노션에서 구현 상세 확인하기
-                                </a>
-                            </div>
+            <!-- Project 2: Larva -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_Larva.png" class="w-full h-full object-cover"
+                            alt="Larva - Red and Yellow"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_Larva.png</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Project 3 (White Paradise - 두 번째 설산 썸네일 탑재 완료) -->
-                <div
-                    class="bg-[#252526] border border-[#4ec9b0] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none">
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">Larva <span
+                                class="text-[var(--text-dim)] font-normal text-base">— TubaN</span></h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">2022.06.20 – 2023.01.20</span>
                     </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">UE5 Plugin</span>
+                        <span class="tag">C++ & SDK</span>
+                        <span class="tag">Pipeline Automation</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· 언리얼 엔진 5 환경에서 애니메이션 워크플로우 지원용 확장형 에디터 플러그인 C++ 설계 및 구현</li>
+                        <li>· C++ 및 Python 스크립트 연동 기반의 에셋 가상화 및 일괄 임포트/익스포트 파이프라인 개발</li>
+                        <li>· 시퀀서 데이터 추출 자동화 및 에셋 네이밍 규칙 검증(Naming Convention Check) 에디터 툴 구현</li>
+                        <li>· 사내 웹서버 API 연동을 통한 에피소드·씬·컷별 캐릭터 및 프랍 에셋의 제작 상태(Status) 관리 시스템 구축</li>
+                        <li>· Git을 활용한 프로젝트 소스 코드 및 에디터 플러그인 형상 관리</li>
+                    </ul>
+                    <a href="https://www.notion.so/Larva-TubaN-1afb47f20dfa8134bc8eecb7d5081733?pvs=21" target="_blank"
+                        class="btn mt-2">
+                        <i class="fa-solid fa-up-right-from-square"></i> 노션에서 구현 상세 확인하기
+                    </a>
+                </div>
+            </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <!-- Image Backdrop with dark vignette overlay (요청 이미지 2순위 적용) -->
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Whiteparadise.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="White Paradise"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <!-- 로컬 이미지 부재 시 표시되는 매력적인 예외 폴백 레이아웃 -->
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🏔️</span>
-                                    <span
-                                        class="text-xs font-black text-[#4ec9b0] tracking-wider uppercase code-font">WHITE
-                                        PARADISE</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Whiteparadise.png 미업로드
-                                        상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#4ec9b0] text-black text-[11px] font-black tracking-widest uppercase inline-block">UE4
-                                    Content</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    White Paradise</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Engine</span>
-                                <span class="text-[#4ec9b0]">Unreal Engine 4</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">White Paradise <span
-                                            class="text-lg text-neutral-400 font-bold">- JIH</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-building text-[#4ec9b0] mr-1.5"></i> 소속: JIH (Director)
-                                    </p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#4ec9b0] bg-black border border-[#4ec9b0] px-3 py-1.5">
-                                    2019.05.20 ~ 2020.06.01
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#4ec9b0]/10 text-[#4ec9b0] border border-[#4ec9b0] font-black code-font">
-                                    <i class="fa-solid fa-gamepad mr-1"></i> 게임 개발
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-orange-500/10 text-orange-300 border border-orange-700 font-bold">
-                                    <i class="fa-solid fa-clapperboard mr-1"></i> 콘텐츠 제작
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#4ec9b0] uppercase tracking-widest">
-                                    Key Accomplishments</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#569cd6] mt-1 shrink-0"></i>
-                                        <span>언리얼 엔진 4 기반 멀티플레이어 생존 게임의 핵심 플레이 메커니즘 설계 및 C++ 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#569cd6] mt-1 shrink-0"></i>
-                                        <span>Dedicated 서버 엔진 빌드 및 AWS(Amazon Web Services) 클라우드 환경 배포를 통한 멀티플레이어 환경
-                                            구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#569cd6] mt-1 shrink-0"></i>
-                                        <span>디렉터로서 가이드라인 정의 및 개발 마일스톤 관리</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex">
-                                <a href="https://www.notion.so/White-Paradise-JIH-1afb47f20dfa80d1a7b1c2d88a466c48?pvs=21"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#4ec9b0] border border-black text-black font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-up-right-from-square"></i>
-                                    노션에서 구현 상세 확인하기
-                                </a>
-                            </div>
+            <!-- Project 3: White Paradise -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_Whiteparadise.png" class="w-full h-full object-cover"
+                            alt="White Paradise"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_Whiteparadise.png</span>
                         </div>
                     </div>
                 </div>
-
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">White Paradise <span
+                                class="text-[var(--text-dim)] font-normal text-base">— JIH</span></h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">2019.05.20 – 2020.06.01</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">UE4 Content</span>
+                        <span class="tag">게임 개발</span>
+                        <span class="tag">콘텐츠 제작</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· 언리얼 엔진 4 기반 멀티플레이어 생존 게임의 핵심 플레이 메커니즘 설계 및 C++ 구현</li>
+                        <li>· Dedicated 서버 엔진 빌드 및 AWS(Amazon Web Services) 클라우드 환경 배포를 통한 멀티플레이어 환경 구현</li>
+                        <li>· 디렉터로서 가이드라인 정의 및 개발 마일스톤 관리</li>
+                    </ul>
+                    <a href="https://www.notion.so/White-Paradise-JIH-1afb47f20dfa80d1a7b1c2d88a466c48?pvs=21"
+                        target="_blank" class="btn mt-2">
+                        <i class="fa-solid fa-up-right-from-square"></i> 노션에서 구현 상세 확인하기
+                    </a>
+                </div>
             </div>
         </section>
 
-        <!-- AX PROJECTS SECTION (Solo Rapid Prototypes, Itch.io Builds) -->
-        <section class="mb-32 snap-section">
-            <div class="border-b-2 border-white pb-3 mb-8">
-                <h2 class="text-3xl font-black text-white flex items-center gap-3">
-                    <i class="fa-solid fa-flask text-[#dcdcaa]"></i>
-                    <span class="text-4xl">AX PROJECTS</span>
-                </h2>
-                <p class="text-slate-400 text-sm mt-1">기획부터 빌드, Itch.io 배포까지 단독으로 진행한 단기 게임 프로토타입입니다.</p>
+        <!-- AX PROJECTS SECTION -->
+        <section class="mb-20 snap-section">
+            <div class="hairline-b pb-3 mb-2">
+                <h2 class="text-xl text-white">AX Projects</h2>
+                <p class="text-[var(--text-dim)] text-sm mt-1">기획부터 빌드, Itch.io 배포까지 단독으로 진행한 단기 게임 프로토타입입니다.</p>
             </div>
 
-            <div class="space-y-12">
-
-                <!-- Prototype -1 (Whale Getaway - 최신작) -->
-                <div
-                    class="bg-[#252526] border border-[#569cd6] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl pointer-events-none">
-                    </div>
-
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_WhaleGetaway.jpg"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="Whale Getaway - Blue Horizon"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🐳</span>
-                                    <span
-                                        class="text-xs font-black text-[#569cd6] tracking-wider uppercase code-font">WHALE
-                                        GETAWAY</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_WhaleGetaway.jpg 미업로드
-                                        상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#569cd6] text-black text-[11px] font-black tracking-widest uppercase inline-block">Latest
-                                    · Solo Prototype</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    Whale Getaway</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Build</span>
-                                <span class="text-[#569cd6]">Web (Itch.io)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">Whale Getaway <span
-                                            class="text-lg text-neutral-400 font-bold">- Blue Horizon</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-user text-[#569cd6] mr-1.5"></i> 기획·개발 단독 진행 (1인
-                                        프로토타입, 게임잼 출품작)</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#569cd6] bg-black border border-[#569cd6] px-3 py-1.5">
-                                    2026.06 ~ 2026.07
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#569cd6]/10 text-[#569cd6] border border-[#569cd6] font-black code-font">
-                                    <i class="fa-solid fa-code mr-1"></i> TypeScript + Vite / Canvas 2D
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
-                                    <i class="fa-solid fa-gauge-high mr-1"></i> 3-스킬 정화 액션 + 절차적 바다 월드
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#569cd6] uppercase tracking-widest">
-                                    Key Accomplishments</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>버블(포획) · 도넛(고정 플랫폼) · 대시 세 가지 스킬이 서로 다른 역할로 맞물리는 오염물 정화 코어 루프를 설계·구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>3600px 폭의 카메라 추적형 절차적 바다 월드, 굴곡진 해저 지형, 풍선처럼 튕기는 원형 충돌 처리를 직접 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>튜토리얼 → 4단계 페이즈 진행 → 게이지/타이머 기반 게임오버까지 이어지는 온보딩·난이도 곡선을 1인 완결형으로 제작</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex flex-wrap gap-4">
-                                <a href="https://epiclog42.itch.io/whale-getaway"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#569cd6] border border-black text-black font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-play"></i>
-                                    PLAY DEMO (Itch.io)
-                                </a>
-                                <a href="WhaleGetaway_Architecture.html"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-black border border-[#569cd6] text-[#569cd6] font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-file-lines"></i>
-                                    아키텍처 문서 보기
-                                </a>
-                            </div>
+            <!-- Whale Getaway -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_WhaleGetaway.jpg" class="w-full h-full object-cover"
+                            alt="Whale Getaway - Blue Horizon"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_WhaleGetaway.jpg</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Prototype 0 (HamsThor) -->
-                <div
-                    class="bg-[#252526] border border-[#569cd6] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none">
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">Whale Getaway <span
+                                class="text-[var(--text-dim)] font-normal text-base">— Blue Horizon</span></h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">2026.06 – 2026.07</span>
                     </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">Latest</span>
+                        <span class="tag">TypeScript + Vite</span>
+                        <span class="tag">Canvas 2D</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· 버블(포획) · 도넛(고정 플랫폼) · 대시 세 가지 스킬이 서로 다른 역할로 맞물리는 오염물 정화 코어 루프를 설계·구현</li>
+                        <li>· 3600px 폭의 카메라 추적형 절차적 바다 월드, 굴곡진 해저 지형, 풍선처럼 튕기는 원형 충돌 처리를 직접 구현</li>
+                        <li>· 튜토리얼 → 4단계 페이즈 진행 → 게이지/타이머 기반 게임오버까지 이어지는 온보딩·난이도 곡선을 1인 완결형으로 제작</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-3 mt-2">
+                        <a href="https://epiclog42.itch.io/whale-getaway" target="_blank" class="btn btn-solid">
+                            <i class="fa-solid fa-play"></i> Play Demo (Itch.io)
+                        </a>
+                        <a href="WhaleGetaway_Architecture.html" class="btn">
+                            <i class="fa-solid fa-file-lines"></i> 아키텍처 문서
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_HamsThor.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="HamsThor - Spin to Win...ch!"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🐹</span>
-                                    <span
-                                        class="text-xs font-black text-[#569cd6] tracking-wider uppercase code-font">HAMSTHOR</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_HamsThor.png 미업로드
-                                        상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#569cd6] text-black text-[11px] font-black tracking-widest uppercase inline-block">Solo
-                                    Prototype</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    HamsThor</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Build</span>
-                                <span class="text-[#569cd6]">Web (Itch.io)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">HamsThor <span
-                                            class="text-lg text-neutral-400 font-bold">- Spin to Win...ch!</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-user text-[#569cd6] mr-1.5"></i> 기획·개발 단독 진행 (1인
-                                        프로토타입, 게임잼 출품작)</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#569cd6] bg-black border border-[#569cd6] px-3 py-1.5">
-                                    2026.06.29 ~ 2026.07.14
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#569cd6]/10 text-[#569cd6] border border-[#569cd6] font-black code-font">
-                                    <i class="fa-solid fa-code mr-1"></i> Vanilla JS 단일 HTML 빌드
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
-                                    <i class="fa-solid fa-gauge-high mr-1"></i> 원운동 물리 기반 사출 메커니즘
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#569cd6] uppercase tracking-widest">
-                                    Key Accomplishments</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>윈치(반지름-각속도 보존) · 접선 방향 릴리즈 · 35px 정밀 락온으로 이어지는 원운동 사출 코어 루프를 순수 물리
-                                            공식으로 직접 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>로비 → 3단계 실전 튜토리얼 → 본게임으로 이어지는 AppState FSM을 실제 게임 물리 위에 얹어 온보딩 설계</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>무한 절차적 앵커 생성, 난이도 램프, 장애물 기믹, BEST 고도 기록, 그래피티 컨셉 UI/UX까지 1인 완결형으로 제작</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex flex-wrap gap-4">
-                                <a href="https://epiclog42.itch.io/hamsthor-spin-to-winch"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#569cd6] border border-black text-black font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-play"></i>
-                                    PLAY DEMO (Itch.io)
-                                </a>
-                                <a href="HamsThor_Architecture.html"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-black border border-[#569cd6] text-[#569cd6] font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-file-lines"></i>
-                                    아키텍처 문서 보기
-                                </a>
-                            </div>
+            <!-- HamsThor -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_HamsThor.png" class="w-full h-full object-cover"
+                            alt="HamsThor - Spin to Win...ch!"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_HamsThor.png</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Prototype 1 (Germ-y Laundry) -->
-                <div
-                    class="bg-[#252526] border border-[#dcdcaa] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl pointer-events-none">
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">HamsThor <span
+                                class="text-[var(--text-dim)] font-normal text-base">— Spin to Win...ch!</span></h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">2026.06.29 – 2026.07.14</span>
                     </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">Vanilla JS</span>
+                        <span class="tag">원운동 물리</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· 윈치(반지름-각속도 보존) · 접선 방향 릴리즈 · 35px 정밀 락온으로 이어지는 원운동 사출 코어 루프를 순수 물리 공식으로 직접 구현</li>
+                        <li>· 로비 → 3단계 실전 튜토리얼 → 본게임으로 이어지는 AppState FSM을 실제 게임 물리 위에 얹어 온보딩 설계</li>
+                        <li>· 무한 절차적 앵커 생성, 난이도 램프, 장애물 기믹, BEST 고도 기록까지 1인 완결형으로 제작</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-3 mt-2">
+                        <a href="https://epiclog42.itch.io/hamsthor-spin-to-winch" target="_blank"
+                            class="btn btn-solid">
+                            <i class="fa-solid fa-play"></i> Play Demo (Itch.io)
+                        </a>
+                        <a href="HamsThor_Architecture.html" class="btn">
+                            <i class="fa-solid fa-file-lines"></i> 아키텍처 문서
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Germy.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="Germ-y Laundry"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🧫</span>
-                                    <span
-                                        class="text-xs font-black text-[#dcdcaa] tracking-wider uppercase code-font">GERM-Y
-                                        LAUNDRY</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Germy.png 미업로드
-                                        상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#dcdcaa] text-black text-[11px] font-black tracking-widest uppercase inline-block">Solo
-                                    Prototype</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    Germ-y Laundry</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Build</span>
-                                <span class="text-[#dcdcaa]">Web (Itch.io)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">Germ-y Laundry <span
-                                            class="text-lg text-neutral-400 font-bold">- Hyper UX & Balance
-                                            Edition</span></h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-user text-[#dcdcaa] mr-1.5"></i> 기획·개발 단독 진행 (1인
-                                        프로토타입)</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#dcdcaa] bg-black border border-[#dcdcaa] px-3 py-1.5">
-                                    2026.06.02 ~ 2026.06.03
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#dcdcaa]/10 text-[#dcdcaa] border border-[#dcdcaa] font-black code-font">
-                                    <i class="fa-solid fa-code mr-1"></i> Vanilla JS / Tailwind 단일 HTML 빌드
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
-                                    <i class="fa-solid fa-gauge-high mr-1"></i> 난이도 밸런싱 (Easy / Normal / Hard)
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#dcdcaa] uppercase tracking-widest">
-                                    Key Accomplishments</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>세탁 드럼 회전 + 대시 회피 코어 루프를 기획부터 빌드까지 2일 내 단독 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>3단계 난이도 밸런싱과 튜토리얼, 생존시간 기반 결과 공유 화면까지 단기간 완성</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex">
-                                <a href="https://epiclog42.itch.io/germ-y-laundry"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#dcdcaa] border border-black text-black font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-play"></i>
-                                    PLAY DEMO (Itch.io)
-                                </a>
-                            </div>
+            <!-- Germ-y Laundry -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_Germy.png" class="w-full h-full object-cover" alt="Germ-y Laundry"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_Germy.png</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Prototype 2 (No More Prizes) -->
-                <div
-                    class="bg-[#252526] border border-[#c586c0] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl pointer-events-none">
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">Germ-y Laundry <span
+                                class="text-[var(--text-dim)] font-normal text-base">— Hyper UX & Balance
+                                Edition</span></h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">2026.06.02 – 2026.06.03</span>
                     </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">Vanilla JS / Tailwind</span>
+                        <span class="tag">Easy / Normal / Hard</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· 세탁 드럼 회전 + 대시 회피 코어 루프를 기획부터 빌드까지 2일 내 단독 구현</li>
+                        <li>· 3단계 난이도 밸런싱과 튜토리얼, 생존시간 기반 결과 공유 화면까지 단기간 완성</li>
+                    </ul>
+                    <a href="https://epiclog42.itch.io/germ-y-laundry" target="_blank" class="btn btn-solid mt-2">
+                        <i class="fa-solid fa-play"></i> Play Demo (Itch.io)
+                    </a>
+                </div>
+            </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_NoMorePrizes.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="No More Prizes"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🎰</span>
-                                    <span
-                                        class="text-xs font-black text-[#c586c0] tracking-wider uppercase code-font">NO
-                                        MORE PRIZES</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_NoMorePrizes.png 미업로드
-                                        상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#c586c0] text-black text-[11px] font-black tracking-widest uppercase inline-block">Solo
-                                    Prototype</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    No More Prizes</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Build</span>
-                                <span class="text-[#c586c0]">Web (Itch.io)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">No More Prizes</h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-user text-[#c586c0] mr-1.5"></i> 기획·개발 단독 진행 (1인
-                                        프로토타입)</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#c586c0] bg-black border border-[#c586c0] px-3 py-1.5">
-                                    2026.05.21 ~ 2026.05.28
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#c586c0]/10 text-[#c586c0] border border-[#c586c0] font-black code-font">
-                                    <i class="fa-solid fa-code mr-1"></i> Vanilla JS (game / ui / effects 모듈 분리)
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
-                                    <i class="fa-solid fa-language mr-1"></i> EN / KR 다국어 지원
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#c586c0] uppercase tracking-widest">
-                                    Key Accomplishments</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#569cd6] mt-1 shrink-0"></i>
-                                        <span>세트 효과 · 인벤토리 · Moss Drive 레벨링을 갖춘 수집형 코어 루프를 1주일 내 단독 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#569cd6] mt-1 shrink-0"></i>
-                                        <span>도감 / 기록 모달, 커스텀 커서 · 볼륨 UI 등 디테일한 인터랙션으로 완성도 확보</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex">
-                                <a href="https://epiclog42.itch.io/no-more-prizes"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#c586c0] border border-black text-white font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-play"></i>
-                                    PLAY DEMO (Itch.io)
-                                </a>
-                            </div>
+            <!-- No More Prizes -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_NoMorePrizes.png" class="w-full h-full object-cover" alt="No More Prizes"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_NoMorePrizes.png</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Prototype 3 (AX_Defense_03) -->
-                <div
-                    class="bg-[#252526] border border-[#4ec9b0] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-lime-500/10 rounded-full blur-2xl pointer-events-none">
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">No More Prizes</h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">2026.05.21 – 2026.05.28</span>
                     </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">Vanilla JS</span>
+                        <span class="tag">EN / KR</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· 세트 효과 · 인벤토리 · Moss Drive 레벨링을 갖춘 수집형 코어 루프를 1주일 내 단독 구현</li>
+                        <li>· 도감 / 기록 모달, 커스텀 커서 · 볼륨 UI 등 디테일한 인터랙션으로 완성도 확보</li>
+                    </ul>
+                    <a href="https://epiclog42.itch.io/no-more-prizes" target="_blank" class="btn btn-solid mt-2">
+                        <i class="fa-solid fa-play"></i> Play Demo (Itch.io)
+                    </a>
+                </div>
+            </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Defense03.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="AX Defense 03"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🛡️</span>
-                                    <span
-                                        class="text-xs font-black text-[#4ec9b0] tracking-wider uppercase code-font">AX
-                                        DEFENSE 03</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Defense03.png 미업로드
-                                        상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#4ec9b0] text-black text-[11px] font-black tracking-widest uppercase inline-block">Solo
-                                    Prototype</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    AX Defense 03</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Framework</span>
-                                <span class="text-[#4ec9b0]">Unity</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">AX Defense 03</h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-user text-[#4ec9b0] mr-1.5"></i> 기획·개발 단독 진행 (1인
-                                        프로토타입)</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#4ec9b0] bg-black border border-[#4ec9b0] px-3 py-1.5">
-                                    v3.0 Stable
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#4ec9b0]/10 text-[#4ec9b0] border border-[#4ec9b0] font-black code-font">
-                                    <i class="fa-solid fa-code mr-1"></i> AX Framework v1 기반
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
-                                    <i class="fa-solid fa-gamepad mr-1"></i> Defense System
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#4ec9b0] uppercase tracking-widest">
-                                    Key Features</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>AI 도구를 활용한 고속 개발 프로세스 적용</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>가중치 매핑 기반 경로 탐색 및 웨이브 루프 기능</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>타일형 디펜스 게임 핵심 메커니즘 확장</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex">
-                                <a href="D3_Architecture_Blueprint.pdf"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#4ec9b0] border border-black text-black font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    아키텍처 문서 보기
-                                </a>
-                            </div>
+            <!-- AX Defense 03 -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_Defense03.png" class="w-full h-full object-cover" alt="AX Defense 03"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_Defense03.png</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Prototype 4 (AX_Defense_02) -->
-                <div
-                    class="bg-[#252526] border border-[#4ec9b0] p-6 md:p-8 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-lime-500/10 rounded-full blur-2xl pointer-events-none">
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">AX Defense 03</h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">v3.0 Stable</span>
                     </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">AX Framework v1</span>
+                        <span class="tag">Unity</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· AI 도구를 활용한 고속 개발 프로세스 적용</li>
+                        <li>· 가중치 매핑 기반 경로 탐색 및 웨이브 루프 기능</li>
+                        <li>· 타일형 디펜스 게임 핵심 메커니즘 확장</li>
+                    </ul>
+                    <a href="D3_Architecture_Blueprint.pdf" target="_blank" class="btn mt-2">
+                        <i class="fa-solid fa-file-pdf"></i> 아키텍처 문서
+                    </a>
+                </div>
+            </div>
 
-                    <div class="flex flex-col lg:flex-row gap-8">
-                        <div
-                            class="w-full lg:w-72 shrink-0 bg-black border border-white flex flex-col justify-between relative overflow-hidden min-h-[240px] group">
-                            <div class="absolute inset-0 z-0 bg-neutral-950 flex items-center justify-center">
-                                <img src="Thumbnail_Defense02.png"
-                                    class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-300"
-                                    alt="AX Defense 02"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div
-                                    class="absolute inset-0 hidden flex-col items-center justify-center p-4 text-center bg-[#1e1e1e]">
-                                    <span class="text-4xl mb-2">🛡️</span>
-                                    <span
-                                        class="text-xs font-black text-[#4ec9b0] tracking-wider uppercase code-font">AX
-                                        DEFENSE 02</span>
-                                    <span class="text-[9px] text-slate-500 mt-1">Thumbnail_Defense02.png 미업로드
-                                        상태</span>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent">
-                                </div>
-                            </div>
-                            <div class="space-y-2 relative z-10 p-5">
-                                <span
-                                    class="px-3 py-1.5 bg-[#4ec9b0] text-black text-[11px] font-black tracking-widest uppercase inline-block">Solo
-                                    Prototype</span>
-                                <h4
-                                    class="text-2xl font-black text-white tracking-tight leading-none mt-2">
-                                    AX Defense 02</h4>
-                            </div>
-                            <div
-                                class="text-[11px] text-slate-300 flex justify-between uppercase font-black code-font relative z-10 p-5">
-                                <span>Framework</span>
-                                <span class="text-[#4ec9b0]">Unity</span>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-4">
-                                <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">AX Defense 02</h3>
-                                    <p class="text-xs text-slate-400 mt-1"><i
-                                            class="fa-solid fa-user text-[#4ec9b0] mr-1.5"></i> 기획·개발 단독 진행 (1인
-                                        프로토타입)</p>
-                                </div>
-                                <span
-                                    class="text-xs font-mono font-bold text-[#4ec9b0] bg-black border border-[#4ec9b0] px-3 py-1.5">
-                                    v2.0 Stable
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span
-                                    class="text-xs px-3 py-2 bg-[#4ec9b0]/10 text-[#4ec9b0] border border-[#4ec9b0] font-black code-font">
-                                    <i class="fa-solid fa-code mr-1"></i> AX Framework v1 기반
-                                </span>
-                                <span
-                                    class="text-xs px-3 py-2 bg-neutral-900 text-slate-300 border border-neutral-700 font-bold">
-                                    <i class="fa-solid fa-gamepad mr-1"></i> Monster & Wave System
-                                </span>
-                            </div>
-
-                            <div class="space-y-3 pt-2">
-                                <h4
-                                    class="text-xs font-black text-[#4ec9b0] uppercase tracking-widest">
-                                    Key Features</h4>
-                                <ul class="text-sm text-slate-300 space-y-2 list-none pl-0">
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>AI 생성 연계 다양한 몬스터 패턴 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>웨이브 스케줄러 시스템 빠른 기능 구현</span>
-                                    </li>
-                                    <li class="flex items-start gap-2.5">
-                                        <i class="fa-solid fa-bolt text-[#4ec9b0] mt-1 shrink-0"></i>
-                                        <span>프로토타입 테스트 및 완성도 향상</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="pt-4 flex">
-                                <a href="D2_Project_Architecture.pdf"
-                                    target="_blank"
-                                    class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#4ec9b0] border border-black text-black font-black text-sm hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    아키텍처 문서 보기
-                                </a>
-                            </div>
+            <!-- AX Defense 02 -->
+            <div class="entry-row py-8 flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-56 shrink-0">
+                    <div class="thumb aspect-[4/3] overflow-hidden relative">
+                        <img src="Thumbnail_Defense02.png" class="w-full h-full object-cover" alt="AX Defense 02"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 hidden items-center justify-center text-center p-3">
+                            <span class="code-font text-[10px] text-[var(--text-faint)]">Thumbnail_Defense02.png</span>
                         </div>
                     </div>
                 </div>
-
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 class="text-lg text-white">AX Defense 02</h3>
+                        <span class="code-font text-xs text-[var(--text-faint)]">v2.0 Stable</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag">AX Framework v1</span>
+                        <span class="tag">Unity</span>
+                    </div>
+                    <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
+                        <li>· AI 생성 연계 다양한 몬스터 패턴 구현</li>
+                        <li>· 웨이브 스케줄러 시스템 빠른 기능 구현</li>
+                        <li>· 프로토타입 테스트 및 완성도 향상</li>
+                    </ul>
+                    <a href="D2_Project_Architecture.pdf" target="_blank" class="btn mt-2">
+                        <i class="fa-solid fa-file-pdf"></i> 아키텍처 문서
+                    </a>
+                </div>
             </div>
         </section>
 
-        <!-- SIDE PROJECTS SECTION (Sticker Stack Filtering) -->
-        <section class="mb-32 snap-section">
+        <!-- SIDE PROJECTS SECTION -->
+        <section class="mb-20 snap-section">
             <div
-                class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 border-b-2 border-white pb-6">
+                class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 hairline-b pb-3 mb-6">
                 <div>
-                    <h2 class="text-3xl font-black text-white flex items-center gap-3">
-                        <i class="fa-solid fa-code-fork text-[#4ec9b0]"></i>
-                        <span class="text-4xl">SIDE PROJECTS</span>
-                    </h2>
-                    <p class="text-slate-400 text-sm mt-1">개인 개발 연구실: 독자적으로 다듬어 온 프로젝트 리스트입니다.</p>
+                    <h2 class="text-xl text-white">Side Projects</h2>
+                    <p class="text-[var(--text-dim)] text-sm mt-1">개인 개발 연구실: 독자적으로 다듬어 온 프로젝트 리스트입니다.</p>
                 </div>
 
-                <!-- Search Input with Hype Style -->
                 <div class="relative w-full md:w-auto">
                     <input type="text" id="project-search" placeholder="프로젝트명 검색..."
-                        class="w-full sm:w-60 pl-10 pr-4 py-3 text-xs bg-black border border-[#4ec9b0] text-white placeholder-neutral-500 focus:outline-none focus:border-[#4ec9b0] transition-colors font-bold">
+                        class="w-full sm:w-56 pl-9 pr-3 py-2 text-xs bg-transparent border border-[var(--line)] rounded text-white placeholder-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors code-font">
                     <i
-                        class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 text-xs"></i>
+                        class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] text-xs"></i>
                 </div>
             </div>
 
-            <!-- Custom Category Selection Buttons (Hype Sticker Tabs) -->
-            <div class="flex flex-wrap gap-3.5 mb-8">
-                <!-- 전체보기 탭을 마젠타 컬러와 선명한 블랙 섀도우를 가진 하이라이트 뱃지로 튜닝 -->
-                <button onclick="filterCategory('all')" id="tab-all"
-                    class="category-tab px-4 py-2 text-xs font-black bg-[#c586c0] text-white border border-black transition-all">
-                    전체보기 (8)
-                </button>
-                <button onclick="filterCategory('unity')" id="tab-unity"
-                    class="category-tab px-4 py-2 text-xs font-black bg-black text-[#4ec9b0] border border-[#4ec9b0] hover:bg-[#4ec9b0]/10 transition-all">
-                    Unity Engine (6)
-                </button>
-                <button onclick="filterCategory('unreal')" id="tab-unreal"
-                    class="category-tab px-4 py-2 text-xs font-black bg-black text-[#569cd6] border border-[#569cd6] hover:bg-[#569cd6]/10 transition-all">
-                    Unreal Engine (3)
-                </button>
-                <button onclick="filterCategory('opengl')" id="tab-opengl"
-                    class="category-tab px-4 py-2 text-xs font-black bg-black text-white border border-white hover:bg-white/10 transition-all">
-                    Low-Level / OpenGL (2)
-                </button>
+            <div class="flex flex-wrap gap-2.5 mb-8">
+                <button onclick="filterCategory('all')" id="tab-all" class="category-tab active">전체보기 (8)</button>
+                <button onclick="filterCategory('unity')" id="tab-unity" class="category-tab">Unity Engine (6)</button>
+                <button onclick="filterCategory('unreal')" id="tab-unreal" class="category-tab">Unreal Engine
+                    (3)</button>
+                <button onclick="filterCategory('opengl')" id="tab-opengl" class="category-tab">Low-Level / OpenGL
+                    (2)</button>
             </div>
 
-            <!-- Projects Grid of Cards -->
-            <div id="side-projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="side-projects-container">
 
-                <!-- Card 1 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="unity game" data-name="ax_defense_01">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-[#4ec9b0]/10 border border-[#4ec9b0] text-[#4ec9b0] text-[10px] font-black uppercase tracking-wider">Unity</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Defense System</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">Unity</span>
+                            <h3 class="text-white">AX_Defense_01</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">v1.0 Basic</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">AX_Defense_01</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                             AX Framework v1 기반 프로젝트. 유니티 그리드 좌표 배치 및 마우스 클릭 레이캐스트 기반의 타일형 디펜스 초기 핵심 메커니즘 검증작.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">v1.0 Basic</span>
-                        <a href="https://www.notion.so/AX_Defense_01-326b47f20dfa80399ed3e5bf8c5c5800?pvs=21"
-                            target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/AX_Defense_01-326b47f20dfa80399ed3e5bf8c5c5800?pvs=21"
+                        target="_blank" class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
-                <!-- Card 4 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="unity framework design" data-name="ax framework v1 - unity">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-[#4ec9b0]/10 border border-[#4ec9b0] text-[#4ec9b0] text-[10px] font-black uppercase tracking-wider">Unity</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Custom Framework</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">Unity</span>
+                            <h3 class="text-white">AX Framework v1</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">Architecture</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">AX Framework v1</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            앞선 UI 중심 개발 경험을 바탕으로 정립한 인하우스 고속 개발용 커스텀 프레임워크. UI 매니저, 데이터 직렬화, 이벤트 채널 등 AI 보조 도구와 연계해 빠르게
-                            살을 붙일 수 있는 베이스 시스템.
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
+                            앞선 UI 중심 개발 경험을 바탕으로 정립한 인하우스 고속 개발용 커스텀 프레임워크. UI 매니저, 데이터 직렬화, 이벤트 채널 등 AI 보조 도구와
+                            연계해 빠르게 살을 붙일 수 있는 베이스 시스템.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">Architecture</span>
-                        <a href="https://www.notion.so/AX-Framework-v1-Unity-326b47f20dfa8a69a73d7a9e6eb8391?pvs=21"
-                            target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/AX-Framework-v1-Unity-326b47f20dfa8a69a73d7a9e6eb8391?pvs=21"
+                        target="_blank" class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
-                <!-- Card 5 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="unity game clicker" data-name="ax_clicker_01">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-[#4ec9b0]/10 border border-[#4ec9b0] text-[#4ec9b0] text-[10px] font-black uppercase tracking-wider">Unity</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Casual Mechanics</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">Unity</span>
+                            <h3 class="text-white">AX_Clicker_01</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">v1.0 Basic</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">AX_Clicker_01</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            AX Framework v1 제작의 발판이 된 UI 메인 프로토타입. 캐주얼 방치형 게임의 화면 간 데이터 흐름과 인게임 루프를 검증하고, 클릭 시 발생하는 화면
-                            이펙트 처리에 오브젝트 풀링을 적용한 프로젝트.
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
+                            AX Framework v1 제작의 발판이 된 UI 메인 프로토타입. 캐주얼 방치형 게임의 화면 간 데이터 흐름과 인게임 루프를 검증하고, 클릭 시
+                            발생하는 화면 이펙트 처리에 오브젝트 풀링을 적용한 프로젝트.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">v1.0 Basic</span>
-                        <a href="https://www.notion.so/AX_Clicker_01-326b47f20dfa803aa452f645835a387e?pvs=21"
-                            target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/AX_Clicker_01-326b47f20dfa803aa452f645835a387e?pvs=21"
+                        target="_blank" class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
-                <!-- Card 6 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="unreal server network" data-name="ue_multiplayer_dedicated">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-[#569cd6]/10 border border-[#569cd6] text-[#569cd6] text-[10px] font-black uppercase tracking-wider">Unreal</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Dedicated Server</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">Unreal</span>
+                            <h3 class="text-white">UE_Multiplayer_Dedicated</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">Multiplayer Core</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">UE_Multiplayer_Dedicated</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            언리얼 엔진 데디케이티드 서버 가동 및 멀티플레이어 환경 테스트 프로젝트. C++ 및 블루프린트를 활용한 RPC(Remote Procedure Call) 패킷 전송
-                            및 유저 세션 관리 기능 구현 스터디.
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
+                            언리얼 엔진 데디케이티드 서버 가동 및 멀티플레이어 환경 테스트 프로젝트. C++ 및 블루프린트를 활용한 RPC(Remote Procedure Call)
+                            패킷 전송 및 유저 세션 관리 기능 구현 스터디.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">Multiplayer Core</span>
-                        <a href="https://www.notion.so/UE_Multiplayer_Dedicated-24cb47f20dfa80808104d6e5289f120a?pvs=21"
-                            target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 노션 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/UE_Multiplayer_Dedicated-24cb47f20dfa80808104d6e5289f120a?pvs=21"
+                        target="_blank" class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
-                <!-- Card 7 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="unity game clone optimization" data-name="mega road clone - unity">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-[#4ec9b0]/10 border border-[#4ec9b0] text-[#4ec9b0] text-[10px] font-black uppercase tracking-wider">Unity</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Refactoring Study</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">Unity</span>
+                            <h3 class="text-white">Mega Road Clone - Unity</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">Optimization Core</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">Mega Road Clone - Unity</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            실무 시스템을 기반으로 한 뱀서라이크 장르의 R&D 프로젝트. UnityEngine.Pool 기반의 오브젝트 풀링 최적화, Addressable Asset
-                            System을 활용한 메모리 및 에셋 관리, 리플렉션/컴포넌트 자동 맵핑을 통한 UI Bind 구조 개선 적용.
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
+                            실무 시스템을 기반으로 한 뱀서라이크 장르의 R&D 프로젝트. UnityEngine.Pool 기반의 오브젝트 풀링 최적화, Addressable
+                            Asset System을 활용한 메모리 및 에셋 관리, 리플렉션/컴포넌트 자동 맵핑을 통한 UI Bind 구조 개선 적용.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">Optimization Core</span>
-                        <a href="https://www.notion.so/Mega-Road-Clone-Unity-1afb47f20dfa80fbbfecd808a5cb0542?pvs=21"
-                            target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/Mega-Road-Clone-Unity-1afb47f20dfa80fbbfecd808a5cb0542?pvs=21"
+                        target="_blank" class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
-                <!-- Card 8 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="unreal game clone" data-name="mega road clone - unreal">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-[#569cd6]/10 border border-[#569cd6] text-[#569cd6] text-[10px] font-black uppercase tracking-wider">Unreal</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Cross-Engine Study</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">Unreal</span>
+                            <h3 class="text-white">Mega Road Clone - Unreal</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">Cross Porting</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">Mega Road Clone - Unreal</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                             유니티 기반의 원본 게임 로직과 UI 구조를 언리얼 엔진 5 환경의 C++ 및 블루프린트 구조로 이식하는 마이그레이션 스터디.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">Cross Porting</span>
-                        <a href="https://www.notion.so/Mega-Road-Clone-Unreal-1afb47f20e428219c545c77a6925?pvs=21"
-                            target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/Mega-Road-Clone-Unreal-1afb47f20e428219c545c77a6925?pvs=21"
+                        target="_blank" class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
-                <!-- Card 9 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="opengl cpp raw graphic" data-name="isaac clone - opengl">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-white/10 border border-white text-white text-[10px] font-black uppercase tracking-wider">C++
-                                / OpenGL</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Low-Level Graphics</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">C++ / OpenGL</span>
+                            <h3 class="text-white">Isaac Clone - OpenGL</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">Low-Level Graphics</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">Isaac Clone - OpenGL</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            상용 엔진 없이 C++ 및 OpenGL API를 사용하여 2D 텍스처(이미지) 매핑, 기본 이동 및 충돌 처리를 테스트한 아이작 스타일
-                            프로토타입.
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
+                            상용 엔진 없이 C++ 및 OpenGL API를 사용하여 2D 텍스처(이미지) 매핑, 기본 이동 및 충돌 처리를 테스트한 아이작 스타일 프로토타입.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">OpenGL</span>
-                        <a href="https://www.notion.so/Isaac-Clone-OpenGL-1afb47f20dfa80f5acf3e3e3a44b2811?pvs=21"
-                            target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/Isaac-Clone-OpenGL-1afb47f20dfa80f5acf3e3e3a44b2811?pvs=21"
+                        target="_blank" class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
-                <!-- Card 10 -->
-                <div class="side-card sticker-panel p-6 rounded-none flex flex-col justify-between"
+                <div class="side-card entry-row py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     data-tags="opengl glsl raw graphic shader" data-name="shader - opengl">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="px-2.5 py-1 bg-white/10 border border-white text-white text-[10px] font-black uppercase tracking-wider">C++
-                                / GLSL</span>
-                            <span class="text-[10px] font-black code-font text-neutral-500">Shader Programming</span>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <span class="tag">C++ / GLSL</span>
+                            <h3 class="text-white">Shader - OpenGL</h3>
+                            <span class="code-font text-xs text-[var(--text-faint)]">Shader Programming</span>
                         </div>
-                        <h3 class="text-lg font-black text-white">Shader - OpenGL</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
+                        <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                             GLSL을 활용한 기본 버텍스/프래그먼트 셰이더 연산 테스트. 화면에 원을 그리거나 기본적인 색상 변경 이펙트를 구현한 기초 테스트 프로젝트.
                         </p>
                     </div>
-                    <div class="pt-4 mt-6 border-t border-neutral-900 flex justify-between items-center">
-                        <span class="text-[10px] text-[#569cd6] font-black code-font">OpenGL</span>
-                        <a href="https://www.notion.so/Shader-OpenGL-1afb47f2000b829fc45ad486c93?pvs=21" target="_blank"
-                            class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 transition-colors">
-                            상세 Notion 보기 <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.notion.so/Shader-OpenGL-1afb47f2000b829fc45ad486c93?pvs=21" target="_blank"
+                        class="link-accent text-xs whitespace-nowrap shrink-0">노션 보기 →</a>
                 </div>
 
             </div>
         </section>
 
         <!-- FOOTER -->
-        <footer class="snap-section mt-20 pt-8 border-t-4 border-white text-center text-xs text-slate-500">
-            <p class="text-lg text-white">© 2026 장인호</p>
+        <footer class="snap-section mt-16 pt-6 hairline text-center text-xs text-[var(--text-faint)] code-font">
+            <p>© 2026 장인호</p>
         </footer>
 
     </div>
 
-    <!-- Project Filtering & Live Search Logic (Perfect Compatibility Kept) -->
+    <!-- Project Filtering & Live Search Logic -->
     <script>
         const cards = document.querySelectorAll('.side-card');
         const searchInput = document.getElementById('project-search');
@@ -1703,31 +865,8 @@
         function filterCategory(category) {
             currentFilter = category;
 
-            // Update Tab active styling
-            const tabs = document.querySelectorAll('.category-tab');
-            tabs.forEach(tab => {
-                // Remove all possible active states
-                tab.classList.remove('bg-[#c586c0]', 'text-white', 'border-black');
-                tab.classList.remove('bg-[#4ec9b0]', 'text-black', 'border-black');
-                tab.classList.remove('bg-[#569cd6]', 'text-black', 'border-black');
-                tab.classList.remove('bg-white', 'text-black', 'border-black');
-
-                // Add default inactive state
-                tab.classList.add('bg-black', 'text-slate-400', 'border-neutral-800');
-            });
-
-            const activeTab = document.getElementById(`tab-${category}`);
-            activeTab.classList.remove('bg-black', 'text-slate-400', 'border-neutral-800');
-
-            if (category === 'all') {
-                activeTab.classList.add('bg-[#c586c0]', 'text-white', 'border-black');
-            } else if (category === 'unity') {
-                activeTab.classList.add('bg-[#4ec9b0]', 'text-black', 'border-black');
-            } else if (category === 'unreal') {
-                activeTab.classList.add('bg-[#569cd6]', 'text-black', 'border-black');
-            } else if (category === 'opengl') {
-                activeTab.classList.add('bg-white', 'text-black', 'border-black');
-            }
+            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab-${category}`).classList.add('active');
 
             executeSearchAndFilter();
         }
@@ -1756,16 +895,12 @@
 
                 const matchesSearch = name.includes(query) || tags.includes(query);
 
-                if (matchesCategory && matchesSearch) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = (matchesCategory && matchesSearch) ? 'flex' : 'none';
             });
         }
     </script>
 
-    <!-- Snap Section Fade In/Out (스냅 전환 시 휠 먹통 오인 방지용 시각 피드백) -->
+    <!-- Snap Section Fade In/Out -->
     <script>
         const snapSections = document.querySelectorAll('.snap-section');
         const snapObserver = new IntersectionObserver((entries) => {
@@ -1780,20 +915,19 @@
     <!-- Wheel Resistance Controller (영역 끝에 도달해도 즉시 넘어가지 않고, 흐려지며 더 휠을 내려야 다음 영역으로 확정 전환) -->
     <script>
         (function () {
-            // 터치/모바일은 wheel 이벤트가 없어 영향 없음 (해당 환경은 CSS 미디어쿼리의 네이티브 스냅이 담당)
             if (!window.matchMedia('(pointer: fine)').matches) return;
 
             const sections = Array.from(document.querySelectorAll('.snap-section'));
             if (sections.length < 2) return;
 
-            const RESISTANCE = 220;     // 경계에서 전환을 확정 짓기까지 필요한 추가 휠 입력량(px)
-            const IDLE_RESET_MS = 220;  // 휠 입력이 멈추면 저항 누적을 리셋
-            const COMMIT_LOCK_MS = 650; // 전환 애니메이션 동안 추가 입력 무시
-            const DIM_RATIO = 0.6;      // 저항 중 최대로 흐려지는 정도
+            const RESISTANCE = 220;
+            const IDLE_RESET_MS = 220;
+            const COMMIT_LOCK_MS = 650;
+            const DIM_RATIO = 0.6;
 
             let bounds = [];
             let progress = 0;
-            let resistDirection = 0; // 1: 다음 영역으로, -1: 이전 영역으로
+            let resistDirection = 0;
             let resistTarget = null;
             let idleTimer = null;
             let locked = false;
@@ -1862,13 +996,9 @@
                 const goingDown = e.deltaY > 0;
                 const goingUp = e.deltaY < 0;
 
-                // 한 번의 큰 휠 입력(빠른 마우스/트랙패드 플링)이 경계 체크를 건너뛰고
-                // 갭/다음 영역으로 바로 점프해버리는 것을 막기 위해, "이번 이동으로 경계를
-                // 넘는지"를 미리 계산해서 경계까지만 이동시키고 넘는 만큼만 저항치로 누적한다.
                 if (goingDown && next) {
                     const maxAllowedY = Math.max(current.bottom - viewH, current.top);
                     if (y >= maxAllowedY - 0.5) {
-                        // 이미 경계: 이번 입력 전체가 저항으로 누적됨, 스크롤 자체는 고정
                         e.preventDefault();
                         if (resistDirection !== 1 || resistTarget !== current.el) resetResistance();
                         resistDirection = 1;
@@ -1887,7 +1017,6 @@
 
                     const intendedY = y + e.deltaY;
                     if (intendedY > maxAllowedY) {
-                        // 경계를 넘어가려는 큰 점프: 경계까지만 이동, 넘긴 만큼만 저항으로 누적
                         e.preventDefault();
                         window.scrollTo(0, maxAllowedY);
                         if (resistDirection !== 1 || resistTarget !== current.el) resetResistance();
@@ -1904,7 +1033,6 @@
                         }
                         return;
                     }
-                    // 경계와 거리가 충분하면 평범하게 자유 스크롤 (기본 동작 유지)
                 }
 
                 if (goingUp && prev) {
@@ -1944,10 +1072,8 @@
                         }
                         return;
                     }
-                    // 경계와 거리가 충분하면 평범하게 자유 스크롤 (기본 동작 유지)
                 }
 
-                // 경계가 아니면 평범하게 자유 스크롤
                 if (resistDirection !== 0) resetResistance();
             }, { passive: false });
         })();
