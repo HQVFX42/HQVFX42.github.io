@@ -88,12 +88,32 @@
         }
 
         .entry-row {
+            position: relative;
             border-top: 1px solid var(--line);
-            transition: background-color 0.15s ease;
+            transition: background-color 0.15s ease, padding-left 0.2s ease;
+        }
+
+        .entry-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -1px;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.25s ease;
         }
 
         .entry-row:hover {
             background-color: #191919;
+            padding-left: 0.85rem;
+            margin-left: -0.85rem;
+        }
+
+        .entry-row:hover::before {
+            transform: scaleY(1);
         }
 
         .tag {
@@ -103,17 +123,25 @@
             border: 1px solid var(--line);
             padding: 0.15rem 0.55rem;
             border-radius: 3px;
+            transition: border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         .link-accent {
             color: var(--accent);
             text-decoration: none;
             border-bottom: 1px solid transparent;
-            transition: border-color 0.15s ease;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+            display: inline-block;
         }
 
         .link-accent:hover {
             border-bottom-color: var(--accent);
+            transform: translateX(2px);
         }
 
         .btn {
@@ -123,7 +151,7 @@
             border-radius: 4px;
             border: 1px solid var(--line);
             color: var(--text);
-            transition: border-color 0.15s ease, color 0.15s ease;
+            transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
@@ -132,6 +160,10 @@
         .btn:hover {
             border-color: var(--accent);
             color: var(--accent);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
         }
 
         .btn-solid {
@@ -160,6 +192,8 @@
         .bar-fill {
             background: var(--accent);
             height: 100%;
+            width: 0;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .category-tab {
@@ -172,9 +206,38 @@
             transition: all 0.15s ease;
         }
 
+        .category-tab:hover {
+            border-color: var(--text-dim);
+            color: var(--text);
+        }
+
         .category-tab.active {
             border-color: var(--accent);
             color: var(--accent);
+        }
+
+        .category-tab:active {
+            transform: scale(0.96);
+        }
+
+        .side-card {
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+
+        .side-card.is-hidden {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background: var(--accent);
+            z-index: 50;
+            transition: width 0.1s ease-out;
         }
 
         ::-webkit-scrollbar {
@@ -197,6 +260,8 @@
 </head>
 
 <body class="antialiased overflow-x-hidden relative">
+
+    <div id="scroll-progress"></div>
 
     <div class="max-w-4xl mx-auto px-5 py-14 md:py-20 relative z-10">
 
@@ -260,28 +325,28 @@
                                     <span>Unreal Engine</span>
                                     <span class="code-font text-xs text-[var(--text-dim)]">3 / 5</span>
                                 </div>
-                                <div class="bar-track"><div class="bar-fill" style="width: 60%"></div></div>
+                                <div class="bar-track"><div class="bar-fill" data-width="60"></div></div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-1.5">
                                     <span>Unity Engine</span>
                                     <span class="code-font text-xs text-[var(--text-dim)]">2 / 5</span>
                                 </div>
-                                <div class="bar-track"><div class="bar-fill" style="width: 40%"></div></div>
+                                <div class="bar-track"><div class="bar-fill" data-width="40"></div></div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-1.5">
                                     <span>C++</span>
                                     <span class="code-font text-xs text-[var(--text-dim)]">3 / 5</span>
                                 </div>
-                                <div class="bar-track"><div class="bar-fill" style="width: 60%"></div></div>
+                                <div class="bar-track"><div class="bar-fill" data-width="60"></div></div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-1.5">
                                     <span>C#</span>
                                     <span class="code-font text-xs text-[var(--text-dim)]">2 / 5</span>
                                 </div>
-                                <div class="bar-track"><div class="bar-fill" style="width: 40%"></div></div>
+                                <div class="bar-track"><div class="bar-fill" data-width="40"></div></div>
                             </div>
                         </div>
 
@@ -894,10 +959,48 @@
                 }
 
                 const matchesSearch = name.includes(query) || tags.includes(query);
+                const shouldShow = matchesCategory && matchesSearch;
 
-                card.style.display = (matchesCategory && matchesSearch) ? 'flex' : 'none';
+                if (shouldShow) {
+                    card.style.display = 'flex';
+                    requestAnimationFrame(() => card.classList.remove('is-hidden'));
+                } else {
+                    card.classList.add('is-hidden');
+                    setTimeout(() => {
+                        if (card.classList.contains('is-hidden')) card.style.display = 'none';
+                    }, 180);
+                }
             });
         }
+    </script>
+
+    <!-- Tech Stack Bar Fill Animation (진입 시 0%에서 목표치까지 채워짐) -->
+    <script>
+        const barFills = document.querySelectorAll('.bar-fill');
+        const barObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.getAttribute('data-width') + '%';
+                    barObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        barFills.forEach((bar) => barObserver.observe(bar));
+    </script>
+
+    <!-- Scroll Progress Indicator -->
+    <script>
+        const scrollProgressEl = document.getElementById('scroll-progress');
+        function updateScrollProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const ratio = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgressEl.style.width = ratio + '%';
+        }
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        window.addEventListener('resize', updateScrollProgress);
+        updateScrollProgress();
     </script>
 
     <!-- Snap Section Fade In/Out -->
