@@ -8,176 +8,251 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;500;600;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
+        :root {
+            --bg: #141414;
+            --line: #2a2a2a;
+            --text: #e8e8e6;
+            --text-dim: #8c8c8a;
+            --text-faint: #5c5c5a;
+            --accent: #5b8def;
+        }
+
         body {
-            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
-            background-color: #03000a;
-            color: #f8fafc;
-        }
-
-        .graffiti-font {
-            font-family: 'Permanent Marker', cursive;
-            letter-spacing: 0.05em;
-        }
-
-        .graffiti-shadow-black {
-            text-shadow: 2.5px 2.5px 0px #000000;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-weight: 400;
         }
 
         .code-font {
-            font-family: 'Fira Code', monospace;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .hairline {
+            border-top: 1px solid var(--line);
+        }
+
+        .hairline-b {
+            border-bottom: 1px solid var(--line);
         }
 
         .panel {
-            background: #090613;
-            border: 3px solid #ffffff;
-            box-shadow: 6px 6px 0px #000000;
+            background: #1a1a1a;
+            border: 1px solid var(--line);
+            border-radius: 6px;
         }
 
-        .hazard-stripe-bg {
-            background: repeating-linear-gradient(-45deg, #a3e635, #a3e635 10px, #000000 10px, #000000 20px);
+        .link-accent {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+            display: inline-block;
+        }
+
+        .link-accent:hover {
+            border-bottom-color: var(--accent);
+            transform: translateX(2px);
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            color: var(--text);
+            transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-solid {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .btn-solid:hover {
+            color: #0c0c0c;
+            opacity: 0.88;
+        }
+
+        .hero-in {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: hero-in-kf 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes hero-in-kf {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-in {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
         }
 
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 9px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #03000a;
+            background: var(--bg);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #00f0ff;
-            border: 2px solid #03000a;
+            background: var(--line);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-faint);
         }
     </style>
 </head>
 
-<body class="selection:bg-[#00f0ff] selection:text-black antialiased">
+<body class="antialiased">
 
-    <div class="max-w-5xl mx-auto px-4 py-10 md:py-16">
+    <div class="max-w-3xl mx-auto px-5 py-14 md:py-20">
 
         <!-- BACK LINK -->
-        <a href="index.html"
-            class="inline-flex items-center gap-2 mb-8 px-4 py-2 bg-black border-2 border-[#ff007f] text-[#ff007f] text-xs font-black tracking-wider uppercase rotate-[-1.5deg] hover:scale-105 transition-all">
+        <a href="index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
             <i class="fa-solid fa-arrow-left"></i> 포트폴리오로 돌아가기
         </a>
 
         <!-- HEADER -->
-        <header class="mb-16 relative overflow-hidden panel p-8 md:p-10 rotate-[-0.5deg]">
-            <div class="absolute top-0 left-0 w-full h-3 hazard-stripe-bg"></div>
-            <span
-                class="inline-flex items-center gap-2 px-4 py-2 bg-black border-2 border-[#00f0ff] text-[#00f0ff] text-xs font-black tracking-wider uppercase rotate-[-1.5deg]">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#00f0ff] animate-ping"></span>
-                Solo Prototype · Architecture Blueprint
-            </span>
-            <h1 class="mt-4 text-5xl md:text-6xl font-black tracking-tight text-white leading-tight select-none">
-                <span class="graffiti-font text-[#00f0ff] text-6xl block graffiti-shadow-black">HamsThor</span>
-                <span class="text-xl md:text-2xl font-bold text-slate-400 block mt-2 code-font">Spin to
+        <header class="mb-16">
+            <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// solo
+                prototype · architecture</p>
+
+            <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
+                style="--d:0.16s">
+                HamsThor
+                <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">Spin to
                     Win...ch!</span>
             </h1>
-            <p class="mt-6 text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl">
+
+            <p class="hero-in text-sm md:text-base text-[var(--text-dim)] mt-4 leading-relaxed max-w-2xl"
+                style="--d:0.32s">
                 모바일 세로 화면 하이퍼캐주얼 물리 게임. 앵커에 매달려 로프를 감아 회전 속도를 높이고(윈치), 원운동의 접선 방향으로 몸을 던져(릴리즈) 다음 앵커에 정밀하게
                 락온하며 무한히 높은 고도로 올라가는 것이 핵심 루프다.
             </p>
-            <div class="mt-6 flex flex-wrap gap-3">
-                <a href="https://epiclog42.itch.io/hamsthor-spin-to-winch" target="_blank"
-                    class="inline-flex items-center gap-2 px-5 py-3 bg-[#00f0ff] border-2 border-black text-black font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
-                    <i class="fa-solid fa-play"></i> PLAY DEMO (Itch.io)
+
+            <div class="hero-in mt-6" style="--d:0.48s">
+                <a href="https://epiclog42.itch.io/hamsthor-spin-to-winch" target="_blank" class="btn btn-solid">
+                    <i class="fa-solid fa-play"></i> Play Demo (Itch.io)
                 </a>
             </div>
         </header>
 
         <!-- MODULE MAP -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-diagram-project text-[#00f0ff]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">모듈 구조</span>
-            </h2>
-            <p class="text-slate-400 text-sm mb-6">
-                <code class="code-font text-[#00f0ff]">index.html</code> 이 순서대로 로드하는 8개 스크립트가 전부다. 각 파일은
-                <code class="code-font text-[#00f0ff]">HamsThor</code> 전역 객체에 자기 모듈만 등록하고, 서로는 그 공개 프로퍼티를
-                통해서만 접근한다.
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">모듈 구조</h2>
+            <p class="text-[var(--text-dim)] text-sm mt-1 mb-6">
+                <code class="code-font text-[var(--accent)]">index.html</code> 이 순서대로 로드하는 8개 스크립트가 전부다. 각 파일은
+                <code class="code-font text-[var(--accent)]">HamsThor</code> 전역 객체에 자기 모듈만 등록하고, 서로는 그 공개
+                프로퍼티를 통해서만 접근한다.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="panel p-5 rotate-[-0.4deg]">
-                    <h3 class="text-[#facc15] font-black text-sm mb-2 code-font">1. config.js</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">중력, 감쇠, 윈치 지수, 락온 반경, 로비/튜토리얼 튜너블,
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">1. config.js</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">중력, 감쇠, 윈치 지수, 락온 반경, 로비/튜토리얼 튜너블,
                         altitudeDisplayScale 등 모든 게임 상수를 한 곳에 모은 <code
-                            class="code-font text-[#facc15]">CONFIG</code> 객체.</p>
+                            class="code-font text-[var(--accent)]">CONFIG</code> 객체.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.4deg]">
-                    <h3 class="text-[#a3e635] font-black text-sm mb-2 code-font">2. level.js</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">무한 절차적 앵커/장애물 생성기. 카메라가 다가온 만큼만
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">2. level.js</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">무한 절차적 앵커/장애물 생성기. 카메라가 다가온 만큼만
                         위로 이어 붙이고(ensureGeneratedAbove) 화면 아래로 지나간 것은 가지치기(pruneFarBelow)해서 메모리를 고정
                         크기로 유지.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.4deg]">
-                    <h3 class="text-[#00f0ff] font-black text-sm mb-2 code-font">3. assets.js / sound.js</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">스프라이트/오디오 파일명 컨벤션 기반 자동 탐색 로더. 파일이 없으면
-                        조용히 무시하고 벡터 폴백/무음으로 대체 — 에셋 유무에 관계없이 항상 실행 가능.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">3. assets.js / sound.js</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">스프라이트/오디오 파일명 컨벤션 기반 자동 탐색 로더.
+                        파일이 없으면 조용히 무시하고 벡터 폴백/무음으로 대체 — 에셋 유무에 관계없이 항상 실행 가능.</p>
                 </div>
-                <div class="panel p-5 rotate-[-0.4deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2 code-font">4. physics.js</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">순수 상태머신 <code
-                            class="code-font text-[#ff007f]">HamsterController</code>. DOM을 전혀 모르며 ORBIT / FLIGHT
-                        / DEAD 세 상태만 관리. 아래 물리 공식 참고.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">4. physics.js</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">순수 상태머신 <code
+                            class="code-font text-[var(--accent)]">HamsterController</code>. DOM을 전혀 모르며 ORBIT /
+                        FLIGHT / DEAD 세 상태만 관리. 아래 물리 공식 참고.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.3deg]">
-                    <h3 class="text-[#facc15] font-black text-sm mb-2 code-font">5. input.js</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">마우스 휠 / 터치 드래그를 반지름 변화량(deltaR)으로,
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">5. input.js</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">마우스 휠 / 터치 드래그를 반지름 변화량(deltaR)으로,
                         탭을 화면 좌표로 변환해 콜백으로 넘기는 순수 입력 어댑터. 게임 상태를 모르고 호출만 한다.</p>
                 </div>
-                <div class="panel p-5 rotate-[-0.3deg]">
-                    <h3 class="text-[#a3e635] font-black text-sm mb-2 code-font">6. flow.js</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">LOBBY / TUTORIAL_1-3 / TRANSITION / GAME 상위
-                        FSM. main.js가 매 프레임 만들어주는 컨텍스트 객체를 통해서만 hamster와 카메라를 건드린다.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">6. flow.js</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">LOBBY / TUTORIAL_1-3 / TRANSITION /
+                        GAME 상위 FSM. main.js가 매 프레임 만들어주는 컨텍스트 객체를 통해서만 hamster와 카메라를 건드린다.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.4deg] md:col-span-2">
-                    <h3 class="text-[#00f0ff] font-black text-sm mb-2 code-font">7. main.js</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">고정 타임스텝 루프, 카메라, 렌더링, HUD, 사망/공유 화면,
-                        입력 디스패처 오케스트레이션. GAME 상태가 아니면 즉시 <code
-                            class="code-font text-[#00f0ff]">Flow</code>에 위임하고 자기 로직은 건드리지 않는다.</p>
+                <div class="panel p-5 md:col-span-2">
+                    <h3 class="text-white text-sm mb-2 code-font">7. main.js</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">고정 타임스텝 루프, 카메라, 렌더링, HUD, 사망/공유
+                        화면, 입력 디스패처 오케스트레이션. GAME 상태가 아니면 즉시 <code
+                            class="code-font text-[var(--accent)]">Flow</code>에 위임하고 자기 로직은 건드리지 않는다.</p>
                 </div>
             </div>
         </section>
 
         <!-- FSM LAYERS -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-layer-group text-[#a3e635]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">2단 상태머신</span>
-            </h2>
-            <p class="text-slate-400 text-sm mb-6">
-                본 게임 루프(<code class="code-font text-[#a3e635]">HamsThor.STATE</code>)와 온보딩 흐름(<code
-                    class="code-font text-[#00f0ff]">HamsThor.AppState</code>)을 완전히 분리된 두 계층으로 둔 것이 이 아키텍처의 핵심
-                결정이다. 위 계층은 아래 계층을 그대로 재사용할 뿐, 아래 계층은 위 계층의 존재를 전혀 모른다.
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">2단 상태머신</h2>
+            <p class="text-[var(--text-dim)] text-sm mt-1 mb-6">
+                본 게임 루프(<code class="code-font text-[var(--accent)]">HamsThor.STATE</code>)와 온보딩 흐름(<code
+                    class="code-font text-[var(--accent)]">HamsThor.AppState</code>)을 완전히 분리된 두 계층으로 둔 것이 이
+                아키텍처의 핵심 결정이다. 위 계층은 아래 계층을 그대로 재사용할 뿐, 아래 계층은 위 계층의 존재를 전혀 모른다.
             </p>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="panel p-6 rotate-[-0.3deg]">
-                    <span
-                        class="px-3 py-1 bg-[#00f0ff] text-black text-[11px] font-black uppercase inline-block graffiti-font mb-3">상위
-                        · flow.js</span>
-                    <h3 class="text-white font-black mb-2">AppState</h3>
-                    <p class="code-font text-xs text-[#00f0ff] mb-3">LOBBY → TUTORIAL_1 → TUTORIAL_2 → TUTORIAL_3 →
-                        TRANSITION → GAME</p>
-                    <p class="text-xs text-slate-400 leading-relaxed">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="panel p-6">
+                    <span class="code-font text-xs text-[var(--accent)]">상위 · flow.js</span>
+                    <h3 class="text-white mt-2 mb-2">AppState</h3>
+                    <p class="code-font text-xs text-[var(--text-dim)] mb-3">LOBBY → TUTORIAL_1 → TUTORIAL_2 →
+                        TUTORIAL_3 → TRANSITION → GAME</p>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                         로비의 인터랙티브 펜듈럼 토이, 3단계 실전 튜토리얼(윈치 가속 → 관성 사출 → 정밀 락온), 그리고 본게임 진입 전 연출을 담당. 튜토리얼은
-                        진짜 <code class="code-font text-[#00f0ff]">HamsterController</code> 인스턴스를 던져쓰기(throwaway)
+                        진짜 <code class="code-font text-[var(--accent)]">HamsterController</code> 인스턴스를 던져쓰기(throwaway)
                         앵커 위에서 그대로 재사용한다 — 물리 공식을 다시 구현하지 않는다.
                     </p>
                 </div>
-                <div class="panel p-6 rotate-[0.3deg]">
-                    <span
-                        class="px-3 py-1 bg-[#a3e635] text-black text-[11px] font-black uppercase inline-block graffiti-font mb-3">하위
-                        · physics.js</span>
-                    <h3 class="text-white font-black mb-2">STATE</h3>
-                    <p class="code-font text-xs text-[#a3e635] mb-3">ORBIT ⇄ FLIGHT → DEAD</p>
-                    <p class="text-xs text-slate-400 leading-relaxed">
+                <div class="panel p-6">
+                    <span class="code-font text-xs text-[var(--accent)]">하위 · physics.js</span>
+                    <h3 class="text-white mt-2 mb-2">STATE</h3>
+                    <p class="code-font text-xs text-[var(--text-dim)] mb-3">ORBIT ⇄ FLIGHT → DEAD</p>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                         실제 게임의 물리 상태만 관리하는 순수 상태머신. DOM도, AppState도, 카메라도 모른다. <code
-                            class="code-font text-[#a3e635]">startOrbit / adjustRadius / release / latch / die</code>
+                            class="code-font text-[var(--accent)]">startOrbit / adjustRadius / release / latch / die</code>
                         다섯 개의 공개 메서드가 전부 — 위 계층이든 실제 게임이든 이 다섯 개만 호출한다.
                     </p>
                 </div>
@@ -186,59 +261,54 @@
 
         <!-- PHYSICS FORMULAS -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-square-root-variable text-[#ff007f]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">코어 물리 공식</span>
-            </h2>
-            <div class="space-y-5">
-                <div class="panel p-6 rotate-[-0.2deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2">① 윈치 — 각운동량 보존형 반지름-속도 트레이드오프</h3>
-                    <p class="code-font text-xs text-[#00f0ff] bg-black/60 p-3 border border-neutral-800 mb-2">ω_new =
-                        ω_old · (R_old / R_new) ^ winchExponent</p>
-                    <p class="text-xs text-slate-400 leading-relaxed">로프를 짧게 감을수록(R↓) 회전 속도(ω↑)가 빨라진다. 지수
-                        <code class="code-font text-[#00f0ff]">winchExponent</code>로 가속 곡선의 체감을 튜닝.</p>
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">코어 물리 공식</h2>
+            <div class="space-y-4">
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">① 윈치 — 각운동량 보존형 반지름-속도 트레이드오프</h3>
+                    <p class="code-font text-xs text-[var(--accent)] bg-black/40 p-3 rounded border border-[var(--line)] mb-2">
+                        ω_new = ω_old · (R_old / R_new) ^ winchExponent</p>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">로프를 짧게 감을수록(R↓) 회전 속도(ω↑)가
+                        빨라진다. 지수 <code class="code-font text-[var(--accent)]">winchExponent</code>로 가속 곡선의 체감을
+                        튜닝.</p>
                 </div>
-                <div class="panel p-6 rotate-[0.2deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2">② 릴리즈 — 원운동 위치식의 미분(접선 벡터) 상속</h3>
-                    <p class="code-font text-xs text-[#00f0ff] bg-black/60 p-3 border border-neutral-800 mb-2">vx =
-                        −R·ω·sin(θ) &nbsp;&nbsp; vy = R·ω·cos(θ)</p>
-                    <p class="text-xs text-slate-400 leading-relaxed">놓는 순간의 반지름·각속도·각도로부터 접선 방향 속도 벡터를 그대로
-                        비행 초기속도로 상속한다. 상승 방향으로 놓을수록 콤보 배수가 붙어 vy에만 곱해진다(회전 방향엔 영향 없음).</p>
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">② 릴리즈 — 원운동 위치식의 미분(접선 벡터) 상속</h3>
+                    <p class="code-font text-xs text-[var(--accent)] bg-black/40 p-3 rounded border border-[var(--line)] mb-2">
+                        vx = −R·ω·sin(θ) &nbsp;&nbsp; vy = R·ω·cos(θ)</p>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">놓는 순간의 반지름·각속도·각도로부터 접선 방향 속도
+                        벡터를 그대로 비행 초기속도로 상속한다. 상승 방향으로 놓을수록 콤보 배수가 붙어 vy에만 곱해진다(회전 방향엔 영향 없음).</p>
                 </div>
-                <div class="panel p-6 rotate-[-0.2deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2">③ 정밀 락온 — 외적(cross product) 기반 방향 판정</h3>
-                    <p class="code-font text-xs text-[#00f0ff] bg-black/60 p-3 border border-neutral-800 mb-2">
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">③ 정밀 락온 — 외적(cross product) 기반 방향 판정</h3>
+                    <p class="code-font text-xs text-[var(--accent)] bg-black/40 p-3 rounded border border-[var(--line)] mb-2">
                         direction = sign(r × v) &nbsp;&nbsp; ω0 = direction · max(|baseOmega|, minLatchOmega)</p>
-                    <p class="text-xs text-slate-400 leading-relaxed">앵커 35px 반경 안에 탭이 들어오면, 진입 속도 벡터의 회전
-                        "방향"만 취하고 크기는 항상 기준 각속도로 고정한다 — 어떤 궤적으로 들어와도 다음 회전은 일관된 속도로 시작하며, 어떤 설정 실수로도 ω가 0이 되지
-                        않도록 최소 안전값을 보장한다.</p>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">앵커 35px 반경 안에 탭이 들어오면, 진입 속도 벡터의
+                        회전 "방향"만 취하고 크기는 항상 기준 각속도로 고정한다 — 어떤 궤적으로 들어와도 다음 회전은 일관된 속도로 시작하며, 어떤 설정 실수로도
+                        ω가 0이 되지 않도록 최소 안전값을 보장한다.</p>
                 </div>
             </div>
         </section>
 
         <!-- LOOP -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-gauge text-[#facc15]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">고정 타임스텝 + 불릿타임</span>
-            </h2>
-            <div class="panel p-6 rotate-[0.2deg]">
-                <p class="text-xs text-slate-400 leading-relaxed mb-3">
-                    <code class="code-font text-[#facc15]">requestAnimationFrame</code> 루프는 실제 경과 시간을 그대로
-                    누산기(accumulator)에 쌓고, <code class="code-font text-[#facc15]">FIXED_DT(1/60)</code> 단위로
-                    소비하며 매 스텝 <code class="code-font text-[#facc15]">update()</code>를 호출한다. 슬로우모션(불릿타임)은
-                    누산기가 차는 속도를 늦추는 대신, <strong class="text-white">각 스텝에 넘기는 dt 자체를 축소</strong>
-                    (<code class="code-font text-[#facc15]">FIXED_DT × Flow.timeScale</code>)한다.
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">고정 타임스텝 + 불릿타임</h2>
+            <div class="panel p-6">
+                <p class="text-xs text-[var(--text-dim)] leading-relaxed mb-3">
+                    <code class="code-font text-[var(--accent)]">requestAnimationFrame</code> 루프는 실제 경과 시간을 그대로
+                    누산기(accumulator)에 쌓고, <code class="code-font text-[var(--accent)]">FIXED_DT(1/60)</code> 단위로
+                    소비하며 매 스텝 <code class="code-font text-[var(--accent)]">update()</code>를 호출한다. 슬로우모션(불릿타임)은
+                    누산기가 차는 속도를 늦추는 대신, <strong class="text-white font-medium">각 스텝에 넘기는 dt 자체를 축소</strong>
+                    (<code class="code-font text-[var(--accent)]">FIXED_DT × Flow.timeScale</code>)한다.
                 </p>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    → 이렇게 해야 물리 스텝이 매 프레임 정상적으로 돌면서 시뮬레이션 자체만 느려져, 진짜 슬로우모션처럼 보인다. (반대로 하면 스텝이 뜨문뜨문 돌아
-                    프레임 드랍처럼 보이는 문제가 있었다.)
+                <p class="text-xs text-[var(--text-faint)] leading-relaxed">
+                    → 이렇게 해야 물리 스텝이 매 프레임 정상적으로 돌면서 시뮬레이션 자체만 느려져, 진짜 슬로우모션처럼 보인다. (반대로 하면 스텝이 뜨문뜨문
+                    돌아 프레임 드랍처럼 보이는 문제가 있었다.)
                 </p>
             </div>
         </section>
 
-        <footer class="mt-20 pt-8 border-t-4 border-white text-center text-xs text-slate-500">
-            <p class="graffiti-font text-lg text-white graffiti-shadow-black">HamsThor — Spin to Win...ch!</p>
+        <footer class="mt-16 pt-6 hairline text-center text-xs text-[var(--text-faint)] code-font">
+            <p>HamsThor — Spin to Win...ch!</p>
             <p class="mt-2">© 2026 장인호</p>
         </footer>
     </div>

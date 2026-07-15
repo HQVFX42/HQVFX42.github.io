@@ -8,184 +8,266 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;500;600;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
+        :root {
+            --bg: #141414;
+            --line: #2a2a2a;
+            --text: #e8e8e6;
+            --text-dim: #8c8c8a;
+            --text-faint: #5c5c5a;
+            --accent: #5b8def;
+        }
+
         body {
-            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
-            background-color: #03000a;
-            color: #f8fafc;
-        }
-
-        .graffiti-font {
-            font-family: 'Permanent Marker', cursive;
-            letter-spacing: 0.05em;
-        }
-
-        .graffiti-shadow-black {
-            text-shadow: 2.5px 2.5px 0px #000000;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-weight: 400;
         }
 
         .code-font {
-            font-family: 'Fira Code', monospace;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .hairline {
+            border-top: 1px solid var(--line);
+        }
+
+        .hairline-b {
+            border-bottom: 1px solid var(--line);
         }
 
         .panel {
-            background: #090613;
-            border: 3px solid #ffffff;
-            box-shadow: 6px 6px 0px #000000;
+            background: #1a1a1a;
+            border: 1px solid var(--line);
+            border-radius: 6px;
         }
 
-        .hazard-stripe-bg {
-            background: repeating-linear-gradient(-45deg, #38bdf8, #38bdf8 10px, #000000 10px, #000000 20px);
+        .link-accent {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+            display: inline-block;
+        }
+
+        .link-accent:hover {
+            border-bottom-color: var(--accent);
+            transform: translateX(2px);
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            color: var(--text);
+            transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-solid {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .btn-solid:hover {
+            color: #0c0c0c;
+            opacity: 0.88;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-dim);
+            border: 1px solid var(--line);
+            padding: 0.15rem 0.55rem;
+            border-radius: 3px;
+        }
+
+        .hero-in {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: hero-in-kf 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes hero-in-kf {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-in {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
         }
 
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 9px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #03000a;
+            background: var(--bg);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #38bdf8;
-            border: 2px solid #03000a;
+            background: var(--line);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-faint);
         }
     </style>
 </head>
 
-<body class="selection:bg-[#38bdf8] selection:text-black antialiased">
+<body class="antialiased">
 
-    <div class="max-w-5xl mx-auto px-4 py-10 md:py-16">
+    <div class="max-w-3xl mx-auto px-5 py-14 md:py-20">
 
         <!-- BACK LINK -->
-        <a href="index.html"
-            class="inline-flex items-center gap-2 mb-8 px-4 py-2 bg-black border-2 border-[#ff007f] text-[#ff007f] text-xs font-black tracking-wider uppercase rotate-[-1.5deg] hover:scale-105 transition-all">
+        <a href="index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
             <i class="fa-solid fa-arrow-left"></i> 포트폴리오로 돌아가기
         </a>
 
         <!-- HEADER -->
-        <header class="mb-16 relative overflow-hidden panel p-8 md:p-10 rotate-[-0.5deg]">
-            <div class="absolute top-0 left-0 w-full h-3 hazard-stripe-bg"></div>
-            <span
-                class="inline-flex items-center gap-2 px-4 py-2 bg-black border-2 border-[#38bdf8] text-[#38bdf8] text-xs font-black tracking-wider uppercase rotate-[-1.5deg]">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#38bdf8] animate-ping"></span>
-                Solo Prototype · Architecture Blueprint
-            </span>
-            <h1 class="mt-4 text-5xl md:text-6xl font-black tracking-tight text-white leading-tight select-none">
-                <span class="graffiti-font text-[#38bdf8] text-6xl block graffiti-shadow-black">Whale Getaway</span>
-                <span class="text-xl md:text-2xl font-bold text-slate-400 block mt-2 code-font">Blue Horizon</span>
+        <header class="mb-16">
+            <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// solo
+                prototype · architecture</p>
+
+            <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
+                style="--d:0.16s">
+                Whale Getaway
+                <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">Blue Horizon</span>
             </h1>
-            <p class="mt-6 text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl">
+
+            <p class="hero-in text-sm md:text-base text-[var(--text-dim)] mt-4 leading-relaxed max-w-2xl"
+                style="--d:0.32s">
                 바다 위를 헤엄치는 고래를 조종해 하늘에서 쏟아지는 해양 쓰레기를 정화하는 하이퍼캐주얼 액션 게임. 버블로 오염물을 포획하고, 도넛으로 발판을 만들고, 대시로
                 몸을 던져 트인 오염물을 처리장까지 실어 나르며 게이지가 차기 전에 최대한 많이 정화하는 것이 핵심 루프다.
             </p>
-            <div class="mt-6 flex flex-wrap gap-3">
-                <a href="https://epiclog42.itch.io/whale-getaway" target="_blank"
-                    class="inline-flex items-center gap-2 px-5 py-3 bg-[#38bdf8] border-2 border-black text-black font-black text-sm shadow-[4px_4px_0px_#000] hover:scale-105 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all graffiti-font">
-                    <i class="fa-solid fa-play"></i> PLAY DEMO (Itch.io)
+
+            <div class="hero-in mt-6" style="--d:0.48s">
+                <a href="https://epiclog42.itch.io/whale-getaway" target="_blank" class="btn btn-solid">
+                    <i class="fa-solid fa-play"></i> Play Demo (Itch.io)
                 </a>
             </div>
         </header>
 
         <!-- MODULE MAP -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-diagram-project text-[#38bdf8]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">모듈 구조</span>
-            </h2>
-            <p class="text-slate-400 text-sm mb-6">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">모듈 구조</h2>
+            <p class="text-[var(--text-dim)] text-sm mt-1 mb-6">
                 TypeScript + Vite 빌드. 각 매니저는 자기 도메인(입력, 물리, 오염물, 카메라, HUD)만 책임지고, 매 프레임
-                <code class="code-font text-[#38bdf8]">main.ts</code>의 루프가 순서대로 갱신·조합한다.
+                <code class="code-font text-[var(--accent)]">main.ts</code>의 루프가 순서대로 갱신·조합한다.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="panel p-5 rotate-[-0.4deg]">
-                    <h3 class="text-[#facc15] font-black text-sm mb-2 code-font">1. tuning.ts</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">고래 이동 가속도, 스킬별 쿨다운/사거리/힘, 오염물 낙하 속도,
-                        게이지 증가율 등 모든 밸런스 상수를 모은 튜너블 테이블.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">1. tuning.ts</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">고래 이동 가속도, 스킬별 쿨다운/사거리/힘, 오염물
+                        낙하 속도, 게이지 증가율 등 모든 밸런스 상수를 모은 튜너블 테이블.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.4deg]">
-                    <h3 class="text-[#a3e635] font-black text-sm mb-2 code-font">2. whale.ts</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">WASD/방향키 가속 이동, 속도 기반 몸통 사인파 undulation, 진행
-                        방향에 따른 좌우 미러링(회전 대신 미러링해 뒤집힘 방지)을 관리하는 고래 상태.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">2. whale.ts</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">WASD/방향키 가속 이동, 속도 기반 몸통 사인파
+                        undulation, 진행 방향에 따른 좌우 미러링(회전 대신 미러링해 뒤집힘 방지)을 관리하는 고래 상태.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.4deg]">
-                    <h3 class="text-[#38bdf8] font-black text-sm mb-2 code-font">3. skills.ts</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Dash(Space) · Bubble(LMB/F) · Donut(RMB/E) 세
-                        스킬의 발사·쿨다운·수명을 관리. 각 스킬은 아래 오염물 매니저에 이벤트만 통지할 뿐 직접 상태를 바꾸지 않는다.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">3. skills.ts</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Dash(Space) · Bubble(LMB/F) ·
+                        Donut(RMB/E) 세 스킬의 발사·쿨다운·수명을 관리. 각 스킬은 아래 오염물 매니저에 이벤트만 통지할 뿐 직접 상태를 바꾸지 않는다.</p>
                 </div>
-                <div class="panel p-5 rotate-[-0.4deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2 code-font">4. pollution.ts</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">PollutionManager/PollutionItem. 낙하 → 포획(trapped)
-                        → 처리(disposed) 또는 방치(게이지 누적)로 이어지는 오염물 생명주기와 원형 충돌 판정을 전담.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">4. pollution.ts</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">PollutionManager/PollutionItem. 낙하 →
+                        포획(trapped) → 처리(disposed) 또는 방치(게이지 누적)로 이어지는 오염물 생명주기와 원형 충돌 판정을 전담.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.3deg]">
-                    <h3 class="text-[#facc15] font-black text-sm mb-2 code-font">5. terrain.ts / camera.ts</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">보간 제어점 기반의 굴곡진 해저를 생성하고, 3600px 폭 월드를
-                        고래를 따라 이동하며 월드 경계에 클램프되는 카메라로 렌더링.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">5. terrain.ts / camera.ts</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">보간 제어점 기반의 굴곡진 해저를 생성하고,
+                        3600px 폭 월드를 고래를 따라 이동하며 월드 경계에 클램프되는 카메라로 렌더링.</p>
                 </div>
-                <div class="panel p-5 rotate-[-0.3deg]">
-                    <h3 class="text-[#a3e635] font-black text-sm mb-2 code-font">6. flow.ts</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">LOBBY → TUTORIAL → PHASE 1-4 → GAME OVER 상위
-                        FSM. 페이즈마다 BGM과 오염물 스폰 밀도를 교체하며 난이도 곡선을 관리.</p>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">6. flow.ts</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">LOBBY → TUTORIAL → PHASE 1-4 → GAME
+                        OVER 상위 FSM. 페이즈마다 BGM과 오염물 스폰 밀도를 교체하며 난이도 곡선을 관리.</p>
                 </div>
-                <div class="panel p-5 rotate-[0.4deg] md:col-span-2">
-                    <h3 class="text-[#38bdf8] font-black text-sm mb-2 code-font">7. main.ts</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">고정 타임스텝 루프, 4:3(1200×900) 레터박스 프레임 유지, HUD(스킬
-                        쿨다운 오버레이·타이머·점수·게이지) 갱신, 입력 디스패처 오케스트레이션을 담당하는 최상위 진입점.</p>
+                <div class="panel p-5 md:col-span-2">
+                    <h3 class="text-white text-sm mb-2 code-font">7. main.ts</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">고정 타임스텝 루프, 4:3(1200×900) 레터박스 프레임
+                        유지, HUD(스킬 쿨다운 오버레이·타이머·점수·게이지) 갱신, 입력 디스패처 오케스트레이션을 담당하는 최상위 진입점.</p>
                 </div>
             </div>
         </section>
 
         <!-- SKILL LOOP -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-layer-group text-[#a3e635]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">3-스킬 정화 코어 루프</span>
-            </h2>
-            <p class="text-slate-400 text-sm mb-6">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">3-스킬 정화 코어 루프</h2>
+            <p class="text-[var(--text-dim)] text-sm mt-1 mb-6">
                 세 스킬이 서로 다른 역할(포획 / 고정 / 이동)을 맡아 맞물리도록 설계한 것이 이 게임의 핵심 결정이다. 어느 하나만으로는 오염물을 처리장까지 옮길 수
                 없고, 세 스킬을 상황에 맞게 조합해야 한다.
             </p>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="panel p-6 rotate-[-0.3deg]">
-                    <span
-                        class="px-3 py-1 bg-[#60a5fa] text-black text-[11px] font-black uppercase inline-block graffiti-font mb-3">🫧
-                        BUBBLE</span>
-                    <h3 class="text-white font-black mb-2">포획</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="panel p-6">
+                    <span class="tag">🫧 BUBBLE</span>
+                    <h3 class="text-white mt-3 mb-2">포획</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                         입 앞으로 빠르게 쏘아지다 감쇠와 함께 천천히 위로 뜨는 버블 하나(Bubble Bobble 스타일 궤적)를 발사. 낙하 중인 오염물에 닿으면
                         trapped 상태로 전환해 이후 조작 대상으로 만든다.
                     </p>
                 </div>
-                <div class="panel p-6 rotate-[0.3deg]">
-                    <span
-                        class="px-3 py-1 bg-[#fb7185] text-black text-[11px] font-black uppercase inline-block graffiti-font mb-3">🍩
-                        DONUT</span>
-                    <h3 class="text-white font-black mb-2">고정</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
+                <div class="panel p-6">
+                    <span class="tag">🍩 DONUT</span>
+                    <h3 class="text-white mt-3 mb-2">고정</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                         등 뒤에서 거의 즉시 확장되는 흰색 도넛이 몇 초간 "발판"처럼 유지되며, 그 띠 안에 걸린 오염물의 낙하를 멈춘다. 버블보다 수명이 길어
                         여러 개를 한 번에 묶어두는 용도로 쓴다.
                     </p>
                 </div>
-                <div class="panel p-6 rotate-[-0.3deg]">
-                    <span
-                        class="px-3 py-1 bg-[#06b6d4] text-black text-[11px] font-black uppercase inline-block graffiti-font mb-3">⚡
-                        DASH</span>
-                    <h3 class="text-white font-black mb-2">이동/충돌</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
+                <div class="panel p-6">
+                    <span class="tag">⚡ DASH</span>
+                    <h3 class="text-white mt-3 mb-2">이동/충돌</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">
                         속도 기반 돌진. trapped 오염물은 고래와 원형 충돌(<code
-                            class="code-font text-[#06b6d4]">resolveWhaleCollision</code>)로 풍선처럼 튕겨나가므로, 대시로
-                        부딪히거나 밀어서 처리장 방향으로 실어 나른다.
+                            class="code-font text-[var(--accent)]">resolveWhaleCollision</code>)로 풍선처럼 튕겨나가므로,
+                        대시로 부딪히거나 밀어서 처리장 방향으로 실어 나른다.
                     </p>
                 </div>
             </div>
-            <div class="panel p-6 mt-6 rotate-[0.2deg]">
-                <h3 class="text-[#facc15] font-black text-sm mb-2">생명주기: 낙하 → 포획/고정 → 이동 → 처리 or 방치</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    하늘에서 낙하하는 오염물을 방치하면 바닥에 쌓여 <span class="text-white font-bold">오염 게이지</span>가 차오르고, 게이지가
-                    가득 차거나 페이즈 타이머가 끝나면 게임 오버. 반대로 버블/도넛으로 붙잡아 대시로 처리장까지 옮기면 점수가 오르고 게이지가 완화된다 —
+            <div class="panel p-6 mt-4">
+                <h3 class="text-white text-sm mb-2">생명주기: 낙하 → 포획/고정 → 이동 → 처리 or 방치</h3>
+                <p class="text-xs text-[var(--text-dim)] leading-relaxed">
+                    하늘에서 낙하하는 오염물을 방치하면 바닥에 쌓여 <span class="text-white font-medium">오염 게이지</span>가 차오르고,
+                    게이지가 가득 차거나 페이즈 타이머가 끝나면 게임 오버. 반대로 버블/도넛으로 붙잡아 대시로 처리장까지 옮기면 점수가 오르고 게이지가 완화된다 —
                     "방치하면 벌점, 처리하면 보상"의 이중 압박으로 스킬 사용을 강제한다.
                 </p>
             </div>
@@ -193,49 +275,46 @@
 
         <!-- WORLD / CAMERA -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-water text-[#ff007f]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">절차적 바다 월드</span>
-            </h2>
-            <div class="space-y-5">
-                <div class="panel p-6 rotate-[-0.2deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2">① 굴곡진 해저 지형</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">평평한 한 줄 바닥 대신 보간된 제어점으로 굴곡을 만들고, 오염물이
-                        바닥에 안착하는 높이도 같은 곡선을 따르게 해 지형과 낙하 결과가 항상 일치하도록 했다.</p>
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">절차적 바다 월드</h2>
+            <div class="space-y-4">
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">① 굴곡진 해저 지형</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">평평한 한 줄 바닥 대신 보간된 제어점으로 굴곡을
+                        만들고, 오염물이 바닥에 안착하는 높이도 같은 곡선을 따르게 해 지형과 낙하 결과가 항상 일치하도록 했다.</p>
                 </div>
-                <div class="panel p-6 rotate-[0.2deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2">② 3600px 카메라 추적 월드</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">한 화면 폭이던 초기 프로토타입을 3600px 폭 월드로 확장하고, 고래를
-                        따라가되 월드 경계에서 멈추는 카메라를 추가. 고래도 좌우/상하 경계와 해저·수면에서 위치가 클램프되고 해당 축 속도가 0이 된다.</p>
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">② 3600px 카메라 추적 월드</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">한 화면 폭이던 초기 프로토타입을 3600px 폭 월드로
+                        확장하고, 고래를 따라가되 월드 경계에서 멈추는 카메라를 추가. 고래도 좌우/상하 경계와 해저·수면에서 위치가 클램프되고 해당 축 속도가
+                        0이 된다.</p>
                 </div>
-                <div class="panel p-6 rotate-[-0.2deg]">
-                    <h3 class="text-[#ff007f] font-black text-sm mb-2">③ 좌우 미러링 방식의 방향 전환</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">진행 방향에 맞춰 실루엣 전체를 회전시키면 수직을 넘는 순간 배·등이
-                        뒤바뀌어 뒤집힌 것처럼 보이는 문제가 있었다. 회전 대신 좌우 방향일 때만 수평 미러링하는 방식으로 바꿔 등이 항상 위를 향하도록 고정했다.</p>
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">③ 좌우 미러링 방식의 방향 전환</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">진행 방향에 맞춰 실루엣 전체를 회전시키면 수직을
+                        넘는 순간 배·등이 뒤바뀌어 뒤집힌 것처럼 보이는 문제가 있었다. 회전 대신 좌우 방향일 때만 수평 미러링하는 방식으로 바꿔 등이 항상
+                        위를 향하도록 고정했다.</p>
                 </div>
             </div>
         </section>
 
         <!-- LOOP -->
         <section class="mb-14">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3 border-b-4 border-white pb-3 mb-6">
-                <i class="fa-solid fa-gauge text-[#facc15]"></i>
-                <span class="graffiti-font text-3xl graffiti-shadow-black">페이즈 진행과 온보딩</span>
-            </h2>
-            <div class="panel p-6 rotate-[0.2deg]">
-                <p class="text-xs text-slate-400 leading-relaxed mb-3">
-                    로비(커버 아트 자체가 시작 버튼) → 튜토리얼(스킬별 개별 안내) → <code class="code-font text-[#facc15]">PHASE
-                        1~4</code> 순으로 진행하며, 페이즈마다 오염물 스폰 밀도와 배경음악(BGM)이 함께 바뀌어 난이도 체감을 끌어올린다.
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">페이즈 진행과 온보딩</h2>
+            <div class="panel p-6">
+                <p class="text-xs text-[var(--text-dim)] leading-relaxed mb-3">
+                    로비(커버 아트 자체가 시작 버튼) → 튜토리얼(스킬별 개별 안내) → <code
+                        class="code-font text-[var(--accent)]">PHASE 1~4</code> 순으로 진행하며, 페이즈마다 오염물 스폰 밀도와
+                    배경음악(BGM)이 함께 바뀌어 난이도 체감을 끌어올린다.
                 </p>
-                <p class="text-xs text-slate-500 leading-relaxed">
+                <p class="text-xs text-[var(--text-faint)] leading-relaxed">
                     타이머와 오염 게이지라는 두 개의 서로 다른 실패 조건을 동시에 두어, 플레이어가 "버티기(방치)"와 "적극적 정화" 사이에서 계속 선택하게
                     만드는 것이 페이즈 설계의 의도다.
                 </p>
             </div>
         </section>
 
-        <footer class="mt-20 pt-8 border-t-4 border-white text-center text-xs text-slate-500">
-            <p class="graffiti-font text-lg text-white graffiti-shadow-black">Whale Getaway — Blue Horizon</p>
+        <footer class="mt-16 pt-6 hairline text-center text-xs text-[var(--text-faint)] code-font">
+            <p>Whale Getaway — Blue Horizon</p>
             <p class="mt-2">© 2026 장인호</p>
         </footer>
     </div>
