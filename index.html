@@ -90,6 +90,9 @@
         .entry-row {
             position: relative;
             border-top: 1px solid var(--line);
+            padding-left: 1rem;
+            margin-left: -1rem;
+            width: calc(100% + 1rem);
             transition: background-color 0.15s ease;
         }
 
@@ -345,7 +348,8 @@
                     <span class="text-[var(--text-faint)]">Updated 2026.05</span>
                 </div>
 
-                <div class="hairline mt-8 pt-6 space-y-4 text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl">
+                <div class="hero-in hairline mt-8 pt-6 space-y-4 text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl"
+                    style="--d:0.64s">
                     <p>
                         <strong class="text-white font-medium">스토리텔링이 이끈 개발자의 삶.</strong>
                         저는 원래 스토리텔링이 너무 좋아서 개발을 시작했습니다. 그 이야기의 강력한 힘에 매료되어 있으며, 결국 게임이라는 가장 역동적이고
@@ -365,7 +369,7 @@
                 <!-- Left: Tech Stack -->
                 <div class="lg:col-span-5 space-y-10">
 
-                    <div>
+                    <div class="hero-in" style="--d:0.8s">
                         <h2 class="code-font text-xs text-[var(--text-faint)] tracking-widest uppercase mb-5">Tech
                             Stack</h2>
 
@@ -409,7 +413,7 @@
                         </div>
                     </div>
 
-                    <div class="hairline pt-8">
+                    <div class="hero-in hairline pt-8" style="--d:0.96s">
                         <h2 class="code-font text-xs text-[var(--text-faint)] tracking-widest uppercase mb-4">
                             Education</h2>
                         <h3 class="text-sm text-white">한국공학대학교 졸업</h3>
@@ -430,11 +434,13 @@
 
                 <!-- Right: Experience -->
                 <div class="lg:col-span-7">
-                    <h2 class="code-font text-xs text-[var(--text-faint)] tracking-widest uppercase mb-1">Experience
-                    </h2>
-                    <p class="text-xs text-[var(--text-faint)] mb-6">총 2년 6개월</p>
+                    <div class="hero-in" style="--d:0.8s">
+                        <h2 class="code-font text-xs text-[var(--text-faint)] tracking-widest uppercase mb-1">
+                            Experience</h2>
+                        <p class="text-xs text-[var(--text-faint)] mb-6">총 2년 6개월</p>
+                    </div>
 
-                    <div class="space-y-8">
+                    <div class="hero-in space-y-8" style="--d:0.96s">
                         <div class="hairline pt-5">
                             <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                                 <h3 class="text-base text-white">Tidal Flats <span
