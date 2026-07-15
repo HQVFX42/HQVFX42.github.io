@@ -229,6 +229,53 @@
             transform: translateY(-4px);
         }
 
+        .hero-in {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: hero-in-kf 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes hero-in-kf {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-underline {
+            position: relative;
+        }
+
+        .hero-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 100%;
+            bottom: -2px;
+            height: 2px;
+            background: var(--accent);
+            animation: hero-underline-kf 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.55s;
+        }
+
+        @keyframes hero-underline-kf {
+            to {
+                right: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .hero-in,
+            .hero-underline::after {
+                animation: none;
+                opacity: 1;
+                transform: none;
+                right: 0;
+            }
+        }
+
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -270,19 +317,24 @@
 
             <!-- HEADER -->
             <header class="mb-20">
-                <p class="code-font text-xs text-[var(--accent)] tracking-wide mb-4">// game programmer</p>
+                <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// game
+                    programmer</p>
 
-                <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight">
+                <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
+                    style="--d:0.08s">
                     장인호
                     <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">Inho
                         Jang</span>
                 </h1>
 
-                <p class="text-base md:text-lg text-[var(--text-dim)] mt-4 leading-relaxed max-w-xl">
-                    기획 및 아트와의 협업 효율을 고민하고, 새로운 기술을 탐구하는 게임 프로그래머
+                <p class="hero-in text-base md:text-lg text-[var(--text-dim)] mt-4 leading-relaxed max-w-xl"
+                    style="--d:0.16s">
+                    기획 및 아트와의 협업 효율을 고민하고, 새로운 기술을 탐구하는 <span
+                        class="hero-underline text-white">게임 프로그래머</span>
                 </p>
 
-                <div class="flex flex-wrap gap-x-6 gap-y-2 mt-6 code-font text-xs text-[var(--text-dim)]">
+                <div class="hero-in flex flex-wrap gap-x-6 gap-y-2 mt-6 code-font text-xs text-[var(--text-dim)]"
+                    style="--d:0.24s">
                     <a href="mailto:ford6313@gmail.com" class="link-accent flex items-center gap-1.5">
                         <i class="fa-regular fa-envelope"></i> ford6313@gmail.com
                     </a>
