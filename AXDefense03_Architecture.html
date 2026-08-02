@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AX Defense 03 — Architecture Doc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #141414;
+            --line: #2a2a2a;
+            --text: #e8e8e6;
+            --text-dim: #8c8c8a;
+            --text-faint: #5c5c5a;
+            --accent: #5b8def;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .hairline {
+            border-top: 1px solid var(--line);
+        }
+
+        .hairline-b {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .panel {
+            background: #1a1a1a;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+        }
+
+        .link-accent {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+            display: inline-block;
+        }
+
+        .link-accent:hover {
+            border-bottom-color: var(--accent);
+            transform: translateX(2px);
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            color: var(--text);
+            transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-solid {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .btn-solid:hover {
+            color: #0c0c0c;
+            opacity: 0.88;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-dim);
+            border: 1px solid var(--line);
+            padding: 0.15rem 0.55rem;
+            border-radius: 3px;
+        }
+
+        .hero-in {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: hero-in-kf 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes hero-in-kf {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-in {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 9px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-faint);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="max-w-3xl mx-auto px-5 py-14 md:py-20">
+
+        <!-- BACK LINK -->
+        <a href="index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i> 포트폴리오로 돌아가기
+        </a>
+
+        <!-- HEADER -->
+        <header class="mb-16">
+            <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// AI-assisted
+                dev · architecture</p>
+
+            <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
+                style="--d:0.16s">
+                AX Defense 03
+                <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">v3.0 Stable</span>
+            </h1>
+
+            <ul class="hero-in text-sm md:text-base text-[var(--text-dim)] mt-4 leading-relaxed space-y-1 max-w-2xl"
+                style="--d:0.32s">
+                <li>· 2D 탑다운 서바이벌 타워디펜스 로그라이크 (생존, 자원 채집, 기지 방어의 융합)</li>
+                <li>· 엔진 Unity (URP) / 언어 C# / 2D 조명·파티클 중심 렌더링</li>
+                <li>· 타겟 플랫폼: 모바일 (Android / iOS) 최적화</li>
+            </ul>
+
+            <div class="hero-in flex flex-wrap gap-2 mt-6" style="--d:0.48s">
+                <span class="tag">Unity / URP</span>
+                <span class="tag">AX Framework v1</span>
+                <span class="tag">Mobile</span>
+            </div>
+
+            <div class="hero-in flex flex-wrap gap-3 mt-6" style="--d:0.6s">
+                <a href="https://youtu.be/04coRvl7VXI" target="_blank" class="btn btn-solid">
+                    <i class="fa-solid fa-play"></i> Demo Video
+                </a>
+            </div>
+        </header>
+
+        <!-- CORE LOOP -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">주야간 생존 루프</h2>
+            <div class="panel p-6 mb-4">
+                <p class="text-xs text-[var(--text-dim)] leading-relaxed">
+                    <span class="text-white">낮 (파밍 및 건축)</span> ↔ <span class="text-white">밤 (웨이브 방어)</span> ·
+                    핵심 방어 대상: <span class="code-font text-[var(--accent)]">캐러밴 (Caravan)</span>
+                </p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="panel p-4">
+                    <h3 class="text-white text-sm mb-1">🔥 체온</h3>
+                    <p class="text-xs text-[var(--text-dim)]">Torch / Campfire로 유지</p>
+                </div>
+                <div class="panel p-4">
+                    <h3 class="text-white text-sm mb-1">🍖 허기</h3>
+                    <p class="text-xs text-[var(--text-dim)]">플레이어 유지 스탯</p>
+                </div>
+                <div class="panel p-4">
+                    <h3 class="text-white text-sm mb-1">💧 갈증</h3>
+                    <p class="text-xs text-[var(--text-dim)]">플레이어 유지 스탯</p>
+                </div>
+                <div class="panel p-4">
+                    <h3 class="text-white text-sm mb-1">⚡ 전력</h3>
+                    <p class="text-xs text-[var(--text-dim)]">밤 사이클 감소 가속</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE FLOW -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">씬 아키텍처</h2>
+            <div class="panel p-6">
+                <p class="text-xs text-[var(--text-dim)] leading-relaxed code-font mb-3">
+                    TitleScene → Loading → LobbyScene (런 시작·캐릭터 선택) → Loading → GameScene (낮/밤 사이클 실행) ·
+                    DevScene (개발자 테스트 환경)
+                </p>
+                <p class="text-xs text-[var(--text-faint)] leading-relaxed">
+                    각 씬 사이의 전환은 로딩 화면(Loading)을 거쳐 데이터 안전성을 확보.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5 PILLARS + DATA PIPELINE -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">스크립트 시스템 — 5대 핵심 기둥</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Config & Data</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">게임 전역 설정 및 ScriptableObject 기반
+                        스탯/아이템 정의</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Managers</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">런타임 게임 상태, 흐름, 풀링을 제어하는 중앙
+                        싱글톤 시스템</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Controllers</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">플레이어, 몬스터, 상호작용 객체의 실질적 로직 및 AI</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">UI</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Z-index 스택 기반의 씬(Scene) 및 팝업(Popup)
+                        인터페이스</p>
+                </div>
+                <div class="panel p-5 md:col-span-2">
+                    <h3 class="text-white text-sm mb-2 code-font">Map & FX</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">절차적 타일맵 생성, 그리드 관리 및 시각적 피드백
+                        (DOTween, 파티클)</p>
+                </div>
+            </div>
+            <p class="text-xs text-[var(--text-faint)] code-font text-center mb-6">↑ Utils & Events (공통 기반)</p>
+
+            <h3 class="text-white text-sm mb-3 code-font">비파괴적 기획 데이터 파이프라인</h3>
+            <div class="panel p-6">
+                <p class="text-xs text-[var(--text-dim)] leading-relaxed code-font">
+                    Editor (엑셀 데이터) → ScriptableObject (유니티 에셋화) → JSON Serialization (런타임 로드용 저장) →
+                    DataManager & Game Load (읽기 전용 런타임 모델)
+                </p>
+            </div>
+        </section>
+
+        <!-- MANAGER SYSTEM -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">모듈화된 중앙 제어 매트릭스</h2>
+            <p class="text-[var(--text-dim)] text-sm mt-1 mb-6">네 그룹의 매니저가 <span
+                    class="code-font text-[var(--accent)]">EventBus (Pub/Sub)</span>를 중심으로 느슨하게 결합.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">게임 흐름 제어</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">GameManager · RunManager ·
+                        DayNightManager · WaveManager</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">객체 / 공간 관리</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">SpawnerManager · PoolManager ·
+                        BuildManager · LightManager</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">메타 및 데이터</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">DataManager · SaveManager ·
+                        CurrencyManager · ProfileManager</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">유틸리티</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">EventManager · UIManager ·
+                        SoundManager · SceneManager · Localization · Coroutine</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CREATURE / TARGETING + WORLD OBJECTS -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">크리처 아키텍처 & 월드 오브젝트</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Creature Base</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">공통 체력/상태이상 → Player / Monster /
+                        NPC로 분기. 타격·투사체 궤적 연산 분리, 몬스터 접촉 데미지 개별 처리.</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">AI 타겟팅 우선순위</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">1순위 Player → 2순위 Caravan → 3순위
+                        Installable 구조물 (Proximity 기반)</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Interactable (월드 배치)</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">채집 자원 노드, 제작대, 캐러밴 — 플레이어가 다가가
+                        액션을 취하는 대상</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Installable (플레이어 배치)</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">횃불·캠프파이어(빛/열), 나무 함정·자동 포탑(방어선) —
+                        그리드 기반 건설, 파괴 시 재료 드롭</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- UI STACK -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">레이어 기반 Z-Index UI 스택</h2>
+            <div class="space-y-4">
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">Overlay / System</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">게임 오버 화면, 디버그 아이템 스폰 UI, 데미지
+                        플로팅 텍스트</p>
+                </div>
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">Popup UI (Systems)</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">인벤토리(드래그&드롭), 크래프팅, 장비 슬롯, NPC
+                        거래, 일시정지 — 스택 기반 열기/닫기 제어</p>
+                </div>
+                <div class="panel p-6">
+                    <h3 class="text-white text-sm mb-2">Scene UI (HUD)</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">게임 메인 HUD, 가상 조이스틱, 생존 스탯, 공격
+                        버튼, 퀵슬롯</p>
+                </div>
+            </div>
+            <p class="text-xs text-[var(--text-faint)] leading-relaxed mt-4">모든 UI는 UI Base를 상속하며, 클릭/드래그 입력 이벤트
+                디스패처를 통해 이벤트를 중앙 처리.</p>
+        </section>
+
+        <!-- VISUAL POLISH + EXTERNAL PACKAGES -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">비주얼 폴리시 & 외부 패키지</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">DOTween / URP 2D Light</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">UI 트랜지션 트위닝, 횃불·캠프파이어 빛 반경 및
+                        실시간 Flicker 효과</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Particles & Pooling</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">상태이상 파티클 오버레이, 설치 미리보기 피드백,
+                        재생 완료 FX 자동 풀 반환</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">수익화</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">IronSource LevelPlay (광고 중재), Unity
+                        IAP (인앱 결제)</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">에셋 / 입력</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Addressables, TextMesh Pro, Unity
+                        Input System</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NIGHT WAVE PROCESS -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">종합: 밤 웨이브 방어 프로세스</h2>
+            <div class="panel p-6">
+                <ol class="text-xs text-[var(--text-dim)] leading-relaxed space-y-2 list-decimal list-inside">
+                    <li>DayNightManager가 '밤'을 선언 → 체온/전력 스탯 감소 가속화</li>
+                    <li>WaveManager 활성화 → 캐러밴 주변 지정된 링(Ring) 반경에서 몬스터 스폰 시작</li>
+                    <li>Monster AI 추적 시작 (Player &gt; Caravan) vs 원거리 자동 포탑(Installable)의 요격</li>
+                    <li>LightManager의 횃불 반경 안에서 그리드 방어선을 사수하며 생존</li>
+                </ol>
+            </div>
+        </section>
+
+        <footer class="mt-16 pt-6 hairline text-center text-xs text-[var(--text-faint)] code-font">
+            <p>AX Defense 03 — v3.0 Stable</p>
+            <p class="mt-2">© 2026 장인호</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

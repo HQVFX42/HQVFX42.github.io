@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AX Defense 02 — Architecture Doc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #141414;
+            --line: #2a2a2a;
+            --text: #e8e8e6;
+            --text-dim: #8c8c8a;
+            --text-faint: #5c5c5a;
+            --accent: #5b8def;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .hairline {
+            border-top: 1px solid var(--line);
+        }
+
+        .hairline-b {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .panel {
+            background: #1a1a1a;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+        }
+
+        .link-accent {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+            display: inline-block;
+        }
+
+        .link-accent:hover {
+            border-bottom-color: var(--accent);
+            transform: translateX(2px);
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            color: var(--text);
+            transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-solid {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .btn-solid:hover {
+            color: #0c0c0c;
+            opacity: 0.88;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-dim);
+            border: 1px solid var(--line);
+            padding: 0.15rem 0.55rem;
+            border-radius: 3px;
+        }
+
+        .hero-in {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: hero-in-kf 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes hero-in-kf {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-in {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 9px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-faint);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="max-w-3xl mx-auto px-5 py-14 md:py-20">
+
+        <!-- BACK LINK -->
+        <a href="index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i> 포트폴리오로 돌아가기
+        </a>
+
+        <!-- HEADER -->
+        <header class="mb-16">
+            <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// AI-assisted
+                dev · architecture</p>
+
+            <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
+                style="--d:0.16s">
+                AX Defense 02
+                <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">v2.0 Stable</span>
+            </h1>
+
+            <ul class="hero-in text-sm md:text-base text-[var(--text-dim)] mt-4 leading-relaxed space-y-1 max-w-2xl"
+                style="--d:0.32s">
+                <li>· Unity 기반 크레인 그리드 디펜스 게임</li>
+                <li>· 크레인으로 영웅 토큰을 배치 → 영웅이 몬스터를 자동 공격하는 직관적 루프</li>
+            </ul>
+
+            <div class="hero-in flex flex-wrap gap-2 mt-6" style="--d:0.48s">
+                <span class="tag">Unity</span>
+                <span class="tag">AX Framework v1</span>
+            </div>
+        </header>
+
+        <!-- CORE LOOP -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">플레이어 경험 → 코드</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Generate Button</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">토큰 생성</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Draw Button</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">크레인 조작 및 배치</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Monster Slider</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">웨이브 스폰 진행도</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Wave Text / Monster Count</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">게임 상태 표시</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4 CORE SYSTEMS -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">4대 핵심 시스템 청사진</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">CraneGridController</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">크레인 UI 그리드 — 1×5 슬롯 기반의 토큰 생성 및
+                        수집 시스템</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">BattlefieldGrid</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">배틀필드 그리드 — N×M 슬롯 기반의 영웅 배치 공간</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">HeroController</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">영웅 전투 루프 — 거리 기반의 자동 타겟팅 및 공격
+                        AI</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">SpawningPool + MonsterSpawnPath</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">몬스터 웨이브 — 자동 스폰 및 순환 이동 시스템</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DATA CLASSIFICATION -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">게임 데이터 분류 체계</h2>
+            <p class="text-[var(--text-dim)] text-sm mt-1 mb-6 code-font">Define.cs 기반의 엔티티 정의 구조</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">EObjectType</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Hero · Monster · EliteMonster · Boss ·
+                        Projectile</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">ECreatureState</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Idle · Moving · Skill · OnDamaged ·
+                        Dead</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">ESkillType</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Bullet · Sword · Sequence · Repeat ·
+                        Dash · Melee · Projectile</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">EWaveType / EScene</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">None · Elite · Boss / TitleScene ·
+                        LobbyScene · GameScene</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE FOUNDATION -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">아키텍처 코어 파운데이션</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Manager Singleton</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Managers 클래스로 모든 매니저 일괄 접근</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Object Pool</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">메모리 효율을 위해 생성/제거 대신 재사용 (최대 80마리
+                        몬스터 관리)</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">State Machine</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">CreatureState로 생명체 상태 전환 (Idle →
+                        Moving → Dead)</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Data-Driven</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">JSON 데이터 → Dictionary 로딩으로 밸런스 외부
+                        관리</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYSTEM SYNERGY -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">시스템 시너지와 통합 데이터 흐름</h2>
+            <div class="panel p-6">
+                <p class="text-xs text-[var(--text-dim)] leading-relaxed code-font mb-3">
+                    Manager (Singleton) 하위 → Crane UI (Data-Driven) —배치→ Battlefield Grid ←스폰/이동— Monsters
+                    (Object Pool) · Battlefield Grid ↔ Heroes (State Machine) —타겟팅 및 공격→ Monsters
+                </p>
+                <p class="text-xs text-[var(--text-faint)] leading-relaxed">
+                    단일화된 관리자 위에서 동작하는 4개의 모듈식 시스템이 결합되어 끊임없는 디펜스 루프를 완성.
+                </p>
+            </div>
+        </section>
+
+        <footer class="mt-16 pt-6 hairline text-center text-xs text-[var(--text-faint)] code-font">
+            <p>AX Defense 02 — v2.0 Stable</p>
+            <p class="mt-2">© 2026 장인호</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

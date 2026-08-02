@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Road — Architecture Doc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #141414;
+            --line: #2a2a2a;
+            --text: #e8e8e6;
+            --text-dim: #8c8c8a;
+            --text-faint: #5c5c5a;
+            --accent: #5b8def;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .hairline {
+            border-top: 1px solid var(--line);
+        }
+
+        .hairline-b {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .panel {
+            background: #1a1a1a;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+        }
+
+        .link-accent {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+            display: inline-block;
+        }
+
+        .link-accent:hover {
+            border-bottom-color: var(--accent);
+            transform: translateX(2px);
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            color: var(--text);
+            transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-solid {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0c0c0c;
+        }
+
+        .btn-solid:hover {
+            color: #0c0c0c;
+            opacity: 0.88;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-dim);
+            border: 1px solid var(--line);
+            padding: 0.15rem 0.55rem;
+            border-radius: 3px;
+        }
+
+        .hero-in {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: hero-in-kf 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes hero-in-kf {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-in {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 9px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-faint);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="max-w-3xl mx-auto px-5 py-14 md:py-20">
+
+        <!-- BACK LINK -->
+        <a href="index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i> 포트폴리오로 돌아가기
+        </a>
+
+        <!-- HEADER -->
+        <header class="mb-16">
+            <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// game
+                programmer · architecture</p>
+
+            <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
+                style="--d:0.16s">
+                Mega Road
+                <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">Tidal Flats</span>
+            </h1>
+
+            <ul class="hero-in text-sm md:text-base text-[var(--text-dim)] mt-4 leading-relaxed space-y-1 max-w-2xl"
+                style="--d:0.32s">
+                <li>· Fidelion IP 기반 모바일 로그라이크 ARPG</li>
+                <li>· 컨셉부터 iOS/Android 글로벌 론칭, 라이브 서비스까지 전 과정 참여 (기여도 100%)</li>
+                <li>· 작업기간: 2023.04.19 – 2023.11.27</li>
+            </ul>
+
+            <div class="hero-in flex flex-wrap gap-2 mt-6" style="--d:0.48s">
+                <span class="tag">Unity / C#</span>
+                <span class="tag">iOS / Android</span>
+                <span class="tag">AppLovin</span>
+                <span class="tag">Jenkins / SVN / Git</span>
+            </div>
+
+            <div class="hero-in flex flex-wrap gap-3 mt-6" style="--d:0.6s">
+                <a href="https://megaroad.io/" target="_blank" class="btn btn-solid">
+                    <i class="fa-solid fa-globe"></i> Official Site
+                </a>
+                <a href="https://apps.apple.com/us/app/mega-road-roguelike-arpg/id6464222073" target="_blank"
+                    class="btn">
+                    <i class="fa-brands fa-app-store-ios"></i> App Store
+                </a>
+            </div>
+        </header>
+
+        <!-- CONTRIBUTE -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">Contribute</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">UI</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">인게임, 아웃게임 UI 프로그래밍</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Mediation</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">AppLovin Mediation</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">Login</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Play Games &amp; Game Center 로그인</p>
+                </div>
+                <div class="panel p-5">
+                    <h3 class="text-white text-sm mb-2 code-font">형상 관리</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Synology를 이용한 SVN 구성</p>
+                </div>
+                <div class="panel p-5 md:col-span-2">
+                    <h3 class="text-white text-sm mb-2 code-font">라이브 서비스</h3>
+                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">라이브 서비스 유지보수</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- OUTCOME -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-6">Outcome</h2>
+            <div class="panel p-6">
+                <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                    <li>· iOS &amp; AOS 글로벌 론칭</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="mt-16 pt-6 hairline text-center text-xs text-[var(--text-faint)] code-font">
+            <p>Mega Road — Tidal Flats</p>
+            <p class="mt-2">© 2026 장인호</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>
