@@ -2,6 +2,32 @@
 <html lang="ko">
 
 <head>
+    <!-- Discord Visitor Notification Tracker -->
+    <script>
+    (function () {
+        // 1. 로컬 환경(localhost) 테스트 접속은 알림 제외
+        if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
+
+        // 2. 세션당 1회 발송 (새로고침, 탭 이동 시 알림 도배 방지)
+        if (sessionStorage.getItem("visited_discord_notified")) return;
+        sessionStorage.setItem("visited_discord_notified", "true");
+
+        // 3. Worker /visit 엔드포인트 호출
+        const WORKER_VISIT_URL = "https://discord-notifier.ford6313.workers.dev/visit";
+
+        fetch(WORKER_VISIT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            url: window.location.href,
+            referrer: document.referrer || "직접 접속"
+        }),
+        }).catch(function () {
+        // 분석 실패 시에도 사이트 동작에 지장이 없도록 무음 처리
+        });
+    })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>장인호 | 게임 프로그래머 포트폴리오</title>
@@ -318,8 +344,8 @@
 
             <!-- HEADER -->
             <header class="mb-20">
-                <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// game
-                    creator</p>
+                <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// game creator
+                </p>
 
                 <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
                     style="--d:0.16s">
