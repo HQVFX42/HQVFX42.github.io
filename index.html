@@ -2,17 +2,39 @@
 <html lang="ko">
 
 <head>
-    <!-- Discord Visitor Notification Tracker -->
+    <!-- Discord High-Spec Visitor Tracker -->
     <script>
     (function () {
-        // 1. 로컬 환경(localhost) 테스트 접속은 알림 제외
         if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
 
-        // 2. 세션당 1회 발송 (새로고침, 탭 이동 시 알림 도배 방지)
+        // 세션당 1회 알림 (새로고침 도배 방지)
         if (sessionStorage.getItem("visited_discord_notified")) return;
         sessionStorage.setItem("visited_discord_notified", "true");
 
-        // 3. Worker /visit 엔드포인트 호출
+        // 방문 횟수 누적 (로컬 스토리지)
+        let totalVisits = parseInt(localStorage.getItem("total_site_visits") || "0", 10) + 1;
+        localStorage.setItem("total_site_visits", totalVisits.toString());
+
+        // 기기 / OS 판별
+        const ua = navigator.userAgent;
+        let device = "Desktop (PC)";
+        if (/Mobi|Android|iPhone|iPad/i.test(ua)) {
+        device = /iPad|Tablet/i.test(ua) ? "Tablet" : "Mobile";
+        }
+        if (/iPhone/i.test(ua)) device += " / iOS";
+        else if (/Android/i.test(ua)) device += " / Android";
+        else if (/Macintosh/i.test(ua)) device += " / macOS";
+        else if (/Windows/i.test(ua)) device += " / Windows";
+        else if (/Linux/i.test(ua)) device += " / Linux";
+
+        // 브라우저 판별
+        let browser = "기타 브라우저";
+        if (/Whale/i.test(ua)) browser = "Naver Whale";
+        else if (/Edg/i.test(ua)) browser = "Microsoft Edge";
+        else if (/Chrome/i.test(ua)) browser = "Chrome";
+        else if (/Safari/i.test(ua)) browser = "Safari";
+        else if (/Firefox/i.test(ua)) browser = "Firefox";
+
         const WORKER_VISIT_URL = "https://discord-notifier.ford6313.workers.dev/visit";
 
         fetch(WORKER_VISIT_URL, {
@@ -20,11 +42,15 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             url: window.location.href,
-            referrer: document.referrer || "직접 접속"
+            title: document.title || "홈페이지",
+            referrer: document.referrer || "",
+            device: device,
+            browser: browser,
+            screen: `${window.screen.width}x${window.screen.height}`,
+            lang: navigator.language || "ko-KR",
+            visitCount: totalVisits
         }),
-        }).catch(function () {
-        // 분석 실패 시에도 사이트 동작에 지장이 없도록 무음 처리
-        });
+        }).catch(function () {});
     })();
     </script>
 
