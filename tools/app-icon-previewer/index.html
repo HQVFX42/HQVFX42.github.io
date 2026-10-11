@@ -42,9 +42,18 @@ canvas{width:min(100%,240px);height:auto}.meta{font-size:11px;color:var(--muted)
  <div class="group"><label>아이콘 / Foreground 이미지</label><input id="fgFile" type="file" accept="image/*"><small id="uploadHint"></small></div>
  <div class="group androidOnly"><label>Android Background 이미지 (선택)</label><input id="bgFile" type="file" accept="image/*"></div>
  <div class="group androidOnly"><div class="label">Android Background 색상</div><div class="row"><input id="bgColor" type="color" value="#4f7cff"><span id="bgHex">#4f7cff</span></div></div>
- <div class="group controls"><div class="row"><label style="margin:0;flex:1">이미지 Scale</label><span id="scaleVal" class="value"></span></div><input id="scale" type="range" min="20" max="160" step="0.1"></div>
- <div class="group controls"><div class="row"><label style="margin:0;flex:1">X 위치</label><span id="xVal" class="value"></span></div><input id="posX" type="range" min="-50" max="50" value="0"></div>
- <div class="group controls"><div class="row"><label style="margin:0;flex:1">Y 위치</label><span id="yVal" class="value"></span></div><input id="posY" type="range" min="-50" max="50" value="0"></div>
+ <div class="group controls">
+   <div class="row"><label style="margin:0;flex:1">이미지 Scale</label><div class="row" style="gap:4px"><input id="scaleInput" type="number" min="20" max="160" step="0.1" style="width:82px"><span class="value">%</span></div></div>
+   <input id="scale" type="range" min="20" max="160" step="0.1">
+ </div>
+ <div class="group controls">
+   <div class="row"><label style="margin:0;flex:1">X 위치</label><div class="row" style="gap:4px"><input id="xInput" type="number" min="-50" max="50" step="0.1" style="width:82px"><span class="value">%</span></div></div>
+   <input id="posX" type="range" min="-50" max="50" step="0.1" value="0">
+ </div>
+ <div class="group controls">
+   <div class="row"><label style="margin:0;flex:1">Y 위치</label><div class="row" style="gap:4px"><input id="yInput" type="number" min="-50" max="50" step="0.1" style="width:82px"><span class="value">%</span></div></div>
+   <input id="posY" type="range" min="-50" max="50" step="0.1" value="0">
+ </div>
  <div class="group controls"><label>미리보기 / Export 크기</label><div class="row"><select id="sizePreset"></select><input id="customSize" type="number" min="48" max="4096" class="hidden"></div></div>
  <div class="group controls"><label><input id="safe" type="checkbox" checked> 규격 가이드 표시</label><label><input id="center" type="checkbox"> 중심선 표시</label></div>
  <div class="row controls"><button class="action" id="reset">현재 플랫폼 규격으로 초기화</button><button class="action primary" id="download">PNG 저장</button></div>
@@ -53,7 +62,7 @@ canvas{width:min(100%,240px);height:auto}.meta{font-size:11px;color:var(--muted)
 <section class="content">
  <div id="androidView">
   <div class="intro"><h2>Android Adaptive Icon</h2><p>108×108dp 레이어 / 중앙 66×66dp Safe Zone / 주요 로고 48~66dp 기준.</p></div>
-  <div class="note"><b>초기값 Scale 61.1%</b>는 66 ÷ 108 비율입니다. 업로드한 PNG 자체에 투명 여백이 있다면 실제 로고 크기는 달라질 수 있으므로 가이드 박스를 기준으로 확인하세요.</div>
+  <div class="note"><b>기본 Scale은 <b>100%</b>입니다. 66×66dp Safe Zone은 Foreground를 자동 축소하기 위한 값이 아니라, 어떤 런처 마스크에서도 핵심 요소가 안전하게 보이는지 확인하기 위한 참고 가이드입니다.</div>
   <div class="grid">
    <div class="card"><h3>Circle</h3><div class="preview"><canvas id="aCircle"></canvas></div><div class="meta">OEM 원형 마스크 예시</div></div>
    <div class="card"><h3>Squircle</h3><div class="preview"><canvas id="aSquircle"></canvas></div><div class="meta">OEM Squircle 마스크 예시</div></div>
@@ -74,10 +83,10 @@ canvas{width:min(100%,240px);height:auto}.meta{font-size:11px;color:var(--muted)
 
  <div id="compareView" class="hidden">
   <div class="intro"><h2>Official-default Compare</h2><p>Android와 iOS 각각의 기본 규격을 독립적으로 적용하여 비교합니다.</p></div>
-  <div class="note">Compare에서는 슬라이더를 공유하지 않습니다. <b>Android = 61.1% / 432px(108dp @4x)</b>, <b>iOS = 100% / 1024px</b> 기본값으로 고정 비교합니다.</div>
+  <div class="note">Compare에서는 슬라이더를 공유하지 않습니다. <b>Android = 100% / 432px(108dp @4x)</b>, <b>iOS = 100% / 1024px</b> 기본값으로 비교합니다. Android Safe Zone은 축소값이 아니라 참고 가이드로만 표시합니다.</div>
   <div class="grid">
-   <div class="card"><h3>Android Circle <span class="badge">61.1%</span></h3><div class="preview"><canvas id="cmpAndroid"></canvas></div><div class="meta">108dp 캔버스의 66dp Safe Zone 기준</div></div>
-   <div class="card"><h3>Android Squircle <span class="badge">61.1%</span></h3><div class="preview"><canvas id="cmpAndroidSq"></canvas></div><div class="meta">동일 Android 공식 프리셋</div></div>
+   <div class="card"><h3>Android Circle <span class="badge">100%</span></h3><div class="preview"><canvas id="cmpAndroid"></canvas></div><div class="meta">108dp 캔버스의 66dp Safe Zone 기준</div></div>
+   <div class="card"><h3>Android Squircle <span class="badge">100%</span></h3><div class="preview"><canvas id="cmpAndroidSq"></canvas></div><div class="meta">동일 Android 공식 프리셋</div></div>
    <div class="card"><h3>iOS Mask Preview <span class="badge">100%</span></h3><div class="preview"><canvas id="cmpIos"></canvas></div><div class="meta">1024×1024 전체 디자인 기준</div></div>
    <div class="card"><h3>iOS Source <span class="badge">1024px</span></h3><div class="preview"><canvas id="cmpIosSquare"></canvas></div><div class="meta">마스크 전 정사각형</div></div>
   </div>
@@ -89,8 +98,8 @@ canvas{width:min(100%,240px);height:auto}.meta{font-size:11px;color:var(--muted)
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 let fg=null,bg=null,tab='android';
 const presets={
- android:{scale:66/108*100,x:0,y:0,size:432,sizes:[192,432,512,1024],safe:true,
-  spec:'<b>Android 공식 기준</b><br>레이어: 108×108dp<br>Safe Zone: <span class="ok">66×66dp</span><br>주요 로고: 48~66dp<br>기본 Preview: 432px (=108dp @4x)'},
+ android:{scale:100,x:0,y:0,size:432,sizes:[192,432,512,1024],safe:true,
+  spec:'<b>Android 공식 기준</b><br>레이어: 108×108dp<br>Safe Zone: <span class="ok">66×66dp</span><br>Foreground 기본 Scale: <span class="ok">100%</span><br>기본 Preview: 432px (=108dp @4x)'},
  ios:{scale:100,x:0,y:0,size:1024,sizes:[120,180,512,1024],safe:true,
   spec:'<b>Apple 공식 기준</b><br>iOS/iPadOS 디자인 캔버스: <span class="ok">1024×1024px</span><br>시스템이 최종 마스크 적용<br>Android식 고정 Safe Zone 비율 없음'}
 };
@@ -101,6 +110,15 @@ $('#fgFile').onchange=e=>loadImage(e.target.files[0],x=>{fg=x;render()});
 $('#bgFile').onchange=e=>loadImage(e.target.files[0],x=>{bg=x;render()});
 $('#bgColor').oninput=()=>{$('#bgHex').textContent=$('#bgColor').value;render()};
 ['scale','posX','posY','safe','center'].forEach(id=>$('#'+id).addEventListener('input',()=>{saveControls();render()}));
+[['scaleInput','scale',20,160],['xInput','posX',-50,50],['yInput','posY',-50,50]].forEach(([inputId,rangeId,min,max])=>{
+ $('#'+inputId).addEventListener('input',()=>{
+   let v=parseFloat($('#'+inputId).value);
+   if(Number.isNaN(v)) return;
+   v=Math.max(min,Math.min(max,v));
+   $('#'+rangeId).value=v;
+   saveControls();render();
+ });
+});
 $('#sizePreset').onchange=()=>{
  const custom=$('#sizePreset').value==='custom';$('#customSize').classList.toggle('hidden',!custom);
  if(!custom) state[tab].size=+$('#sizePreset').value; render();
@@ -124,7 +142,9 @@ function applyControls(){
 }
 function updateLabels(){
  if(tab==='compare')return;
- $('#scaleVal').textContent=(+$('#scale').value).toFixed(1)+'%';$('#xVal').textContent=$('#posX').value+'%';$('#yVal').textContent=$('#posY').value+'%';
+ $('#scaleInput').value=(+$('#scale').value).toFixed(1);
+ $('#xInput').value=(+$('#posX').value).toFixed(1);
+ $('#yInput').value=(+$('#posY').value).toFixed(1);
 }
 $$('[data-tab]').forEach(b=>b.onclick=()=>{
  if(tab!=='compare') saveControls();
@@ -189,7 +209,7 @@ function render(){
  }else if(tab==='ios'){
   draw('iRound','iosRound','ios',i,i.size);draw('iSquare','square','ios',i,i.size);draw('iSmall','iosRound','ios',i,i.size,true);
  }else{
-  const ad={scale:66/108*100,x:0,y:0,safe:true},io={scale:100,x:0,y:0,safe:true};
+  const ad={scale:100,x:0,y:0,safe:true},io={scale:100,x:0,y:0,safe:true};
   draw('cmpAndroid','circle','android',ad,432);draw('cmpAndroidSq','squircle','android',ad,432);draw('cmpIos','iosRound','ios',io,1024);draw('cmpIosSquare','square','ios',io,1024);
  }
 }
