@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>App Icon Spec Previewer — Android & iOS</title>
+<style>
+:root{color-scheme:dark;--bg:#0f1115;--panel:#191c22;--panel2:#14171c;--line:#303640;--muted:#9da6b3;--accent:#8ab4f8;--ok:#86d993}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f4f6f8;font-family:Inter,system-ui,-apple-system,"Noto Sans KR",sans-serif}
+header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}header p{font-size:12px;color:var(--muted);margin:3px 0 0}
+.tabs{display:flex;gap:5px;margin-left:auto;background:#171a20;padding:4px;border:1px solid var(--line);border-radius:10px}
+.tabs button{border:0;background:transparent;color:#b9c0ca;padding:8px 14px;border-radius:7px;cursor:pointer}.tabs button.active{background:#303744;color:white}
+main{display:grid;grid-template-columns:350px 1fr;min-height:calc(100vh - 73px)}
+aside{background:var(--panel2);border-right:1px solid var(--line);padding:20px}.group{margin-bottom:18px}
+label,.label{display:block;font-size:12px;font-weight:700;margin-bottom:8px}.row{display:flex;align-items:center;gap:8px}
+input,select,button{font:inherit}input[type=file]{width:100%;font-size:12px}input[type=range]{width:100%}
+input[type=number],select{width:100%;background:#20242b;border:1px solid var(--line);border-radius:7px;padding:8px;color:white}
+input[type=color]{width:50px;height:35px;border:0;background:transparent}
+button.action{background:#272c35;color:white;border:1px solid #3a414c;border-radius:8px;padding:9px 11px;cursor:pointer}button.primary{background:#315f9f}
+button.spec{width:100%;background:#203451;border:1px solid #39699e;color:#d8e9ff;border-radius:8px;padding:10px;cursor:pointer;font-weight:700}
+small{display:block;color:var(--muted);font-size:11px;line-height:1.45;margin-top:6px}.value{font-size:11px;color:var(--accent);min-width:55px;text-align:right}
+.specbox{border:1px solid #315479;background:#162131;border-radius:9px;padding:11px 12px;margin-bottom:18px;font-size:11px;line-height:1.55;color:#cbd9e9}
+.specbox b{color:white}.specbox .ok{color:var(--ok)}
+.content{padding:22px;overflow:auto}.intro{margin-bottom:16px}.intro h2{font-size:17px;margin:0 0 5px}.intro p{margin:0;color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px}
+.card h3{font-size:13px;margin:0 0 11px}.preview{min-height:225px;display:grid;place-items:center;border-radius:9px;background-color:#12151a;background-image:linear-gradient(45deg,#20242b 25%,transparent 25%),linear-gradient(-45deg,#20242b 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#20242b 75%),linear-gradient(-45deg,transparent 75%,#20242b 75%);background-size:18px 18px;background-position:0 0,0 9px,9px -9px,-9px 0}
+canvas{width:min(100%,240px);height:auto}.meta{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.45}
+.badge{display:inline-block;padding:3px 7px;border-radius:999px;background:#262b34;color:#c8ced7;font-size:10px;margin-left:5px}
+.hidden{display:none!important}.note{padding:12px 14px;border:1px solid var(--line);background:#171b21;border-radius:9px;margin-bottom:15px;font-size:12px;color:#c9d0d9;line-height:1.55}
+@media(max-width:780px){header{align-items:flex-start}.tabs{margin-left:0;width:100%}.tabs button{flex:1}main{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<header>
+ <div><h1>App Icon Spec Previewer</h1><p>플랫폼 공식 규격 프리셋 기반 Android Adaptive + Apple App Icon</p></div>
+ <div class="tabs"><button data-tab="android" class="active">Android</button><button data-tab="ios">iOS</button><button data-tab="compare">Compare</button></div>
+</header>
+<main>
+<aside>
+ <div id="specBox" class="specbox"></div>
+ <div class="group"><label>아이콘 / Foreground 이미지</label><input id="fgFile" type="file" accept="image/*"><small id="uploadHint"></small></div>
+ <div class="group androidOnly"><label>Android Background 이미지 (선택)</label><input id="bgFile" type="file" accept="image/*"></div>
+ <div class="group androidOnly"><div class="label">Android Background 색상</div><div class="row"><input id="bgColor" type="color" value="#4f7cff"><span id="bgHex">#4f7cff</span></div></div>
+ <div class="group controls"><div class="row"><label style="margin:0;flex:1">이미지 Scale</label><span id="scaleVal" class="value"></span></div><input id="scale" type="range" min="20" max="160" step="0.1"></div>
+ <div class="group controls"><div class="row"><label style="margin:0;flex:1">X 위치</label><span id="xVal" class="value"></span></div><input id="posX" type="range" min="-50" max="50" value="0"></div>
+ <div class="group controls"><div class="row"><label style="margin:0;flex:1">Y 위치</label><span id="yVal" class="value"></span></div><input id="posY" type="range" min="-50" max="50" value="0"></div>
+ <div class="group controls"><label>미리보기 / Export 크기</label><div class="row"><select id="sizePreset"></select><input id="customSize" type="number" min="48" max="4096" class="hidden"></div></div>
+ <div class="group controls"><label><input id="safe" type="checkbox" checked> 규격 가이드 표시</label><label><input id="center" type="checkbox"> 중심선 표시</label></div>
+ <div class="row controls"><button class="action" id="reset">현재 플랫폼 규격으로 초기화</button><button class="action primary" id="download">PNG 저장</button></div>
+</aside>
+
+<section class="content">
+ <div id="androidView">
+  <div class="intro"><h2>Android Adaptive Icon</h2><p>108×108dp 레이어 / 중앙 66×66dp Safe Zone / 주요 로고 48~66dp 기준.</p></div>
+  <div class="note"><b>초기값 Scale 61.1%</b>는 66 ÷ 108 비율입니다. 업로드한 PNG 자체에 투명 여백이 있다면 실제 로고 크기는 달라질 수 있으므로 가이드 박스를 기준으로 확인하세요.</div>
+  <div class="grid">
+   <div class="card"><h3>Circle</h3><div class="preview"><canvas id="aCircle"></canvas></div><div class="meta">OEM 원형 마스크 예시</div></div>
+   <div class="card"><h3>Squircle</h3><div class="preview"><canvas id="aSquircle"></canvas></div><div class="meta">OEM Squircle 마스크 예시</div></div>
+   <div class="card"><h3>Rounded Square</h3><div class="preview"><canvas id="aRound"></canvas></div><div class="meta">둥근 사각형 마스크 예시</div></div>
+   <div class="card"><h3>108dp Design Canvas</h3><div class="preview"><canvas id="aSquare"></canvas></div><div class="meta">점선 사각형 = 중앙 66×66dp Safe Zone</div></div>
+  </div>
+ </div>
+
+ <div id="iosView" class="hidden">
+  <div class="intro"><h2>iOS / iPadOS App Icon</h2><p>1024×1024 정사각형 캔버스를 기준으로 시스템 마스크를 미리 봅니다.</p></div>
+  <div class="note"><b>iOS에는 Android의 66/108과 같은 공식 고정 내부 Safe Zone 비율이 없습니다.</b> 따라서 초기값은 1024×1024 / Scale 100% / 중앙정렬입니다. 시스템이 최종 마스크를 적용하므로 원본 이미지 자체에 둥근 모서리를 넣지 마세요.</div>
+  <div class="grid">
+   <div class="card"><h3>System Mask Preview</h3><div class="preview"><canvas id="iRound"></canvas></div><div class="meta">홈 화면 표시 형태를 확인하기 위한 마스크 미리보기</div></div>
+   <div class="card"><h3>1024×1024 Source</h3><div class="preview"><canvas id="iSquare"></canvas></div><div class="meta">제출용 정사각형 디자인 캔버스</div></div>
+   <div class="card"><h3>Small-size Check</h3><div class="preview"><canvas id="iSmall"></canvas></div><div class="meta">작은 표시 크기에서 가독성 확인</div></div>
+  </div>
+ </div>
+
+ <div id="compareView" class="hidden">
+  <div class="intro"><h2>Official-default Compare</h2><p>Android와 iOS 각각의 기본 규격을 독립적으로 적용하여 비교합니다.</p></div>
+  <div class="note">Compare에서는 슬라이더를 공유하지 않습니다. <b>Android = 61.1% / 432px(108dp @4x)</b>, <b>iOS = 100% / 1024px</b> 기본값으로 고정 비교합니다.</div>
+  <div class="grid">
+   <div class="card"><h3>Android Circle <span class="badge">61.1%</span></h3><div class="preview"><canvas id="cmpAndroid"></canvas></div><div class="meta">108dp 캔버스의 66dp Safe Zone 기준</div></div>
+   <div class="card"><h3>Android Squircle <span class="badge">61.1%</span></h3><div class="preview"><canvas id="cmpAndroidSq"></canvas></div><div class="meta">동일 Android 공식 프리셋</div></div>
+   <div class="card"><h3>iOS Mask Preview <span class="badge">100%</span></h3><div class="preview"><canvas id="cmpIos"></canvas></div><div class="meta">1024×1024 전체 디자인 기준</div></div>
+   <div class="card"><h3>iOS Source <span class="badge">1024px</span></h3><div class="preview"><canvas id="cmpIosSquare"></canvas></div><div class="meta">마스크 전 정사각형</div></div>
+  </div>
+ </div>
+</section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let fg=null,bg=null,tab='android';
+const presets={
+ android:{scale:66/108*100,x:0,y:0,size:432,sizes:[192,432,512,1024],safe:true,
+  spec:'<b>Android 공식 기준</b><br>레이어: 108×108dp<br>Safe Zone: <span class="ok">66×66dp</span><br>주요 로고: 48~66dp<br>기본 Preview: 432px (=108dp @4x)'},
+ ios:{scale:100,x:0,y:0,size:1024,sizes:[120,180,512,1024],safe:true,
+  spec:'<b>Apple 공식 기준</b><br>iOS/iPadOS 디자인 캔버스: <span class="ok">1024×1024px</span><br>시스템이 최종 마스크 적용<br>Android식 고정 Safe Zone 비율 없음'}
+};
+const state={android:{...presets.android},ios:{...presets.ios}};
+
+function loadImage(file,cb){if(!file){cb(null);return}const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);cb(im)};im.src=u}
+$('#fgFile').onchange=e=>loadImage(e.target.files[0],x=>{fg=x;render()});
+$('#bgFile').onchange=e=>loadImage(e.target.files[0],x=>{bg=x;render()});
+$('#bgColor').oninput=()=>{$('#bgHex').textContent=$('#bgColor').value;render()};
+['scale','posX','posY','safe','center'].forEach(id=>$('#'+id).addEventListener('input',()=>{saveControls();render()}));
+$('#sizePreset').onchange=()=>{
+ const custom=$('#sizePreset').value==='custom';$('#customSize').classList.toggle('hidden',!custom);
+ if(!custom) state[tab].size=+$('#sizePreset').value; render();
+};
+$('#customSize').oninput=()=>{state[tab].size=Math.max(48,Math.min(4096,+$('#customSize').value||presets[tab].size));render()};
+
+function saveControls(){
+ if(tab==='compare')return;
+ state[tab].scale=+$('#scale').value; state[tab].x=+$('#posX').value; state[tab].y=+$('#posY').value;
+ state[tab].safe=$('#safe').checked;
+}
+function applyControls(){
+ if(tab==='compare')return;
+ const s=state[tab];
+ $('#scale').value=s.scale;$('#posX').value=s.x;$('#posY').value=s.y;$('#safe').checked=s.safe;
+ const sel=$('#sizePreset');sel.innerHTML=s.sizes.map(v=>`<option value="${v}">${v} px</option>`).join('')+'<option value="custom">직접 입력</option>';
+ if(s.sizes.includes(s.size)){sel.value=s.size;$('#customSize').classList.add('hidden')}else{sel.value='custom';$('#customSize').classList.remove('hidden');$('#customSize').value=s.size}
+ $('#specBox').innerHTML=presets[tab].spec;
+ $('#uploadHint').textContent=tab==='android'?'투명 Foreground PNG 권장. 배경은 별도 레이어로 구성하세요.':'완성된 정사각형 아이콘 원본을 업로드하세요.';
+ updateLabels();
+}
+function updateLabels(){
+ if(tab==='compare')return;
+ $('#scaleVal').textContent=(+$('#scale').value).toFixed(1)+'%';$('#xVal').textContent=$('#posX').value+'%';$('#yVal').textContent=$('#posY').value+'%';
+}
+$$('[data-tab]').forEach(b=>b.onclick=()=>{
+ if(tab!=='compare') saveControls();
+ tab=b.dataset.tab;
+ $$('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));
+ $('#androidView').classList.toggle('hidden',tab!=='android');$('#iosView').classList.toggle('hidden',tab!=='ios');$('#compareView').classList.toggle('hidden',tab!=='compare');
+ $$('.androidOnly').forEach(x=>x.classList.toggle('hidden',tab==='ios'||tab==='compare'));
+ $$('.controls').forEach(x=>x.classList.toggle('hidden',tab==='compare'));
+ $('#specBox').classList.toggle('hidden',tab==='compare');
+ if(tab!=='compare')applyControls();
+ render();
+});
+$('#reset').onclick=()=>{
+ const p=presets[tab];
+ state[tab]={...p,sizes:[...p.sizes]};
+ $('#center').checked=false;
+ if(tab==='android'){$('#bgColor').value='#4f7cff';$('#bgHex').textContent='#4f7cff'}
+ applyControls();render();
+};
+
+function rounded(ctx,x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function squircle(ctx,s){let cx=s/2,cy=s/2,a=s/2,p=4,steps=200;ctx.beginPath();for(let i=0;i<=steps;i++){let t=i/steps*Math.PI*2,c=Math.cos(t),q=Math.sin(t),x=cx+a*Math.sign(c)*Math.pow(Math.abs(c),2/p),y=cy+a*Math.sign(q)*Math.pow(Math.abs(q),2/p);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath()}
+function mask(ctx,type,s){
+ if(type==='circle'){ctx.beginPath();ctx.arc(s/2,s/2,s/2,0,Math.PI*2);ctx.closePath()}
+ else if(type==='squircle')squircle(ctx,s);
+ else if(type==='androidRound')rounded(ctx,0,0,s,s,s*.22);
+ else if(type==='iosRound')rounded(ctx,0,0,s,s,s*.225);
+ else{ctx.beginPath();ctx.rect(0,0,s,s);ctx.closePath()}
+}
+function cover(ctx,im,s){let k=Math.max(s/im.width,s/im.height),w=im.width*k,h=im.height*k;ctx.drawImage(im,(s-w)/2,(s-h)/2,w,h)}
+function drawImg(ctx,s,platform,settings){
+ if(platform==='android'){ctx.fillStyle=$('#bgColor').value;ctx.fillRect(0,0,s,s);if(bg)cover(ctx,bg,s)}
+ if(fg){
+  let max=s*(settings.scale/100),k=Math.min(max/fg.width,max/fg.height),w=fg.width*k,h=fg.height*k;
+  let x=(s-w)/2+(settings.x/100)*s,y=(s-h)/2+(settings.y/100)*s;
+  ctx.drawImage(fg,x,y,w,h);
+ }
+}
+function guides(ctx,s,platform,settings){
+ if(!settings.safe)return;
+ ctx.save();ctx.strokeStyle='rgba(255,255,255,.9)';ctx.fillStyle='rgba(255,255,255,.08)';ctx.lineWidth=Math.max(1,s*.005);ctx.setLineDash([Math.max(3,s*.012),Math.max(3,s*.012)]);
+ if(platform==='android'){
+   const z=s*(66/108),x=(s-z)/2;ctx.fillRect(x,x,z,z);ctx.strokeRect(x,x,z,z);
+   ctx.beginPath();ctx.arc(s/2,s/2,z/2,0,Math.PI*2);ctx.stroke();
+ } else {
+   ctx.setLineDash([]);rounded(ctx,0,0,s,s,s*.225);ctx.stroke();
+ }
+ ctx.restore();
+}
+function centerGuide(ctx,s){if(!$('#center').checked)return;ctx.save();ctx.strokeStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.moveTo(s/2,0);ctx.lineTo(s/2,s);ctx.moveTo(0,s/2);ctx.lineTo(s,s/2);ctx.stroke();ctx.restore()}
+function draw(id,type,platform,settings,size,small=false){
+ const c=$('#'+id);c.width=c.height=size;const ctx=c.getContext('2d');ctx.clearRect(0,0,size,size);
+ ctx.save();mask(ctx,type,size);ctx.clip();drawImg(ctx,size,platform,settings);ctx.restore();
+ guides(ctx,size,platform,settings);centerGuide(ctx,size);
+ c.style.width=small?'96px':'min(100%,240px)';
+}
+function render(){
+ if(tab!=='compare'){saveControls();updateLabels()}
+ const a=state.android,i=state.ios;
+ if(tab==='android'){
+  draw('aCircle','circle','android',a,a.size);draw('aSquircle','squircle','android',a,a.size);draw('aRound','androidRound','android',a,a.size);draw('aSquare','square','android',a,a.size);
+ }else if(tab==='ios'){
+  draw('iRound','iosRound','ios',i,i.size);draw('iSquare','square','ios',i,i.size);draw('iSmall','iosRound','ios',i,i.size,true);
+ }else{
+  const ad={scale:66/108*100,x:0,y:0,safe:true},io={scale:100,x:0,y:0,safe:true};
+  draw('cmpAndroid','circle','android',ad,432);draw('cmpAndroidSq','squircle','android',ad,432);draw('cmpIos','iosRound','ios',io,1024);draw('cmpIosSquare','square','ios',io,1024);
+ }
+}
+$('#download').onclick=()=>{
+ if(tab==='compare')return;
+ const id=tab==='android'?'aSquare':'iSquare',c=$('#'+id),a=document.createElement('a');
+ a.download=`${tab}-icon-${state[tab].size}x${state[tab].size}.png`;a.href=c.toDataURL('image/png');a.click();
+};
+applyControls();render();
+</script>
+</body>
+</html>
