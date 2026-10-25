@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Larva — Architecture Doc</title>
+    <title>UE_Multiplayer_Dedicated — Architecture Doc</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
@@ -155,39 +155,35 @@
     <div class="max-w-3xl mx-auto px-5 py-14 md:py-20">
 
         <!-- BACK LINK -->
-        <a href="index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
+        <a href="../index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
             <i class="fa-solid fa-arrow-left"></i> 포트폴리오로 돌아가기
         </a>
 
         <!-- HEADER -->
         <header class="mb-16">
-            <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// technical
-                director · architecture</p>
+            <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// R&D ·
+                architecture</p>
 
             <h1 class="hero-in text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight"
                 style="--d:0.16s">
-                Larva
-                <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">TubaN</span>
+                UE_Multiplayer_Dedicated
+                <span class="code-font text-lg md:text-xl text-[var(--text-dim)] font-normal ml-2">Multiplayer
+                    Core</span>
             </h1>
 
             <ul class="hero-in text-sm md:text-base text-[var(--text-dim)] mt-4 leading-relaxed space-y-1 max-w-2xl"
                 style="--d:0.32s">
-                <li>· Slapstick 3D 애니메이션</li>
-                <li>· UE5를 이용한 애니메이션 제작</li>
-                <li>· 작업기간: 2022.06.20 – 2023.01.20</li>
+                <li>· UE5 Dedicated Server with AWS and GameLift</li>
             </ul>
 
             <div class="hero-in flex flex-wrap gap-2 mt-6" style="--d:0.48s">
-                <span class="tag">C++ / Slate</span>
-                <span class="tag">Maya</span>
-                <span class="tag">Web Server</span>
+                <span class="tag">Unreal Engine 5</span>
+                <span class="tag">AWS GameLift</span>
+                <span class="tag">Dedicated Server</span>
             </div>
 
             <div class="hero-in flex flex-wrap gap-3 mt-6" style="--d:0.6s">
-                <a href="https://youtu.be/ottUSxTTM6g" target="_blank" class="btn btn-solid">
-                    <i class="fa-solid fa-play"></i> Demo Video
-                </a>
-                <a href="https://github.com/HQVFX42/UE_EditorTool" target="_blank" class="btn">
+                <a href="https://github.com/HQVFX42/UE_Multiplayer_Dedicated" target="_blank" class="btn btn-solid">
                     <i class="fa-brands fa-github"></i> Sample Code
                 </a>
             </div>
@@ -196,46 +192,16 @@
         <!-- CONTRIBUTE -->
         <section class="mb-14">
             <h2 class="text-xl text-white hairline-b pb-3 mb-2">Contribute</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="panel p-5">
-                    <h3 class="text-white text-sm mb-2 code-font">파이프라인</h3>
-                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">애니메이션 제작을 위한 파이프 라인 구축</p>
-                </div>
-                <div class="panel p-5">
-                    <h3 class="text-white text-sm mb-2 code-font">Rendering</h3>
-                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Sequence rendering 자동화</p>
-                </div>
-                <div class="panel p-5">
-                    <h3 class="text-white text-sm mb-2 code-font">Import</h3>
-                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">FBX Import 자동화</p>
-                </div>
-                <div class="panel p-5">
-                    <h3 class="text-white text-sm mb-2 code-font">Slate Tool</h3>
-                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Slate를 이용한 파이프라인 자동화 툴 개발
-                        전담</p>
-                </div>
-                <div class="panel p-5 md:col-span-2">
-                    <h3 class="text-white text-sm mb-2 code-font">Web Server</h3>
-                    <p class="text-xs text-[var(--text-dim)] leading-relaxed">Web server를 통한 다량의 Asset 관리 및 Log
-                        수집</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- OUTCOME -->
-        <section class="mb-14">
-            <h2 class="text-xl text-white hairline-b pb-3 mb-6">Outcome</h2>
             <div class="panel p-6">
                 <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
-                    <li>· Sample Code: <a href="https://github.com/HQVFX42/UE_EditorTool" target="_blank"
-                            class="link-accent">github.com/HQVFX42/UE_EditorTool</a></li>
-                    <li>· 넷플릭스 저작권 문제로 인한 대체영상 첨부</li>
+                    <li>· 간단한 FPS 콘텐츠를 이용하여 멀티플레이 환경 구축 및 테스트</li>
+                    <li>· UE5 Dedicated 서버를 AWS GameLift에 연동해 세션 운용 검증</li>
                 </ul>
             </div>
         </section>
 
         <footer class="mt-16 pt-6 hairline text-center text-xs text-[var(--text-faint)] code-font">
-            <p>Larva — TubaN</p>
+            <p>UE_Multiplayer_Dedicated</p>
             <p class="mt-2">© 2026 장인호</p>
         </footer>
     </div>
