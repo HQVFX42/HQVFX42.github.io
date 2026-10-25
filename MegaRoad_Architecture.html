@@ -222,6 +222,152 @@
             </div>
         </section>
 
+        <!-- SYSTEMS -->
+        <section class="mb-14">
+            <h2 class="text-xl text-white hairline-b pb-3 mb-2">Systems</h2>
+            <p class="text-xs text-[var(--text-dim)] leading-relaxed mb-6">모든 시스템은 서버 API 응답 데이터를 기준으로 UI를 구성하고, 유저 액션은 서버 요청 → 응답 결과로 화면을 갱신하는 구조로 구현</p>
+            <div class="space-y-4">
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_02.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_02.jpg" alt="로비" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">로비</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 로그인 시 서버에서 받은 유저 프로필 · 레벨 · 재화(에너지, 보석, 골드) 데이터로 상단 HUD 구성</li>
+                            <li>· 최장 생존 기록, 진행 스테이지 등 유저 진행 정보를 서버 데이터 기준으로 로비에 표시</li>
+                            <li>· 하단 탭(Shop / Weapons / Home / Challenge / DNA) 화면 전환 및 재화 변동 시 서버 응답 값으로 HUD 동기화</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_01.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_01.jpg" alt="장비" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">장비</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 서버 인벤토리 데이터를 받아 장착 슬롯 6종과 보유 장비 목록, 등급 · 레벨 표시</li>
+                            <li>· 장착 / 해제 / 합성 요청을 서버로 전송하고 응답 결과로 인벤토리와 공격력 · HP 스탯 갱신</li>
+                            <li>· 등급별 정렬, 강화 가능 장비 알림 표시</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_05.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_05.jpg" alt="출석 시스템" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">출석 시스템</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 서버에서 받은 출석 일차 · 수령 여부로 7일 출석 보상 상태 표시</li>
+                            <li>· 연속 출석 일수와 단계별 보상 상자 진행도를 서버 데이터 기준으로 구성</li>
+                            <li>· 보상 수령 요청 후 서버 응답으로 보상 지급 및 재화 갱신</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_07.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_07.jpg" alt="퀘스트 시스템" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">퀘스트 시스템</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 일일 / 주간 / 업적 탭별 퀘스트 목록과 진행도, 초기화 남은 시간을 서버에서 받아 표시</li>
+                            <li>· 개별 보상 · 모두 획득 요청을 서버로 처리하고 누적 포인트 마일스톤 상자 보상 연동</li>
+                            <li>· 미완료 퀘스트는 해당 콘텐츠로 바로 이동하는 동선 제공</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_18.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_18.jpg" alt="상점 비주얼" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                        <a href="images/Thumbnail_Megaroad_20.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_20.jpg" alt="상점 비주얼" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">상점 비주얼</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 서버 상품 데이터 기반으로 한정 패키지 배너, 일일 상점 슬롯, 상자 상품 구성</li>
+                            <li>· 상품별 할인율 · 가격 · 매진 상태와 일일 상점 갱신 타이머를 서버 데이터로 표시</li>
+                            <li>· 구매 요청 후 서버 응답으로 매진 처리 및 재화 갱신</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_10.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_10.jpg" alt="상점(가챠) 시스템" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                        <a href="images/Thumbnail_Megaroad_09.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_09.jpg" alt="상점(가챠) 시스템" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">상점(가챠) 시스템</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 1회 / 10회 뽑기 요청 후 서버 응답으로 받은 결과 장비를 기준으로 개봉 연출 진행</li>
+                            <li>· 등급별 연출, 건너뛰기, 10연차 결과 리스트 UI 구현</li>
+                            <li>· 무료 개봉 쿨타임 · 천장(보장) 정보를 서버 데이터로 표시</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_15.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_15.jpg" alt="인게임 비주얼" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">인게임 비주얼</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 서버에서 받은 스테이지 · 장착 장비 스탯 데이터를 반영해 인게임 진입</li>
+                            <li>· 생존 타이머, 레벨 게이지, 처치 수 · 획득 골드 등 인게임 HUD 구현</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_11.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_11.jpg" alt="인게임 스킬 시스템" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">인게임 스킬 시스템</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 서버 스킬 데이터 기반으로 레벨업 시 3택 스킬 선택 UI 구성</li>
+                            <li>· 보유 무기 / 패시브 슬롯과 스킬 레벨, 진화 조합 정보 표시</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_17.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_17.jpg" alt="인게임 통계" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">인게임 통계</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 스킬별 누적 피해량을 집계해 비율 그래프로 표시</li>
+                            <li>· 서버에서 받은 스킬 데이터(이름 · 아이콘)와 매핑해 통계 UI 구성</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel p-5 flex flex-col sm:flex-row gap-5">
+                    <div class="flex gap-2 shrink-0">
+                        <a href="images/Thumbnail_Megaroad_16.jpg" target="_blank"><img src="images/Thumbnail_Megaroad_16.jpg" alt="순찰 시스템" loading="lazy" class="w-28 rounded border border-[var(--line)]"></a>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-sm mb-2 code-font">순찰 시스템</h3>
+                        <ul class="text-xs text-[var(--text-dim)] leading-relaxed space-y-1.5">
+                            <li>· 서버 시간 기준으로 순찰 경과 시간과 누적 보상 계산 결과를 받아 표시 (최대 24시간)</li>
+                            <li>· 스테이지 진행도에 따른 시간당 골드 · EXP 산출량을 서버 데이터로 표시</li>
+                            <li>· 보상 수령 · 빠른 순찰 요청을 서버로 처리하고 응답 결과로 보상 지급</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- OUTCOME -->
         <section class="mb-14">
             <h2 class="text-xl text-white hairline-b pb-3 mb-6">Outcome</h2>
