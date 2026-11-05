@@ -369,6 +369,11 @@
         <div class="snap-section">
 
             <!-- HEADER -->
+            <nav aria-label="Language" class="flex justify-end gap-3 mb-6 code-font text-xs text-[var(--text-faint)]">
+                <a href="?lang=ko" data-language="ko" lang="ko" aria-label="한국어">KR</a>
+                <span aria-hidden="true">/</span>
+                <a href="?lang=en" data-language="en" lang="en" aria-label="English">EN</a>
+            </nav>
             <header class="mb-20">
                 <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// game creator
                 </p>
@@ -1352,6 +1357,7 @@
             }, { passive: false });
         })();
     </script>
+    <script src="language.js"></script>
 </body>
 
 </html>
