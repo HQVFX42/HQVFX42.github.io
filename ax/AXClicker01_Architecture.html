@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+<script>if(new URLSearchParams(location.search).has("embedded"))document.documentElement.dataset.embedded="true";</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AX_Clicker_01 — Architecture Doc</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -10,156 +11,21 @@
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
         rel="stylesheet">
-    <style>
-        :root {
-            --bg: #141414;
-            --line: #2a2a2a;
-            --text: #e8e8e6;
-            --text-dim: #8c8c8a;
-            --text-faint: #5c5c5a;
-            --accent: #5b8def;
-        }
-
-        body {
-            font-family: 'Inter', 'Noto Sans KR', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            font-weight: 400;
-        }
-
-        .code-font {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        a {
-            color: inherit;
-        }
-
-        ::selection {
-            background: var(--accent);
-            color: #0c0c0c;
-        }
-
-        .hairline {
-            border-top: 1px solid var(--line);
-        }
-
-        .hairline-b {
-            border-bottom: 1px solid var(--line);
-        }
-
-        .panel {
-            background: #1a1a1a;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-        }
-
-        .link-accent {
-            color: var(--accent);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.15s ease, transform 0.15s ease;
-            display: inline-block;
-        }
-
-        .link-accent:hover {
-            border-bottom-color: var(--accent);
-            transform: translateX(2px);
-        }
-
-        .btn {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            padding: 0.55rem 1.1rem;
-            border-radius: 4px;
-            border: 1px solid var(--line);
-            color: var(--text);
-            transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-        }
-
-        .btn-solid {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #0c0c0c;
-        }
-
-        .btn-solid:hover {
-            color: #0c0c0c;
-            opacity: 0.88;
-        }
-
-        .tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6875rem;
-            color: var(--text-dim);
-            border: 1px solid var(--line);
-            padding: 0.15rem 0.55rem;
-            border-radius: 3px;
-        }
-
-        .hero-in {
-            opacity: 0;
-            transform: translateY(14px);
-            animation: hero-in-kf 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: var(--d, 0s);
-        }
-
-        @keyframes hero-in-kf {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .hero-in {
-                animation: none;
-                opacity: 1;
-                transform: none;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 9px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--line);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-faint);
-        }
-    </style>
+<link rel="stylesheet" href="../assets/console.css">
+<link rel="stylesheet" href="../assets/experience.css">
+<link rel="stylesheet" href="../assets/documents.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 </head>
 
-<body class="antialiased">
+<body class="antialiased document-page">
+<div class="scene" aria-hidden="true"><img class="scene-image active" src="../images/Thumbnail_Clicker01.png" alt=""><div class="scene-shade"></div></div>
+<a class="skip-link" href="#doc-article">본문으로 건너뛰기</a>
+<header class="console-header"><a class="brand" href="../index.html#library" target="_top" aria-label="INHO PLAY home">i<span>p</span><i></i></a><nav id="main-nav" aria-label="Main navigation"><a class="nav-button" href="../index.html#library" target="_top">작품</a><a class="nav-button" href="../index.html#dashboard" target="_top">활동</a><a class="nav-button" aria-current="page" href="../index.html#notes/p1-5" target="_top">제작 기록</a><a class="nav-button" href="../index.html#profile" target="_top">프로필</a></nav><div class="system-controls"><a class="profile-button" href="../index.html#profile" target="_top" aria-label="장인호 프로필"><span>in</span><i class="presence-dot" aria-hidden="true"></i></a></div></header>
 
-    <div class="max-w-3xl mx-auto px-5 py-14 md:py-20">
+    <div id="doc-article" class="doc-content max-w-3xl mx-auto px-5 py-14 md:py-20">
 
-        <!-- BACK LINK -->
-        <a href="../index.html" class="link-accent code-font text-xs mb-10 inline-flex items-center gap-2">
-            <i class="fa-solid fa-arrow-left"></i> 포트폴리오로 돌아가기
-        </a>
-
-        <!-- HEADER -->
+        <nav class="document-breadcrumb" aria-label="Breadcrumb"><a href="../index.html#notes/p1-5" target="_top">← 프로젝트 기록</a><span>ARCHITECTURE / AX_Clicker_01</span></nav>
+<!-- HEADER -->
         <header class="mb-16">
             <p class="hero-in code-font text-xs text-[var(--accent)] tracking-wide mb-4" style="--d:0s">// AI-assisted
                 dev · architecture</p>
@@ -226,6 +92,8 @@
         </footer>
     </div>
 
+<footer class="document-console-footer"><a href="../index.html#notes/p1-5" target="_top">프로젝트 목록과 함께 읽기 ↗</a><span>INHO PLAY / CREATOR NOTES</span></footer>
+<script src="../assets/documents.js"></script><script src="../assets/session-ui.js"></script>
 </body>
 
 </html>

@@ -5,9 +5,11 @@ window.PORTFOLIO_PROJECTS = [
     "name": "SUPER POP!",
     "image": "images/Thumbnail_SuperPop.png",
     "tags": [
-      "Unity Mobile",
+      "Unity",
       "iOS / Android",
-      "LevelPlay"
+      "LevelPlay",
+      "Git",
+      "GitHub Actions"
     ],
     "details": [
       {
@@ -38,7 +40,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "https://apps.apple.com/us/app/super-pop-pop-match/id6822206631"
       }
-    ]
+    ],
+    "startedAt": "2026-01",
+    "period": {
+      "ko": "2026.01 – 진행중",
+      "en": "2026.01 – Ongoing"
+    }
   },
   {
     "id": "p0-1",
@@ -46,10 +53,14 @@ window.PORTFOLIO_PROJECTS = [
     "name": "Mega Road",
     "image": "images/Thumbnail_Megaroad.png",
     "tags": [
-      "Unity Mobile",
+      "Unity",
       "iOS / Android",
       "AppLovin",
-      "Backend Integration"
+      "Backend Integration",
+      "Git",
+      "SVN",
+      "Jenkins",
+      "Linear"
     ],
     "details": [
       {
@@ -81,7 +92,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "core/MegaRoad_Architecture.html"
       }
-    ]
+    ],
+    "startedAt": "2023-04-19",
+    "period": {
+      "ko": "2023.04.19 – 2023.11.27",
+      "en": "2023.04.19 – 2023.11.27"
+    }
   },
   {
     "id": "p0-2",
@@ -92,7 +108,9 @@ window.PORTFOLIO_PROJECTS = [
       "UE5 Plugin",
       "C++ & Slate",
       "Pipeline Automation",
-      "Internal Web API"
+      "Internal Web API",
+      "Git",
+      "SVN"
     ],
     "details": [
       {
@@ -128,7 +146,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "core/Larva_Architecture.html"
       }
-    ]
+    ],
+    "startedAt": "2022-06-20",
+    "period": {
+      "ko": "2022.06.20 – 2023.01.20",
+      "en": "2022.06.20 – 2023.01.20"
+    }
   },
   {
     "id": "p0-3",
@@ -138,7 +161,8 @@ window.PORTFOLIO_PROJECTS = [
     "tags": [
       "UE4 C++",
       "Listen Server",
-      "Co-op"
+      "Co-op",
+      "Git"
     ],
     "details": [
       {
@@ -166,7 +190,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "core/WhiteParadise_Architecture.html"
       }
-    ]
+    ],
+    "startedAt": "2019-05-20",
+    "period": {
+      "ko": "2019.05.20 – 2020.06.01",
+      "en": "2019.05.20 – 2020.06.01"
+    }
   },
   {
     "id": "p1-0",
@@ -175,7 +204,7 @@ window.PORTFOLIO_PROJECTS = [
     "image": "images/Thumbnail_WhaleGetaway.jpg",
     "tags": [
       "Game Jam",
-      "TypeScript + Vite",
+      "Git",
       "2D"
     ],
     "details": [
@@ -211,7 +240,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "ax/WhaleGetaway_Architecture.html"
       }
-    ]
+    ],
+    "startedAt": "2026-06",
+    "period": {
+      "ko": "2026.06 – 2026.07",
+      "en": "2026.06 – 2026.07"
+    }
   },
   {
     "id": "p1-1",
@@ -220,7 +254,7 @@ window.PORTFOLIO_PROJECTS = [
     "image": "images/Thumbnail_HamsThor.png",
     "tags": [
       "Game Jam",
-      "JS",
+      "Git",
       "2D"
     ],
     "details": [
@@ -256,7 +290,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "ax/HamsThor_Architecture.html"
       }
-    ]
+    ],
+    "startedAt": "2026-06-29",
+    "period": {
+      "ko": "2026.06.29 – 2026.07.14",
+      "en": "2026.06.29 – 2026.07.14"
+    }
   },
   {
     "id": "p1-2",
@@ -289,7 +328,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "https://epiclog42.itch.io/germ-y-laundry"
       }
-    ]
+    ],
+    "startedAt": "2026-06-02",
+    "period": {
+      "ko": "2026.06.02 – 2026.06.03",
+      "en": "2026.06.02 – 2026.06.03"
+    }
   },
   {
     "id": "p1-3",
@@ -322,7 +366,12 @@ window.PORTFOLIO_PROJECTS = [
         },
         "href": "https://epiclog42.itch.io/no-more-prizes"
       }
-    ]
+    ],
+    "startedAt": "2026-05-21",
+    "period": {
+      "ko": "2026.05.21 – 2026.05.28",
+      "en": "2026.05.21 – 2026.05.28"
+    }
   },
   {
     "id": "p1-4",

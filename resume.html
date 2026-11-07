@@ -357,13 +357,17 @@
             background: var(--text-faint);
         }
     </style>
+<link rel="stylesheet" href="assets/console.css">
+<link rel="stylesheet" href="assets/experience.css">
+<link rel="stylesheet" href="assets/documents.css">
 </head>
 
-<body class="antialiased overflow-x-hidden relative">
+<body class="antialiased overflow-x-hidden relative document-page resume-page">
+<header class="console-header"><a class="brand" href="index.html#library" aria-label="INHO PLAY home">i<span>p</span><i></i></a><nav id="main-nav" aria-label="Main navigation"><a class="nav-button" href="index.html#library">작품</a><a class="nav-button" href="index.html#dashboard">활동</a><a class="nav-button" href="index.html#notes">제작 기록</a><a class="nav-button" href="index.html#profile">프로필</a></nav><div class="system-controls"><a class="profile-button" href="index.html#profile" aria-label="장인호 프로필"><span>in</span><i class="presence-dot" aria-hidden="true"></i></a></div></header>
 
     <div id="scroll-progress"></div>
 
-    <div class="max-w-4xl mx-auto px-5 py-14 md:py-20 relative z-10">
+    <div class="doc-content max-w-4xl mx-auto px-5 py-14 md:py-20 relative z-10">
 
         <!-- PROFILE AREA -->
         <div class="snap-section">
@@ -580,9 +584,11 @@
                         <span class="code-font text-xs text-[var(--text-faint)]">2026.01 – 진행중</span>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag">Unity Mobile</span>
+                        <span class="tag">Unity</span>
                         <span class="tag">iOS / Android</span>
                         <span class="tag">LevelPlay</span>
+                        <span class="tag">Git</span>
+                        <span class="tag">GitHub Actions</span>
                     </div>
                     <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
                         <li>· 유니티 모바일 2D 캐주얼 퍼즐 게임 개발</li>
@@ -620,10 +626,14 @@
                         <span class="code-font text-xs text-[var(--text-faint)]">2023.04.19 – 2023.11.27</span>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag">Unity Mobile</span>
+                        <span class="tag">Unity</span>
                         <span class="tag">iOS / Android</span>
                         <span class="tag">AppLovin</span>
                         <span class="tag">Backend Integration</span>
+                        <span class="tag">Git</span>
+                        <span class="tag">SVN</span>
+                        <span class="tag">Jenkins</span>
+                        <span class="tag">Linear</span>
                     </div>
                     <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
                         <li>· 클라이언트-서버 간 패킷 통신에 대응하는 인게임 및 아웃게임 UI 전반 구현</li>
@@ -660,6 +670,8 @@
                         <span class="tag">C++ & Slate</span>
                         <span class="tag">Pipeline Automation</span>
                         <span class="tag">Internal Web API</span>
+                        <span class="tag">Git</span>
+                        <span class="tag">SVN</span>
                     </div>
                     <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
                         <li>· 언리얼 엔진 5 환경에서 애니메이션 워크플로우 지원용 확장형 에디터 플러그인 C++ 설계 및 구현</li>
@@ -696,6 +708,7 @@
                         <span class="tag">UE4 C++</span>
                         <span class="tag">Listen Server</span>
                         <span class="tag">Co-op</span>
+                        <span class="tag">Git</span>
                     </div>
                     <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
                         <li>· 언리얼 엔진 4 기반 멀티플레이어 생존 게임의 핵심 플레이 메커니즘 설계 및 C++ 구현</li>
@@ -735,8 +748,8 @@
                         <span class="code-font text-xs text-[var(--text-faint)]">2026.06 – 2026.07</span>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag">Game Jam</span>
-                        <span class="tag">TypeScript + Vite</span>
+                        <span class="tag tag-jam">Game Jam</span>
+                        <span class="tag">Git</span>
                         <span class="tag">2D</span>
                     </div>
                     <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
@@ -774,8 +787,8 @@
                         <span class="code-font text-xs text-[var(--text-faint)]">2026.06.29 – 2026.07.14</span>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag">Game Jam</span>
-                        <span class="tag">JS</span>
+                        <span class="tag tag-jam">Game Jam</span>
+                        <span class="tag">Git</span>
                         <span class="tag">2D</span>
                     </div>
                     <ul class="text-sm text-[var(--text-dim)] space-y-1.5 leading-relaxed">
@@ -1191,173 +1204,9 @@
         snapSections.forEach((section) => snapObserver.observe(section));
     </script>
 
-    <!-- Wheel Resistance Controller (영역 끝에 도달해도 즉시 넘어가지 않고, 흐려지며 더 휠을 내려야 다음 영역으로 확정 전환) -->
-    <script>
-        (function () {
-            if (!window.matchMedia('(pointer: fine)').matches) return;
 
-            const sections = Array.from(document.querySelectorAll('.snap-section'));
-            if (sections.length < 2) return;
-
-            const RESISTANCE = 220;
-            const IDLE_RESET_MS = 220;
-            const COMMIT_LOCK_MS = 650;
-            const DIM_RATIO = 0.6;
-
-            let bounds = [];
-            let progress = 0;
-            let resistDirection = 0;
-            let resistTarget = null;
-            let idleTimer = null;
-            let locked = false;
-
-            function recomputeBounds() {
-                bounds = sections.map((el) => ({
-                    el,
-                    top: el.offsetTop,
-                    bottom: el.offsetTop + el.offsetHeight,
-                }));
-            }
-            recomputeBounds();
-            window.addEventListener('resize', recomputeBounds);
-
-            function currentIndex() {
-                const y = window.scrollY;
-                for (let i = bounds.length - 1; i >= 0; i--) {
-                    if (y >= bounds[i].top - 1) return i;
-                }
-                return 0;
-            }
-
-            function resetResistance() {
-                if (resistTarget) {
-                    resistTarget.style.opacity = '';
-                    resistTarget.style.transitionDuration = '';
-                }
-                progress = 0;
-                resistDirection = 0;
-                resistTarget = null;
-                clearTimeout(idleTimer);
-            }
-
-            function applyDim(el, ratio) {
-                el.style.transitionDuration = '0.12s';
-                el.style.opacity = String(1 - ratio * DIM_RATIO);
-            }
-
-            function commitTo(targetTop, fadingEl) {
-                locked = true;
-                clearTimeout(idleTimer);
-                window.scrollTo({ top: targetTop, behavior: 'smooth' });
-                setTimeout(() => {
-                    if (fadingEl) {
-                        fadingEl.style.opacity = '';
-                        fadingEl.style.transitionDuration = '';
-                    }
-                    resetResistance();
-                    locked = false;
-                }, COMMIT_LOCK_MS);
-            }
-
-            window.addEventListener('wheel', (e) => {
-                if (locked) {
-                    e.preventDefault();
-                    return;
-                }
-
-                const idx = currentIndex();
-                const y = window.scrollY;
-                const viewH = window.innerHeight;
-                const current = bounds[idx];
-                const next = bounds[idx + 1];
-                const prev = bounds[idx - 1];
-
-                const goingDown = e.deltaY > 0;
-                const goingUp = e.deltaY < 0;
-
-                if (goingDown && next) {
-                    const maxAllowedY = Math.max(current.bottom - viewH, current.top);
-                    if (y >= maxAllowedY - 0.5) {
-                        e.preventDefault();
-                        if (resistDirection !== 1 || resistTarget !== current.el) resetResistance();
-                        resistDirection = 1;
-                        resistTarget = current.el;
-                        progress += e.deltaY;
-                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
-
-                        clearTimeout(idleTimer);
-                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
-
-                        if (progress >= RESISTANCE) {
-                            commitTo(next.top, resistTarget);
-                        }
-                        return;
-                    }
-
-                    const intendedY = y + e.deltaY;
-                    if (intendedY > maxAllowedY) {
-                        e.preventDefault();
-                        window.scrollTo(0, maxAllowedY);
-                        if (resistDirection !== 1 || resistTarget !== current.el) resetResistance();
-                        resistDirection = 1;
-                        resistTarget = current.el;
-                        progress += intendedY - maxAllowedY;
-                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
-
-                        clearTimeout(idleTimer);
-                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
-
-                        if (progress >= RESISTANCE) {
-                            commitTo(next.top, resistTarget);
-                        }
-                        return;
-                    }
-                }
-
-                if (goingUp && prev) {
-                    const minAllowedY = current.top;
-                    if (y <= minAllowedY + 0.5) {
-                        e.preventDefault();
-                        if (resistDirection !== -1 || resistTarget !== current.el) resetResistance();
-                        resistDirection = -1;
-                        resistTarget = current.el;
-                        progress += -e.deltaY;
-                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
-
-                        clearTimeout(idleTimer);
-                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
-
-                        if (progress >= RESISTANCE) {
-                            commitTo(prev.top, resistTarget);
-                        }
-                        return;
-                    }
-
-                    const intendedY = y + e.deltaY;
-                    if (intendedY < minAllowedY) {
-                        e.preventDefault();
-                        window.scrollTo(0, minAllowedY);
-                        if (resistDirection !== -1 || resistTarget !== current.el) resetResistance();
-                        resistDirection = -1;
-                        resistTarget = current.el;
-                        progress += minAllowedY - intendedY;
-                        applyDim(resistTarget, Math.min(progress / RESISTANCE, 1));
-
-                        clearTimeout(idleTimer);
-                        idleTimer = setTimeout(resetResistance, IDLE_RESET_MS);
-
-                        if (progress >= RESISTANCE) {
-                            commitTo(prev.top, resistTarget);
-                        }
-                        return;
-                    }
-                }
-
-                if (resistDirection !== 0) resetResistance();
-            }, { passive: false });
-        })();
-    </script>
     <script src="language.js"></script>
+<script src="assets/session-ui.js"></script>
 </body>
 
 </html>

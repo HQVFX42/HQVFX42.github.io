@@ -8,11 +8,14 @@
   const t = (ko, en) => lang === 'en' ? en : ko;
   const localized = (value) => typeof value === 'string' ? value : value[lang];
   const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const views = [['library','작품','Collection'],['playroom','플레이룸','Playroom'],['notes','기록','Notes'],['profile','프로필','Profile']];
-  let currentView = views.some(v => `#${v[0]}` === location.hash) ? location.hash.slice(1) : 'library';
-  let selected = 'p1-0';
+  const views = [['library','작품','Collection'],['dashboard','활동','Activity'],['notes','제작 기록','Projects'],['profile','프로필','Profile']];
+  const initialRoute = location.hash.slice(1).split('/');
+  let currentView = initialRoute[0] === 'playroom' ? 'dashboard' : views.some(v=>v[0]===initialRoute[0]) ? initialRoute[0] : 'library';
+  let selected = initialRoute[0] === 'library' && projects.some(p=>p.id===initialRoute[1]) ? initialRoute[1] : 'p0-0';
+  let exploring = initialRoute[0] === 'library' && projects.some(p=>p.id===initialRoute[1]);
   let filter = 'all';
-  let detailId = null;
+  let readerId = projects.some(p=>p.id===initialRoute[1]) ? initialRoute[1] : 'p1-0';
+  let renderedDocument = '';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let backgroundVersion = 0, backgroundId = null, hoverTimer = 0;
   let soundEnabled = false, audioContext = null;
@@ -36,6 +39,7 @@
     $('#sound-toggle').setAttribute('aria-label',soundEnabled ? t('UI 효과음 끄기','Turn UI sound off') : t('UI 효과음 켜기','Turn UI sound on'));
   }
   async function updateBackground(project) {
+    if (!project.image) return;
     if (backgroundId === project.id) return;
     backgroundId = project.id;
     const version = ++backgroundVersion;
@@ -48,16 +52,19 @@
     layers.forEach(layer => layer.classList.toggle('active', layer === next));
   }
   function selectProject(id, focus = false) {
-    if (selected !== id) { selected = id; renderFeatured(); playTone(); }
+    if (selected !== id) {
+      selected = id; renderFeatured(); playTone();
+      if (exploring && currentView==='library') history.replaceState(null,'',`#library/${id}`);
+    }
     const button = $(`[data-select="${id}"]`);
-    if (focus) {
+    if (focus && button) {
       button.focus({preventScroll:true});
       const rail = $('#featured-strip');
       const left = button.offsetLeft - rail.offsetLeft;
       rail.scrollTo({left:Math.max(0,left - 8), behavior:reducedMotion.matches ? 'instant' : 'smooth'});
     }
   }
-  const selectedIds = ['p1-0', 'p0-0', 'p0-2', 'p0-1', 'p1-1', 'p0-3'];
+  const selectedIds = ['p0-0', 'p1-0', 'p1-1', 'p0-1', 'p0-2', 'p0-3'];
   const editorial = {
     'p1-0': {title:'Whale\nGetaway', color:'#0c2942', subtitle:['작은 고래와 함께, 푸른 바다를 되찾는 모험.','A little whale. A big adventure to reclaim the blue.'],kind:'SOLO GAME · PIXEL ADVENTURE'},
     'p0-0': {title:'SUPER\nPOP!', color:'#173b40', subtitle:['가볍게 시작해, 계속 즐기고 싶은 모바일 퍼즐.','A casual mobile puzzle, made for one more round.'],kind:'MOBILE GAME · UNITY'},
@@ -78,41 +85,48 @@
   }
   function setView(id, navigate = true) {
     if (!views.some(v => v[0] === id)) return;
+    if (id === 'library' && navigate) { exploring=false;renderFeatured(); }
     currentView = id;
     document.body.dataset.view = id;
+    document.body.classList.toggle('is-exploring',id === 'library' && exploring);
     $('.scene').classList.toggle('scene-interior',id !== 'library');
     clearTimeout(hoverTimer);
     document.querySelectorAll('.view').forEach(el => { el.hidden = el.id !== `view-${id}`; });
     renderNavigation();
+    if (id === 'notes') renderNotes();
     if (navigate) {
       playTone(true);
-      history.pushState(null,'',`#${id}`);
+      history.pushState(null,'',id === 'notes' ? `#notes/${readerId}` : `#${id}`);
       window.scrollTo({top:0,behavior:'instant'});
       $('#main').focus({preventScroll:true});
     }
   }
   function renderFeatured() {
     const p = projects.find(p => p.id === selected);
-    const e = editorial[selected];
+    const e = editorial[selected] || {title:p.name,kind:category(p),subtitle:[p.summary.ko || p.details[0]?.ko || '',p.summary.en || p.details[0]?.en || '']};
     updateBackground(p);
-    $('#featured').innerHTML = `<div class="featured-content"><p class="feature-label">${e.kind}</p><h2>${escape(e.title)}</h2><p class="featured-description">${t(...e.subtitle)}</p><div class="featured-tags">${p.tags.slice(0,3).map(tag=>`<span>${escape(tag)}</span>`).join('')}</div><div class="featured-actions"><button class="primary-button" data-detail="${p.id}">${t('작품 살펴보기','Explore project')} <span aria-hidden="true">↗</span></button>${p.links.find(l=>l.href.includes('itch.io'))?`<a class="secondary-button" href="${escape(p.links.find(l=>l.href.includes('itch.io')).href)}" target="_blank" rel="noopener noreferrer">${t('itch.io에서 플레이 ↗','Play on itch.io ↗')}</a>`:''}</div></div>`;
+    document.body.classList.toggle('is-exploring',currentView === 'library' && exploring);
+    const externalLinks=p.links.filter(link=>!link.href.endsWith('.html'));
+    $('#featured').innerHTML = `<div class="featured-content"><p class="feature-label">${escape(e.kind)}</p><h2>${escape(e.title)}</h2><p class="featured-description">${escape(t(...e.subtitle))}</p><div class="featured-tags">${p.tags.map(tagMarkup).join('')}</div><div class="featured-actions"><button class="primary-button" ${exploring?'data-close-explore':`data-detail="${p.id}"`} aria-expanded="${exploring}" aria-controls="home-info">${exploring?t('설명 닫기','Close details'):t('작품 살펴보기','Explore project')} <span aria-hidden="true">${exploring?'−':'+'}</span></button>${!exploring&&p.links.find(l=>l.href.includes('itch.io'))?`<a class="secondary-button" href="${escape(p.links.find(l=>l.href.includes('itch.io')).href)}" target="_blank" rel="noopener noreferrer">${t('itch.io에서 플레이 ↗','Play on itch.io ↗')}</a>`:''}</div></div><section id="home-info" class="home-info" aria-labelledby="home-info-title" tabindex="-1" ${exploring?'':'hidden'}><div class="home-info-heading"><p class="eyebrow">${escape(category(p))}</p><button class="close-button" data-close-explore aria-label="${t('설명 닫기','Close details')}">×</button></div><h3 id="home-info-title">${t('이 작품에서 만든 것','What I built')}</h3>${p.period?`<p class="home-info-period">${escape(localized(p.period))}</p>`:''}${p.details.length?`<ul>${p.details.map(item=>`<li>${escape(localized(item))}</li>`).join('')}</ul>`:`<p class="home-info-summary">${escape(localized(p.summary))}</p>`}<div class="home-info-links">${externalLinks.map(link=>`<a href="${escape(link.href)}"${externalAttributes(link.href)}>${escape(localized(link.label))} ↗</a>`).join('')}${p.links.some(link=>link.href.endsWith('.html'))?`<button data-archive="${p.id}">${t('제작 기록에서 자세히 읽기','Read the architecture notes')} ↗</button>`:''}</div></section>`;
     $('#selected-name').textContent=p.name;
     $('#console-status').textContent=t(`${p.name} 선택됨`,`${p.name} selected`);
     document.querySelectorAll('.cover-button').forEach(button => {
       const active=button.dataset.select===selected;
-      button.setAttribute('aria-pressed', String(active)); button.tabIndex=active?0:-1;
+      button.setAttribute('aria-pressed', String(active));
+      button.tabIndex=active || (!selectedIds.includes(selected) && button.dataset.select===selectedIds[0])?0:-1;
     });
   }
   function renderStrip() {
     $('#featured-strip').innerHTML = selectedIds.map((id,i)=>{
       const p=projects.find(p=>p.id===id);
-      return `<button class="cover-button" data-select="${id}" aria-pressed="${id===selected}" tabindex="${id===selected?0:-1}" aria-label="${escape(p.name)} — ${t('선택','Select')}"><span class="cover-image">${projectImage(p)}</span></button>`;
+      return `<button class="cover-button" data-select="${id}" aria-pressed="${id===selected}" tabindex="${id===selected?0:-1}" aria-label="${escape(p.name)} — ${p.startedAt.slice(0,7)} — ${t('선택','Select')}" title="${escape(p.name)} · ${p.startedAt.slice(0,7)}"><span class="cover-image">${projectImage(p)}</span></button>`;
     }).join('');
   }
-  function card(p, play = false) {
-    const itch = p.links.find(l=>l.href.includes('itch.io'));
-    const opening = play ? `<a class="project-card" href="${escape(itch.href)}" target="_blank" rel="noopener noreferrer">` : `<button class="project-card" data-detail="${p.id}">`;
-    return `${opening}${projectImage(p)}<span class="project-card-body"><strong>${escape(p.name)}${play?' ↗':''}</strong><small>${play?t('itch.io에서 플레이 · 새 탭','Play on itch.io · New tab'):escape(p.tags.slice(0,2).join(' · ') || category(p))}</small></span>${play?'</a>':'</button>'}`;
+  function tagMarkup(tag) {
+    return `<span${tag==='Game Jam'?' class="tag-jam"':''}>${escape(tag)}</span>`;
+  }
+  function card(p) {
+    return `<button class="project-card" data-detail="${p.id}">${projectImage(p)}<span class="project-card-body"><strong>${escape(p.name)}</strong><small>${p.tags.length?p.tags.slice(0,2).map(tagMarkup).join(' · '):escape(category(p))}</small></span></button>`;
   }
   function renderGrid() {
     const query = $('#search').value.toLowerCase().trim();
@@ -121,21 +135,58 @@
     $('#result-count').textContent = t(`${visible.length}개의 프로젝트`,`${visible.length} projects`);
     $('#filters').innerHTML = [['all','전체','All'],['core','실무 · 협업','Professional'],['ax','개인 제작','Solo projects'],['study','연구 · 프로토타입','Research']].map(([id,ko,en])=>`<button data-filter="${id}" aria-pressed="${filter===id}">${t(ko,en)}</button>`).join('');
   }
-  function renderDetail() {
-    const p=projects.find(p=>p.id===detailId);
-    if(!p) return;
-    $('#project-detail').innerHTML=`${p.image?`<img class="detail-image" src="${escape(p.image)}" alt="${escape(p.name)}">`:''}<div class="detail-body"><p class="eyebrow">${category(p)}</p><h2 id="detail-title">${escape(p.name)}</h2><div class="detail-tags">${p.tags.map(tag=>`<span>${escape(tag)}</span>`).join('')}</div><h3>${t('프로젝트와 내가 만든 부분','The project & my contribution')}</h3>${p.details.length?`<ul>${p.details.map(d=>`<li>${escape(localized(d))}</li>`).join('')}</ul>`:`<p>${escape(localized(p.summary))}</p>`}<div class="detail-links">${p.links.map(l=>`<a href="${escape(l.href)}"${externalAttributes(l.href)}>${escape(localized(l.label))} ↗</a>`).join('')}</div></div>`;
-  }
   function openDetail(id) {
-    clearTimeout(hoverTimer); playTone(true);
-    detailId=id;renderDetail();$('#project-dialog').showModal();$('#project-dialog').scrollTop=0;
+    if (!projects.some(p=>p.id===id)) return;
+    clearTimeout(hoverTimer);
+    if ($('#full-library').open) $('#full-library').close();
+    selected=id;exploring=true;setView('library',false);renderFeatured();
+    history.pushState(null,'',`#library/${id}`);playTone(true);
+    window.scrollTo({top:0,behavior:'instant'});
+    $('#home-info').focus({preventScroll:true});
+  }
+  function closeDetail() {
+    exploring=false;renderFeatured();history.pushState(null,'','#library');
+    $('#featured [data-detail]').focus({preventScroll:true});
+  }
+  function openArchive(id) {
+    if (!projects.some(p=>p.id===id)) return;
+    clearTimeout(hoverTimer);
+    if ($('#full-library').open) $('#full-library').close();
+    readerId=id;setView('notes');
   }
   function renderNotes() {
-    $('#notes-list').innerHTML=projects.filter(p=>p.links.some(l=>l.href.endsWith('.html'))).map((p,i)=>{
-      const link=p.links.find(l=>l.href.endsWith('.html'));
-      return `<a class="note-link" href="${escape(link.href)}"><span class="note-number">${String(i+1).padStart(2,'0')}</span><span><strong>${escape(p.name)}</strong><small>${escape(p.tags.slice(0,3).join(' / '))} · ${t('아키텍처 문서','Architecture · Korean')}</small></span><span class="note-arrow">↗</span></a>`;
-    }).join('');
+    $('#reader-projects').innerHTML=projects.map(p=>`<button data-reader="${p.id}" ${readerId===p.id?'aria-current="page"':''}><span>${escape(p.name)}</span><small>${category(p)}</small></button>`).join('');
+    $('#reader-select').innerHTML=projects.map(p=>`<option value="${p.id}" ${readerId===p.id?'selected':''}>${escape(p.name)}</option>`).join('');
+    if (currentView!=='notes') return;
+    const p=projects.find(p=>p.id===readerId), key=`${readerId}:${lang}`;
+    if (renderedDocument===key) return;
+    renderedDocument=key;
+    const link=p.links.find(l=>l.href.endsWith('.html'));
+    const permalink=$('#document-permalink');permalink.hidden=!link;
+    if(link) {
+      permalink.href=link.href;
+      permalink.textContent=t('문서 단독으로 열기 ↗','Open document separately ↗');
+      const frame=document.createElement('iframe');
+      frame.className='reader-frame';frame.title=`${p.name} — ${t('아키텍처 문서','Architecture (Korean)')}`;
+      frame.src=`${link.href}?embedded=1`;
+      frame.dataset.path=link.href;
+      frame.style.height='900px';
+      $('#reader-content').replaceChildren(frame);
+    } else {
+      $('#reader-content').innerHTML=`${p.image?`<img class="detail-image" src="${escape(p.image)}" alt="${escape(p.name)}">`:''}<article class="detail-body"><p class="eyebrow">${category(p)}</p><h2 id="detail-title">${escape(p.name)}</h2><div class="detail-tags">${p.tags.map(tagMarkup).join('')}</div><h3>${t('프로젝트와 내가 만든 부분','The project & my contribution')}</h3>${p.details.length?`<ul>${p.details.map(d=>`<li>${escape(localized(d))}</li>`).join('')}</ul>`:`<p>${escape(localized(p.summary))}</p>`}<div class="detail-links">${p.links.map(l=>`<a href="${escape(l.href)}"${externalAttributes(l.href)}>${escape(localized(l.label))} ↗</a>`).join('')}</div></article>`;
+    }
   }
+  window.addEventListener('message',event=>{
+    const frame=$('.reader-frame');
+    if (!frame || event.source!==frame.contentWindow || event.data?.path!==frame.dataset.path) return;
+    if (event.data.type==='portfolio:document-size' && Number.isFinite(event.data.height)) {
+      frame.style.height=`${Math.max(300,Math.min(60000,event.data.height))}px`;
+    }
+    if (event.data.type==='portfolio:document-section' && Number.isFinite(event.data.top)) {
+      window.scrollTo({top:Math.max(0,frame.getBoundingClientRect().top+scrollY+event.data.top-24),behavior:reducedMotion.matches?'instant':'smooth'});
+    }
+    if (event.data.type==='portfolio:home') setView('library');
+  });
   function renderExperience() {
     const entries=[
       ['2026.01 — '+t('현재','Present'),'SUPER SEED','Game Programmer','Unity 모바일 게임의 프로젝트 셋업부터 출시 및 라이브 서비스까지 담당했습니다.','Unity mobile games, from project setup through release and live operations.'],
@@ -158,20 +209,23 @@
     updateSoundButton();
     document.querySelectorAll('a[href^="resume.html"]').forEach(a=>a.href=`resume.html?lang=${lang}`);
     renderNavigation();renderStrip();renderFeatured();renderGrid();renderNotes();renderExperience();renderLibraryToggle();
-    $('#play-projects').innerHTML=projects.filter(p=>p.links.some(l=>l.href.includes('itch.io'))).map(p=>card(p,true)).join('');
-    if(detailId)renderDetail();
-    window.orbitGame.setLanguage(lang);
+    window.portfolioDashboard.render(lang);
   }
   document.addEventListener('click',event=>{
-    const view=event.target.closest('[data-view]'); if(view)setView(view.dataset.view);
+    const view=event.target.closest('button[data-view]'); if(view)setView(view.dataset.view);
     const cover=event.target.closest('[data-select]');if(cover)selectProject(cover.dataset.select);
     const detail=event.target.closest('[data-detail]');if(detail)openDetail(detail.dataset.detail);
+    const reader=event.target.closest('[data-reader]');if(reader)openArchive(reader.dataset.reader);
+    const archive=event.target.closest('[data-archive]');if(archive)openArchive(archive.dataset.archive);
+    if(event.target.closest('[data-close-explore]'))closeDetail();
     const filterButton=event.target.closest('[data-filter]');if(filterButton){filter=filterButton.dataset.filter;renderGrid();$(`[data-filter="${filter}"]`).focus({preventScroll:true});}
     const close=event.target.closest('[data-close]');if(close)$(`#${close.dataset.close}`).close();
   });
   document.addEventListener('keydown',event=>{
     if(document.querySelector('dialog[open]')) return;
+    if(event.key==='Escape' && currentView==='library' && exploring){event.preventDefault();closeDetail();return;}
     if(event.key==='Escape' && currentView!=='library'){event.preventDefault();setView('library');return;}
+    if(event.target.closest('#home-info'))return;
     if(currentView!=='library'||event.altKey||event.metaKey||event.ctrlKey)return;
     const button=event.target.closest('[data-select]');
     if(!button && event.target.closest('button,a,input,textarea'))return;
@@ -206,10 +260,18 @@
   });
   document.addEventListener('fullscreenchange',()=>$('#fullscreen').setAttribute('aria-label',document.fullscreenElement?t('전체 화면 나가기','Exit fullscreen'):t('전체 화면','Enter fullscreen')));
   $('#search').addEventListener('input',renderGrid);
+  $('#reader-select').addEventListener('change',event=>openArchive(event.target.value));
   $('#toggle-library').addEventListener('click',()=>{clearTimeout(hoverTimer);playTone(true);$('#full-library').showModal();});
   $('#language').addEventListener('click',()=>{lang=lang==='ko'?'en':'ko';try{localStorage.setItem('portfolio-language',lang);}catch{}const url=new URL(location.href);url.searchParams.set('lang',lang);history.replaceState(null,'',url);renderLanguage();});
-  window.addEventListener('popstate',()=>setView(views.some(v=>`#${v[0]}`===location.hash)?location.hash.slice(1):'library',false));
-  window.addEventListener('hashchange',()=>setView(views.some(v=>`#${v[0]}`===location.hash)?location.hash.slice(1):'library',false));
+  function restoreRoute() {
+    const [route,projectId]=location.hash.slice(1).split('/');
+    const known=projects.some(p=>p.id===projectId);
+    if(route==='notes' && known)readerId=projectId;
+    if(route==='library' || !views.some(v=>v[0]===route)) {exploring=route==='library' && known;if(exploring)selected=projectId;renderFeatured();}
+    setView(route==='playroom'?'dashboard':views.some(v=>v[0]===route)?route:'library',false);
+  }
+  window.addEventListener('popstate',restoreRoute);
+  window.addEventListener('hashchange',restoreRoute);
   document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const rect=dialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();}));
   function updateClock(){const now=new Date();$('#clock').textContent=now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});$('#clock').dateTime=now.toISOString();}
   updateClock();setInterval(updateClock,30000);
