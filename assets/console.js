@@ -189,13 +189,23 @@
   });
   function renderExperience() {
     const entries=[
-      ['2026.01 — '+t('현재','Present'),'SUPER SEED','Game Programmer','Unity 모바일 게임의 프로젝트 셋업부터 출시 및 라이브 서비스까지 담당했습니다.','Unity mobile games, from project setup through release and live operations.'],
-      ['2023.04 — 2023.11','MetaZ','Game Programmer','클라이언트–서버 통신 기반의 인게임·아웃게임 UI와 모바일 게임 개발에 기여했습니다.','Mobile game development and in-game / out-of-game UI integrated with client-server communication.'],
-      ['2022.06 — 2023.01','TubaN','Technical Director','UE5 애니메이션 제작 파이프라인과 자동화 에디터 도구·플러그인을 개발했습니다.','UE5 animation pipelines, editor automation tools, and plugins.'],
-      ['2019.05 — 2020.06','JIH','Director','UE4 멀티플레이어 생존 게임의 상호작용 시스템과 게임플레이를 개발했습니다.','Interaction systems and gameplay for a UE4 multiplayer survival game.']
+      ['2026.01 — '+t('현재','Present'),'SUPER SEED','Game Programmer',[
+        ['SUPER POP','SUPER POP','Unity 모바일 게임 개발 셋업부터 Android·iOS 출시 및 라이브 서비스까지 담당했습니다.','Handled Unity mobile game development from project setup through Android / iOS release and live operations.']
+      ]],
+      ['2023.04 — 2023.11','MetaZ','Game Programmer',[
+        ['Mega Road','Mega Road','로비·장비·출석·퀘스트·상점·가챠 UI와 인게임 스킬 선택·통계 화면을 개발하고, 서버 응답 데이터 연동 및 AppLovin 광고 흐름을 구현했습니다.','Developed lobby, equipment, attendance, quest, shop and gacha UI, in-game skill selection and statistics screens, server response integration, and AppLovin ad flows.']
+      ]],
+      ['2022.06 — 2023.01','TubaN','Technical Director',[
+        ['Larva Pendant','Larva Pendant','넷플릭스 오리지널용 UE5 애니메이션 제작을 위한 파이프라인 자동화와 에디터 도구·플러그인을 개발했습니다.','Developed pipeline automation, editor tools and plugins for UE5 animation production for a Netflix original.'],
+        ['Larva AR','Larva AR','자사 IP를 활용한 VR/AR 모바일 애플리케이션을 개발했습니다.',"Developed VR / AR mobile applications using the company's IP."]
+      ]],
+      ['2019.05 — 2020.06','JIH','Director',[
+        ['White Paradise','White Paradise','리슨 서버 기반 UE4 협동 생존 게임의 상호작용 시스템과 게임플레이를 개발했습니다.','Developed interaction systems and gameplay for a UE4 cooperative survival game using a listen server.']
+      ]]
     ];
-    $('#experience').innerHTML=entries.map(([date,name,role,ko,en])=>`<article class="timeline-row"><time>${date}</time><div><h3>${name}<span>${role}</span></h3><p>${t(ko,en)}</p></div></article>`).join('');
+    $('#experience').innerHTML=entries.map(([date,name,role,projects])=>`<article class="timeline-row"><time>${date}</time><div><h3>${name}<span>${role}</span></h3>${projects.map(([koName,enName,ko,en])=>`<section class="career-project"><h4>${t(koName,enName)}</h4><p>${t(ko,en)}</p></section>`).join('')}</div></article>`).join('');
   }
+
   function renderLibraryToggle() {
     $('#toggle-library').setAttribute('aria-label',t('전체 18개 프로젝트 라이브러리 열기','Open library of all 18 projects'));
   }
