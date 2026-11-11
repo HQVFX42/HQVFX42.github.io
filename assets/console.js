@@ -193,7 +193,7 @@
         ['SUPER POP','SUPER POP','Unity 모바일 게임 개발 셋업부터 Android·iOS 출시 및 라이브 서비스까지 담당했습니다.','Handled Unity mobile game development from project setup through Android / iOS release and live operations.']
       ]],
       ['2023.04 — 2023.11','MetaZ','Game Programmer',[
-        ['Mega Road','Mega Road','로비·장비·출석·퀘스트·상점·가챠 UI와 인게임 스킬 선택·통계 화면을 개발하고, 서버 응답 데이터 연동 및 AppLovin 광고 흐름을 구현했습니다.','Developed lobby, equipment, attendance, quest, shop and gacha UI, in-game skill selection and statistics screens, server response integration, and AppLovin ad flows.']
+        ['Mega Road','Mega Road','로비·장비·출석·퀘스트·상점·가챠 UI와 인게임 스킬 선택·통계 화면을 개발하고 서버 응답 데이터를 연동했습니다.\nAppLovin MAX 미디에이션으로 AppLovin·Google AdMob·Meta 등 광고 네트워크를 연동했습니다.','Developed lobby, equipment, attendance, quest, shop and gacha UI, plus in-game skill selection and statistics screens integrated with server response data.\nIntegrated ad networks including AppLovin, Google AdMob and Meta through AppLovin MAX mediation.']
       ]],
       ['2022.06 — 2023.01','TubaN','Technical Director',[
         ['Larva Pendant','Larva Pendant','넷플릭스 오리지널용 UE5 애니메이션 제작을 위한 파이프라인 자동화와 에디터 도구·플러그인을 개발했습니다.','Developed pipeline automation, editor tools and plugins for UE5 animation production for a Netflix original.'],
